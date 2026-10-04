@@ -1,0 +1,14 @@
+numpy
+scipy
+scikit-learn
+matplotlib
+datasets
+# generator + LoRA (GPU recommended)
+torch
+transformers
+peft
+accelerate
+bitsandbytes   # only for --load_4bit
+# dense retriever (DENSE=bge)
+sentence-transformers
+# optional NER (--ner spacy):  pip install spacy && python -m spacy download en_core_web_sm

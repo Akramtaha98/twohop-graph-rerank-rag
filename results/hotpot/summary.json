@@ -1,0 +1,127 @@
+{
+  "config": {
+    "dataset": "hotpot",
+    "path": null,
+    "n": 1000,
+    "seed": 0,
+    "k": 5,
+    "dense": "bge",
+    "ner": "regex",
+    "generator": "hf",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter": null,
+    "load_4bit": false,
+    "systems": null,
+    "gen_systems": [
+      "none",
+      "bm25",
+      "dense",
+      "hybrid",
+      "oracle"
+    ],
+    "append": false,
+    "tuned": "../results/tuned.json",
+    "out": "../results/hotpot"
+  },
+  "systems_run": [
+    "none",
+    "bm25",
+    "dense",
+    "graph",
+    "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
+    "abl_no_entity_seed:hybrid:alpha=0.15,lam=0,beta=0.3",
+    "abl_no_dense_seed:hybrid:alpha=0.15,lam=1,beta=0.3",
+    "abl_no_fusion:hybrid:alpha=0.15,lam=0.5,beta=0",
+    "abl_no_idf:hybrid:alpha=0.15,lam=0.5,beta=0.3,idf=0",
+    "abl_alpha05:hybrid:alpha=0.5,lam=0.5,beta=0.3",
+    "oracle"
+  ],
+  "n_questions": 1000,
+  "n_passages": 9760,
+  "systems": {
+    "none": {
+      "recall": 0.0,
+      "all_support": 0.0,
+      "em": 0.133,
+      "f1": 0.18923130498533727,
+      "support": 0.0,
+      "unsupported": 1.0,
+      "seconds": 145.8
+    },
+    "bm25": {
+      "recall": 0.738,
+      "all_support": 0.513,
+      "em": 0.338,
+      "f1": 0.4284984737484738,
+      "support": 0.8713916666666667,
+      "unsupported": 0.134,
+      "seconds": 491.7
+    },
+    "dense": {
+      "recall": 0.843,
+      "all_support": 0.702,
+      "em": 0.375,
+      "f1": 0.47622181218345316,
+      "support": 0.8869746031746031,
+      "unsupported": 0.119,
+      "seconds": 504.8
+    },
+    "graph": {
+      "recall": 0.49,
+      "all_support": 0.234,
+      "seconds": 9.2
+    },
+    "hybrid": {
+      "recall": 0.843,
+      "all_support": 0.701,
+      "em": 0.366,
+      "f1": 0.4683834782951192,
+      "support": 0.8816666666666666,
+      "unsupported": 0.123,
+      "seconds": 575.6
+    },
+    "abl_no_entity_seed": {
+      "recall": 0.847,
+      "all_support": 0.71,
+      "seconds": 19.6
+    },
+    "abl_no_dense_seed": {
+      "recall": 0.69,
+      "all_support": 0.472,
+      "seconds": 19.1
+    },
+    "abl_no_fusion": {
+      "recall": 0.8315,
+      "all_support": 0.681,
+      "seconds": 19.3
+    },
+    "abl_no_idf": {
+      "recall": 0.845,
+      "all_support": 0.705,
+      "seconds": 19.1
+    },
+    "abl_alpha05": {
+      "recall": 0.843,
+      "all_support": 0.703,
+      "seconds": 17.8
+    },
+    "oracle": {
+      "recall": 1.0,
+      "all_support": 1.0,
+      "em": 0.54,
+      "f1": 0.672479592808625,
+      "support": 0.9087999999999999,
+      "unsupported": 0.094,
+      "seconds": 255.3
+    },
+    "hybrid2": {
+      "recall": 0.8815,
+      "all_support": 0.786,
+      "em": 0.426,
+      "f1": 0.5318894246434569,
+      "support": 0.897990404040404,
+      "unsupported": 0.107,
+      "seconds": 537.8
+    }
+  }
+}

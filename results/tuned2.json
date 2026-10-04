@@ -1,0 +1,329 @@
+{
+  "best": {
+    "ner": "both",
+    "m": 3,
+    "gamma": 0.3,
+    "tb": 0.5,
+    "all_support": 0.858
+  },
+  "grid": [
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.738
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.758
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.444
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.454
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.262
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.274
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.754
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.778
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.474
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.486
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.276
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.294
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.734
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.754
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.42
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.432
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.23
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.246
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.748
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.768
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.456
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.466
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.248
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.262
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.742
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.772
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.418
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.432
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.236
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.25
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.0,
+      "all_support": 0.76
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.5,
+      "tb": 0.5,
+      "all_support": 0.792
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.0,
+      "all_support": 0.456
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 1.0,
+      "tb": 0.5,
+      "all_support": 0.468
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.0,
+      "all_support": 0.252
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 2.0,
+      "tb": 0.5,
+      "all_support": 0.272
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.826
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.848
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.844
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.828
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.832
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.826
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.842
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.854
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.858
+    }
+  ],
+  "n": 500,
+  "dense": "bge",
+  "dense_baseline": 0.756
+}

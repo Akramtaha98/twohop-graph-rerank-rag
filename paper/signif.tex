@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Paired bootstrap (10\,000 resamples) of Two-hop graph re-ranking (ours) versus Dense: mean difference in percentage points, 95\% CI and two-sided $p$.}
+\label{tab:signif}
+\begin{tabular}{llrrr}
+\toprule
+Dataset & Metric & $\Delta$ & 95\% CI & $p$ \\
+\midrule
+HotpotQA (sample A) & R@5 & +3.9 & [+2.5, +5.3] & <0.001 \\
+HotpotQA (sample A) & All@5 & +8.4 & [+5.7, +11.1] & <0.001 \\
+HotpotQA (sample A) & EM & +5.1 & [+2.8, +7.5] & <0.001 \\
+HotpotQA (sample A) & F1 & +5.6 & [+3.3, +7.9] & <0.001 \\
+HotpotQA (sample A) & Unsup.$\downarrow$ & -1.2 & [-2.7, +0.3] & 0.117 \\
+HotpotQA (sample B) & R@5 & +4.7 & [+3.3, +6.1] & <0.001 \\
+HotpotQA (sample B) & All@5 & +10.5 & [+7.8, +13.2] & <0.001 \\
+\bottomrule
+\end{tabular}
+\end{table}

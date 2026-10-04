@@ -1,0 +1,84 @@
+{
+  "config": {
+    "dataset": "hotpot",
+    "path": null,
+    "n": 1000,
+    "seed": 1,
+    "k": 5,
+    "dense": "bge",
+    "ner": "regex",
+    "generator": "none",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter": null,
+    "load_4bit": false,
+    "systems": [
+      "bm25",
+      "dense",
+      "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
+      "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+      "abl2_no_title:hybrid2:ner=both,m=3,gamma=0.3,tb=0",
+      "abl2_one_seed:hybrid2:ner=both,m=1,gamma=0.3,tb=0.5",
+      "abl2_regex_ner:hybrid2:ner=regex,m=3,gamma=0.3,tb=0.5",
+      "oracle"
+    ],
+    "gen_systems": null,
+    "append": false,
+    "tuned": null,
+    "tuned2": null,
+    "out": "../results/eval_v2_seed1"
+  },
+  "systems_run": [
+    "bm25",
+    "dense",
+    "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
+    "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+    "abl2_no_title:hybrid2:ner=both,m=3,gamma=0.3,tb=0",
+    "abl2_one_seed:hybrid2:ner=both,m=1,gamma=0.3,tb=0.5",
+    "abl2_regex_ner:hybrid2:ner=regex,m=3,gamma=0.3,tb=0.5",
+    "oracle"
+  ],
+  "n_questions": 1000,
+  "n_passages": 9807,
+  "systems": {
+    "bm25": {
+      "recall": 0.716,
+      "all_support": 0.481,
+      "seconds": 1.5
+    },
+    "dense": {
+      "recall": 0.841,
+      "all_support": 0.698,
+      "seconds": 7.8
+    },
+    "hybrid": {
+      "recall": 0.84,
+      "all_support": 0.698,
+      "seconds": 20.3
+    },
+    "hybrid2": {
+      "recall": 0.888,
+      "all_support": 0.803,
+      "seconds": 37.7
+    },
+    "abl2_no_title": {
+      "recall": 0.8535,
+      "all_support": 0.734,
+      "seconds": 36.0
+    },
+    "abl2_one_seed": {
+      "recall": 0.859,
+      "all_support": 0.761,
+      "seconds": 21.3
+    },
+    "abl2_regex_ner": {
+      "recall": 0.886,
+      "all_support": 0.798,
+      "seconds": 33.8
+    },
+    "oracle": {
+      "recall": 1.0,
+      "all_support": 1.0,
+      "seconds": 0.0
+    }
+  }
+}
