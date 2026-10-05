@@ -2,6 +2,8 @@
 
 All retrievers expose fit(passages) and search(question, k) -> (list[pid], dict(extra)).
 """
+import re
+
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
@@ -158,7 +160,13 @@ class Hybrid2:
 
     name = "hybrid2"
 
-    def __init__(self, dense, m=3, gamma=1.0, tb=0.5, tau=0.1, exp_words=40, ner="regex", idf=True, max_df_frac=0.2):
+    COMPARE_CUES = re.compile(r"\b(both|same|older|younger|oldest|youngest|earlier|later|first|larger|smaller|longer|shorter|more|less)\b|\b\w+ or \w+\b", re.I)
+
+    def __init__(self, dense, m=3, gamma=1.0, tb=0.5, tau=0.1, exp_words=40, ner="regex", idf=True, max_df_frac=0.2, gate="none"):
+        """gate: 'none' always re-ranks; 'titles' skips questions that name two or more titles of top-k dense passages
+        (both entities of a comparison question are named); 'rule' skips questions with comparison cue words;
+        'oracle' skips gold comparison questions (upper bound, needs qtype)."""
+        self.gate = gate
         self.dense, self.m, self.gamma, self.tb, self.tau = dense, int(m), gamma, tb, tau
         self.exp_words, self.ner, self.idf, self.max_df_frac = exp_words, ner, idf, max_df_frac
 
@@ -175,15 +183,27 @@ class Hybrid2:
         p = self.passages[pid]
         return q + " " + p["title"] + ". " + " ".join(p["text"].split()[: self.exp_words])
 
-    def search(self, q, k):
+    def _skip(self, q, d, k, qtype, qset):
+        if self.gate == "titles":
+            top = np.argsort(-d)[:k]
+            return sum(1 for p in top if self.title_col[p] >= 0 and self.title_col[p] in qset) >= 2
+        if self.gate == "rule":
+            return bool(self.COMPARE_CUES.search(q))
+        if self.gate == "oracle":
+            return qtype is not None and "comparison" in str(qtype)
+        return False
+
+    def search(self, q, k, qtype=None):
         g = self.g
         d = self.dense.scores(q)
         lo, hi = float(d.min()), float(d.max())
         dn = (d - lo) / (hi - lo) if hi > lo else np.zeros_like(d)
+        qset = set(g.query_entities(q))
+        if self.gate != "none" and self._skip(q, d, k, qtype, qset):
+            return list(np.argsort(-d)[:k]), {"gated": True}
         first = np.argsort(-d)[: self.m]
         w = np.exp((dn[first] - dn[first].max()) / self.tau)
         w = w / w.max()
-        qset = set(g.query_entities(q))
         boost = np.zeros(g.n)
         for p, wp in zip(first, w):
             cols = g.A.indices[g.A.indptr[p] : g.A.indptr[p + 1]]
@@ -203,3 +223,25 @@ class Hybrid2:
         score = dn + self.gamma * boost
         sel = list(np.argsort(-score)[:k])
         return sel, {"bridges": g.bridges(sel)}
+
+
+class CrossRerank:
+    """Cross-encoder baseline: take the top-`top` passages of a base retriever and re-score each (question, passage) pair."""
+
+    name = "ce"
+
+    def __init__(self, base, model="BAAI/bge-reranker-base", top=20):
+        self.base, self.model_name, self.top = base, model, int(top)
+
+    def fit(self, passages):
+        from sentence_transformers import CrossEncoder
+
+        self.passages = passages
+        self.ce = CrossEncoder(self.model_name, max_length=512)
+        return self
+
+    def search(self, q, k, qtype=None):
+        pids = list(self.base.search(q, self.top)[0]) if not hasattr(self.base, "gate") else list(self.base.search(q, self.top, qtype)[0])
+        s = self.ce.predict([(q, _ptext(self.passages[p])) for p in pids], batch_size=20, show_progress_bar=False)
+        order = np.argsort(-np.asarray(s))[:k]
+        return [pids[i] for i in order], {}

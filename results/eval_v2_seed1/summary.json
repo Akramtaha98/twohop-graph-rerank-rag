@@ -79,6 +79,36 @@
       "recall": 1.0,
       "all_support": 1.0,
       "seconds": 0.0
+    },
+    "hybrid2_gate": {
+      "recall": 0.8945,
+      "all_support": 0.816,
+      "gated": 0.229,
+      "seconds": 29.0
+    },
+    "hybrid2_oracle": {
+      "recall": 0.898,
+      "all_support": 0.823,
+      "gated": 0.216,
+      "seconds": 27.9
+    },
+    "ce_dense": {
+      "recall": 0.9005,
+      "all_support": 0.81,
+      "gated": 0.0,
+      "seconds": 319.9
+    },
+    "ce_hybrid2": {
+      "recall": 0.9275,
+      "all_support": 0.868,
+      "gated": 0.0,
+      "seconds": 396.2
+    },
+    "ce_hybrid2_gate": {
+      "recall": 0.9265,
+      "all_support": 0.866,
+      "gated": 0.0,
+      "seconds": 387.2
     }
   }
 }

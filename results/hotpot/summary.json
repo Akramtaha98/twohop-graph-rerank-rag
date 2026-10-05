@@ -122,6 +122,26 @@
       "support": 0.897990404040404,
       "unsupported": 0.107,
       "seconds": 537.8
+    },
+    "hybrid2_gate": {
+      "recall": 0.8865,
+      "all_support": 0.796,
+      "gated": 0.229,
+      "em": 0.423,
+      "f1": 0.5284578511444921,
+      "support": 0.8984904040404039,
+      "unsupported": 0.105,
+      "seconds": 541.4
+    },
+    "ce_dense": {
+      "recall": 0.9025,
+      "all_support": 0.812,
+      "gated": 0.0,
+      "em": 0.397,
+      "f1": 0.5073489540029863,
+      "support": 0.9123333333333332,
+      "unsupported": 0.093,
+      "seconds": 832.4
     }
   }
 }

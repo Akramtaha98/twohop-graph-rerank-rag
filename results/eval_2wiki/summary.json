@@ -1,0 +1,100 @@
+{
+  "config": {
+    "dataset": "2wiki",
+    "path": null,
+    "n": 1000,
+    "seed": 0,
+    "k": 5,
+    "dense": "bge",
+    "ner": "regex",
+    "generator": "none",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter": null,
+    "load_4bit": false,
+    "systems": [
+      "bm25",
+      "dense",
+      "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+      "oracle",
+      "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+      "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
+      "ce_dense:ce:top=20",
+      "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
+      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+    ],
+    "gen_systems": null,
+    "append": false,
+    "tuned": null,
+    "tuned2": null,
+    "out": "../results/eval_2wiki"
+  },
+  "systems_run": [
+    "bm25",
+    "dense",
+    "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+    "oracle",
+    "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+    "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
+    "ce_dense:ce:top=20",
+    "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
+    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+  ],
+  "n_questions": 1000,
+  "n_passages": 6223,
+  "systems": {
+    "bm25": {
+      "recall": 0.656,
+      "all_support": 0.317,
+      "gated": 0.0,
+      "seconds": 0.8
+    },
+    "dense": {
+      "recall": 0.69475,
+      "all_support": 0.382,
+      "gated": 0.0,
+      "seconds": 7.2
+    },
+    "hybrid2": {
+      "recall": 0.8085,
+      "all_support": 0.594,
+      "gated": 0.0,
+      "seconds": 33.6
+    },
+    "oracle": {
+      "recall": 1.0,
+      "all_support": 1.0,
+      "gated": 0.0,
+      "seconds": 0.0
+    },
+    "hybrid2_gate": {
+      "recall": 0.80625,
+      "all_support": 0.605,
+      "gated": 0.354,
+      "seconds": 25.6
+    },
+    "hybrid2_oracle": {
+      "recall": 0.80425,
+      "all_support": 0.607,
+      "gated": 0.472,
+      "seconds": 20.9
+    },
+    "ce_dense": {
+      "recall": 0.7015,
+      "all_support": 0.387,
+      "gated": 0.0,
+      "seconds": 483.7
+    },
+    "ce_hybrid2": {
+      "recall": 0.7495,
+      "all_support": 0.474,
+      "gated": 0.0,
+      "seconds": 537.3
+    },
+    "ce_hybrid2_gate": {
+      "recall": 0.747,
+      "all_support": 0.474,
+      "gated": 0.0,
+      "seconds": 495.6
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "best": {
+    "gate": "titles",
+    "all_support": 0.868,
+    "gated_share": 0.252
+  },
+  "grid": [
+    {
+      "gate": "none",
+      "all_support": 0.858,
+      "gated_share": 0.0
+    },
+    {
+      "gate": "titles",
+      "all_support": 0.868,
+      "gated_share": 0.252
+    },
+    {
+      "gate": "rule",
+      "all_support": 0.864,
+      "gated_share": 0.216
+    },
+    {
+      "gate": "oracle",
+      "all_support": 0.872,
+      "gated_share": 0.2
+    }
+  ],
+  "n": 500
+}

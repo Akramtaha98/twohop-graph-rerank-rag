@@ -15,7 +15,7 @@ import numpy as np
 from . import data as D
 from . import metrics as M
 from .generate import Extractive, HFGenerator, build_context
-from .retrievers import BM25, Dense, GraphPPR, Hybrid, Hybrid2
+from .retrievers import BM25, CrossRerank, Dense, GraphPPR, Hybrid, Hybrid2
 
 def default_systems(best=None, best2=None):
     """Baselines, the proposed hybrid and its ablations. `best` overrides hyper-parameters (from tune.py)."""
@@ -47,7 +47,7 @@ def parse_spec(spec):
     for kv in parts[2:]:
         for item in filter(None, kv.split(",")):
             k, v = item.split("=")
-            kw[k] = v if k == "ner" else float(v) if k in {"alpha", "lam", "beta", "temp", "max_df_frac", "gamma", "tb"} else int(v)
+            kw[k] = v if k in {"ner", "gate", "ce_model"} else float(v) if k in {"alpha", "lam", "beta", "temp", "max_df_frac", "gamma", "tb"} else int(v)
     if "idf" in kw:
         kw["idf"] = bool(kw["idf"])
     return label, kind, kw
@@ -64,6 +64,11 @@ def build(kind, kw, dense, passages, args):
         return Hybrid(dense, ner=args.ner, **kw).fit(passages)
     if kind == "hybrid2":
         return Hybrid2(dense, **{"ner": args.ner, **kw}).fit(passages)
+    if kind in {"ce", "ce_h2"}:  # cross-encoder over the top-`top` of dense ("ce") or of the two-hop re-ranker ("ce_h2")
+        kw = dict(kw)
+        top, cem = kw.pop("top", 20), kw.pop("ce_model", "BAAI/bge-reranker-base")
+        base = dense if kind == "ce" else Hybrid2(dense, **{"ner": args.ner, **kw}).fit(passages)
+        return CrossRerank(base, model=cem, top=top).fit(passages)
     return None  # none / oracle
 
 
@@ -112,18 +117,20 @@ def main():
         r = build(kind, kw, dense, passages, args)
         recs, t0 = [], time.time()
         for ex in exs:
-            bridges = {}
+            bridges, extra = {}, {}
             if kind == "none":
                 pids = []
             elif kind == "oracle":
                 pids = sorted(ex["sup_pids"])
             else:
-                pids, extra = r.search(ex["question"], args.k)
+                pids, extra = r.search(ex["question"], args.k, ex.get("qtype")) if kind in {"hybrid2", "ce", "ce_h2"} else r.search(ex["question"], args.k)
                 bridges = extra.get("bridges", {})
             rec = {
                 "qid": ex["qid"],
                 "recall": M.recall_at_k(pids, ex["sup_pids"]),
                 "all_support": M.all_support_at_k(pids, ex["sup_pids"]),
+                "qtype": ex.get("qtype", ""),
+                "gated": bool(extra.get("gated", False)),
             }
             if gen is not None and (gen_for is None or label in gen_for):
                 ctx = build_context(passages, pids, bridges, chain=(kind in {"graph", "hybrid"}))
@@ -134,7 +141,7 @@ def main():
         with open(out / f"{label}.jsonl", "w") as f:
             for rec in recs:
                 f.write(json.dumps(rec) + "\n")
-        agg = {k: float(np.mean([x[k] for x in recs])) for k in recs[0] if k not in {"qid", "pred"}}
+        agg = {k: float(np.mean([x[k] for x in recs])) for k in recs[0] if k not in {"qid", "pred", "qtype"}}
         agg["seconds"] = round(time.time() - t0, 1)
         summary["systems"][label] = agg
         print(label, {k: round(v, 3) for k, v in agg.items()})

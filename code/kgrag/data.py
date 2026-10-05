@@ -40,7 +40,7 @@ def _hotpot_like(records, n, seed):
             cand.append(pid)
             if title in sf:
                 sup.add(pid)
-        exs.append(dict(qid=str(r.get("id", r.get("_id"))), question=r["question"], answer=r["answer"], sup_pids=sup, cand_pids=cand))
+        exs.append(dict(qid=str(r.get("id", r.get("_id"))), question=r["question"], answer=r["answer"], sup_pids=sup, cand_pids=cand, qtype=r.get("type", "")))
     return exs, corp.passages
 
 
@@ -54,13 +54,22 @@ def load_hotpot(path=None, n=1000, seed=0, split="validation"):
     return _hotpot_like(recs, n, seed)
 
 
-def load_2wiki(path, n=1000, seed=0):
-    return _hotpot_like(json.loads(Path(path).read_text()), n, seed)
+def load_2wiki(path=None, n=1000, seed=0):
+    """2WikiMultiHopQA: local official json, or the HF parquet copy (validation split) when path is None."""
+    if path:
+        return _hotpot_like(json.loads(Path(path).read_text()), n, seed)
+    from datasets import load_dataset
+
+    return _hotpot_like(load_dataset("framolfese/2WikiMultihopQA", split="validation"), n, seed)
 
 
 def load_musique(path, n=1000, seed=0):
     """Official MuSiQue jsonl (musique_ans_v1.0_dev.jsonl)."""
     rng = random.Random(seed)
+    if not path:
+        from huggingface_hub import hf_hub_download
+
+        path = hf_hub_download("dgslibisey/MuSiQue", "musique_ans_v1.0_dev.jsonl", repo_type="dataset")
     recs = [json.loads(l) for l in Path(path).read_text().splitlines() if l.strip()]
     recs = [r for r in recs if r.get("answerable", True)]
     rng.shuffle(recs)
@@ -72,7 +81,7 @@ def load_musique(path, n=1000, seed=0):
             cand.append(pid)
             if p.get("is_supporting"):
                 sup.add(pid)
-        exs.append(dict(qid=r["id"], question=r["question"], answer=r["answer"], sup_pids=sup, cand_pids=cand))
+        exs.append(dict(qid=r["id"], question=r["question"], answer=r["answer"], sup_pids=sup, cand_pids=cand, qtype=r["id"].split("__")[0]))
     return exs, corp.passages
 
 
