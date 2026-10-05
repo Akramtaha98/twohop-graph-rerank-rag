@@ -19,7 +19,7 @@ PRETTY = {"none": "No retrieval", "bm25": "BM25", "dense": "Dense", "graph": "Gr
           "abl_no_entity_seed": "w/o entity seeds", "abl_no_dense_seed": "w/o dense seeds",
           "abl_no_fusion": "w/o dense-score fusion", "abl_no_idf": "w/o IDF edge weights", "abl_alpha05": "restart $\\alpha=0.5$"}
 COLS = [("recall", "R@5", True), ("all_support", "All@5", True), ("em", "EM", True), ("f1", "F1", True), ("unsupported", "Unsup.$\\downarrow$", False)]
-MAC = {"recall": "Recall", "all_support": "AllSupp", "em": "EM", "f1": "FOne", "unsupported": "Unsupp", "support": "Support"}
+MAC = {"seconds": "Sec", "recall": "Recall", "all_support": "AllSupp", "em": "EM", "f1": "FOne", "unsupported": "Unsupp", "support": "Support"}
 LET = lambda s: re.sub(r"[^A-Za-z]", "", s.replace("2", "Two").replace("0", "Zero").replace("1", "One"))  # noqa: E731
 
 
@@ -88,7 +88,7 @@ def retr_table(runs):
     systems = ["bm25", "dense", "hybrid", "hybrid2", "abl2_no_title", "abl2_one_seed", "abl2_regex_ner", "oracle"]
     names = list(runs)
     lines = ["\\begin{table}[t]", "\\centering", "\\small",
-             "\\caption{Retrieval on two independent samples of 1\\,000 HotpotQA questions (\\%). Sample~A was also used to evaluate the earlier PPR variant; sample~B was used only once, for the final configuration. Best non-oracle value in bold.}",
+             "\\caption{Retrieval on two independent samples of 1\\,000 HotpotQA questions (\\%). Sample~A was also used to evaluate the earlier PPR variant; sample~B was first run once with the frozen ungated configuration and later reused (Section~\\ref{sec:setup}). Best non-oracle value in bold.}",
              "\\label{tab:retr2}", "\\begin{tabular}{l" + "rr" * len(names) + "}", "\\toprule",
              "System & " + " & ".join(f"\\multicolumn{{2}}{{c}}{{{n}}}" for n in names) + " \\\\",
              "& " + " & ".join("R@5 & All@5" for _ in names) + " \\\\", "\\midrule"]
@@ -121,7 +121,8 @@ def macros(runs):
             S = LET(s.replace("_", " ").title().replace(" ", ""))
             for k, val in v.items():
                 if k in MAC:
-                    out.append(f"\\newcommand{{\\R{D}{S}{MAC[k]}}}{{{fmt(val)}}}")
+                    num = f"{val:.1f}" if k == "seconds" else fmt(val)
+                    out.append(f"\\newcommand{{\\R{D}{S}{MAC[k]}}}{{{num}}}")
     return "\n".join(out)
 
 
