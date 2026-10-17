@@ -144,7 +144,7 @@ def main():
     hr = {s: rd(Path(a.hotpot) / f"{s}.jsonl") for s in ("dense", "ce_dense", "hybrid2", "hybrid2_gate", "oracle")}
     rows = [("dense", "Dense", "Dense"), ("ce_dense", "Cross-encoder on dense top-20", "CE"), ("hybrid2", "Two-hop re-ranking", "Two"),
             ("hybrid2_gate", "Two-hop + gate", "Gate"), ("oracle", "Gold passages (upper bound)", "Orac")]
-    L = ["\\begin{table}[t]", "\\centering", "\\small", "\\caption{Answers of Qwen2.5-1.5B-Instruct on sample A (\\%). Unsup.: lexically unsupported answers (lower is better). Sec.: end-to-end time for 1\\,000 questions.}",
+    L = ["\\begin{table}[t]", "\\centering", "\\small", "\\caption{Answers of Qwen2.5-1.5B-Instruct on sample A (\\%), \\emph{original run on the Apple M4 laptop}. Unsup.: lexically unsupported answers (lower is better). Sec.: end-to-end time for 1\\,000 questions. The GPU-server rerun of the same systems is in Table~\\ref{tab:gpuanswers}; its exact-match values differ by 0.1 point or less.}",
          "\\label{tab:answers}", "\\begin{tabular}{lrrrrr}", "\\toprule", "System & All@5 & EM & F1 & Unsup.$\\downarrow$ & Sec. \\\\", "\\midrule"]
     for s, name, c in rows:
         v = hs[s]
