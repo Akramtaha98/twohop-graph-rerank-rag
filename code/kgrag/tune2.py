@@ -21,7 +21,7 @@ def main():
     ap.add_argument("--dense", default="tfidf", choices=["tfidf", "bge"])
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--ners", nargs="+", default=["regex", "spacy", "both"])
-    ap.add_argument("--gammas", nargs="+", type=float, default=[0.5, 1.0, 2.0])
+    ap.add_argument("--gammas", nargs="+", type=float, default=[0.1, 0.2, 0.3, 0.5, 1.0, 2.0])
     ap.add_argument("--ms", nargs="+", type=int, default=[2, 3])
     ap.add_argument("--tbs", nargs="+", type=float, default=[0.0, 0.5])
     ap.add_argument("--out", default="results/tuned2.json")

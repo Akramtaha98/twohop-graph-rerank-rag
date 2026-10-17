@@ -63,9 +63,9 @@ def build(kind, kw, dense, passages, args):
     if kind == "hybrid":
         return Hybrid(dense, ner=args.ner, **kw).fit(passages)
     if kind == "spriglike":
-        return SprigLike(dense, ner=args.ner, **kw).fit(passages)
+        return SprigLike(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind == "linearlike":
-        return LinearLike(dense, ner=args.ner, **kw).fit(passages)
+        return LinearLike(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind == "hybrid2":
         return Hybrid2(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind in {"ce", "ce_h2"}:  # cross-encoder over the top-`top` of dense ("ce") or of the two-hop re-ranker ("ce_h2")

@@ -19,14 +19,14 @@ step tune3 python -m kgrag.tune3 --tuned2 $R/tuned2.json --n 500 --dense bge --o
 GATE=$(python -c "import json;print(json.load(open('$R/tuned3.json'))['best']['gate'])")
 B="ner=both,m=3,gamma=0.3,tb=0.5"                       # frozen from tuned2.json
 T="ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only"       # gamma chosen on train (control experiments)
-BL=("spriglike:spriglike:alpha=0.15,seeds_k=5" "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10")
+BL=("spriglike:spriglike:alpha=0.15,seeds_k=5,ner=both" "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10,ner=both")
 NEW=("hybrid2_gate:hybrid2:$B,gate=$GATE" "hybrid2_oracle:hybrid2:$B,gate=oracle" "ce_dense:ce:top=20" "ce_hybrid2:ce_h2:$B,top=20"
      "ce_hybrid2_gate:ce_h2:$B,gate=$GATE,top=20" "titlelink:hybrid2:$T" "ce_titlelink:ce_h2:$T,top=20" "${BL[@]}")
 BASE=(bm25 dense "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3" "hybrid2:hybrid2:$B" oracle)
 ABL=("abl2_no_title:hybrid2:ner=both,m=3,gamma=0.3,tb=0" "abl2_one_seed:hybrid2:ner=both,m=1,gamma=0.3,tb=0.5" "abl2_regex_ner:hybrid2:ner=regex,m=3,gamma=0.3,tb=0.5")
 
 # main HotpotQA sample A: all systems, answers (Qwen2.5-1.5B) for the systems compared in the paper
-step hotpotA python -m kgrag.run --dataset hotpot --n 1000 --seed 0 --dense bge --ner both --generator hf --model "$MODEL" --tuned $R/tuned.json --tuned2 $R/tuned2.json \
+step hotpotA python -m kgrag.run --dataset hotpot --n 1000 --seed 0 --dense bge --generator hf --model "$MODEL" --tuned $R/tuned.json --tuned2 $R/tuned2.json \
   --systems none bm25 dense graph "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3" "hybrid2:hybrid2:$B" "${NEW[@]}" oracle \
   --gen_systems none bm25 dense hybrid hybrid2 hybrid2_gate ce_dense titlelink spriglike linearlike oracle --out $R/hotpot
 # retrieval-only copy of sample A with ablations (same layout as before)
