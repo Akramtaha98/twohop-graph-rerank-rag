@@ -47,3 +47,5 @@ MIT.
 
 ## Baselines and like-for-like answers (GPU v5)
 `code/run_gpu_v5.sh` runs simplified re-implementations of the LinearRAG and SPRIG ideas (`SprigLike`, `LinearLike` in `kgrag/retrievers.py`; not the authors' code, untuned defaults) on all four sets, and all systems' answers on sample A on one GPU (`results/answersA_gpu`). `python -m kgrag.report_gpu --res results --out paper` regenerates the tables.
+
+Figures: `python -m kgrag.make_figures --res results --out paper/figs` (vector PDF and 300 dpi PNG from the stored per-question files).
