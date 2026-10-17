@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Retrieval with two-hop re-ranking, a question-type gate and a cross-encoder on four evaluation sets (\%; 1\,000 questions each). Settings were frozen from HotpotQA training data; 2WikiMultiHopQA and MuSiQue are zero-shot transfer. Sec.: retrieval time for 1\,000 questions on the M4 laptop. Best non-oracle value per column in bold.}
+\label{tab:ext}
+\begin{tabular}{lrrrrrrrrrrrr}
+\toprule
+System & \multicolumn{3}{c}{HotpotQA A} & \multicolumn{3}{c}{HotpotQA B} & \multicolumn{3}{c}{2Wiki} & \multicolumn{3}{c}{MuSiQue} \\
+& R@5 & All@5 & Sec. & R@5 & All@5 & Sec. & R@5 & All@5 & Sec. & R@5 & All@5 & Sec. \\
+\midrule
+BM25 & 73.8 & 51.3 & 2 & 71.6 & 48.1 & 2 & 65.6 & 31.7 & 1 & 43.6 & 10.0 & 2 \\
+Dense & 84.3 & 70.2 & 8 & 84.1 & 69.8 & 8 & 69.5 & 38.2 & 7 & 49.8 & 15.3 & 8 \\
+\midrule
+CE (dense top-20) & 90.2 & 81.2 & 334 & 90.0 & 81.0 & 320 & 70.2 & 38.7 & 484 & 53.7 & 18.0 & 321 \\
+Two-hop & 88.1 & 78.6 & 37 & 88.8 & 80.3 & 38 & \textbf{80.8} & 59.4 & 34 & 48.3 & 21.6 & 35 \\
+Two-hop + gate & 88.6 & 79.6 & 30 & 89.5 & 81.6 & 29 & 80.6 & \textbf{60.5} & 26 & 49.2 & 21.8 & 34 \\
+\midrule
+CE (two-hop top-20) & 92.2 & 85.3 & 369 & \textbf{92.8} & \textbf{86.8} & 396 & 75.0 & 47.4 & 537 & 54.4 & \textbf{22.9} & 383 \\
+CE (gated two-hop) & \textbf{92.3} & \textbf{85.7} & 357 & 92.7 & 86.6 & 387 & 74.7 & 47.4 & 496 & \textbf{54.9} & 22.8 & 369 \\
+Two-hop + oracle gate & 89.2 & 80.7 & 28 & 89.8 & 82.3 & 28 & 80.4 & 60.7 & 21 & 48.3 & 21.6 & 34 \\
+\bottomrule
+\end{tabular}
+\end{table*}

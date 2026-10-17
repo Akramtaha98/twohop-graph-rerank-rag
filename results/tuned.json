@@ -1,0 +1,121 @@
+{
+  "best": {
+    "alpha": 0.15,
+    "lam": 0.5,
+    "beta": 0.3,
+    "all_support": 0.77
+  },
+  "spec": "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
+  "grid": [
+    {
+      "alpha": 0.15,
+      "lam": 0.25,
+      "beta": 0.3,
+      "all_support": 0.768
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.25,
+      "beta": 0.5,
+      "all_support": 0.764
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.25,
+      "beta": 0.7,
+      "all_support": 0.762
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.5,
+      "beta": 0.3,
+      "all_support": 0.77
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.5,
+      "beta": 0.5,
+      "all_support": 0.762
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.5,
+      "beta": 0.7,
+      "all_support": 0.764
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.75,
+      "beta": 0.3,
+      "all_support": 0.71
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.75,
+      "beta": 0.5,
+      "all_support": 0.756
+    },
+    {
+      "alpha": 0.15,
+      "lam": 0.75,
+      "beta": 0.7,
+      "all_support": 0.756
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.25,
+      "beta": 0.3,
+      "all_support": 0.762
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.25,
+      "beta": 0.5,
+      "all_support": 0.76
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.25,
+      "beta": 0.7,
+      "all_support": 0.756
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.5,
+      "beta": 0.3,
+      "all_support": 0.76
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.5,
+      "beta": 0.5,
+      "all_support": 0.762
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.5,
+      "beta": 0.7,
+      "all_support": 0.762
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.75,
+      "beta": 0.3,
+      "all_support": 0.71
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.75,
+      "beta": 0.5,
+      "all_support": 0.732
+    },
+    {
+      "alpha": 0.3,
+      "lam": 0.75,
+      "beta": 0.7,
+      "all_support": 0.756
+    }
+  ],
+  "n": 500,
+  "dense": "bge"
+}

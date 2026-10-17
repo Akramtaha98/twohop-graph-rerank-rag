@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Ablation of the earlier PPR hybrid (\%); the PPR variant was not run with the generator except in its full form.}
+\label{tab:ablation}
+\begin{tabular}{llrrrrr}
+\toprule
+Dataset & System & R@5 & All@5 & EM & F1 & Unsup.$\downarrow$ \\
+\midrule
+\multirow{6}{*}{HotpotQA} & PPR hybrid (v1) & 84.3 & 70.1 & \textbf{36.6} & \textbf{46.8} & \textbf{12.3} \\
+ & w/o entity seeds & \textbf{84.7} & \textbf{71.0} & -- & -- & -- \\
+ & w/o dense seeds & 69.0 & 47.2 & -- & -- & -- \\
+ & w/o dense-score fusion & 83.2 & 68.1 & -- & -- & -- \\
+ & w/o IDF edge weights & 84.5 & 70.5 & -- & -- & -- \\
+ & restart $\alpha=0.5$ & 84.3 & 70.3 & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

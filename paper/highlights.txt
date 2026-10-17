@@ -1,0 +1,5 @@
+Two-hop graph re-ranking adds no LLM calls at indexing time
+HotpotQA All@5 rises from about 70% to 80% over BGE
+Controls: the graph title link, not query expansion, drives most gain
+No significant All@5 gap to a cross-encoder on HotpotQA
+Claims are limited to pooled corpora of Wikipedia benchmarks

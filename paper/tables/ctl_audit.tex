@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Audit of 2WikiMultiHopQA by question type (1\,000 questions): size of the supporting set, share of questions whose supporting set fits in five passages, and retrieval (\%) of dense retrieval (D), the two-hop re-ranker (T) and the title-link-only variant (L).}
+\label{tab:audit}
+\begin{tabular}{lrcrrrrrrr}
+\toprule
+Type & $n$ & $|S|$ & fits in 5 & D R@5 & D All@5 & D All@20 & T R@5 & T All@5 & L All@5 \\
+\midrule
+bridge comparison & 240 & 4 & 100 & 51.6 & 0.0 & 0.4 & 57.3 & 2.5 & 43.3 \\
+comparison & 232 & 2 & 100 & 98.9 & 97.8 & 99.6 & 94.8 & 89.7 & 97.4 \\
+compositional & 413 & 2 & 100 & 63.3 & 26.6 & 42.4 & 86.1 & 73.6 & 82.6 \\
+inference & 115 & 2 & 100 & 69.6 & 39.1 & 58.3 & 83.0 & 66.1 & 70.4 \\
+\bottomrule
+\end{tabular}
+\end{table}

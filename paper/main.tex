@@ -1,0 +1,405 @@
+%% AI Open (KeAi) manuscript, official Elsevier CAS single-column template (cas-sc).
+\documentclass[a4paper,fleqn]{cas-sc}
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,multirow,graphicx,xcolor}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newdefinition{remark}{Remark}
+\newproof{pf}{Proof}
+
+\newcommand{\ppr}{\mathrm{PPR}}
+\newcommand{\repourl}{https://github.com/Akramtaha98/twohop-graph-rerank-rag}
+\IfFileExists{tables/numbers.tex}{\input{tables/numbers.tex}}{\newcommand{\nPHotpotQA}{?}}
+\IfFileExists{tables/numbers_analysis.tex}{\input{tables/numbers_analysis.tex}}{}
+\IfFileExists{tables/numbers_ext.tex}{\input{tables/numbers_ext.tex}}{}
+\IfFileExists{tables/numbers_ctl.tex}{\input{tables/numbers_ctl.tex}}{}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Entity-graph two-hop re-ranking for multi-hop QA}
+\shortauthors{Zeyad et al.}
+
+\title[mode=title]{Graph-Augmented Retrieval for Multi-Hop Question Answering: Lightweight Entity-Graph Two-Hop Re-Ranking}
+
+\author[1,2]{Akram Taha Zeyad}[orcid=0009-0002-4020-8060]
+\cormark[1]
+\ead{akram.t.zeyad@uotechnology.edu.iq}
+\credit{Conceptualization, Methodology, Software, Investigation, Formal analysis, Writing -- original draft}
+\affiliation[1]{organization={College of Computer Engineering, University of Technology},
+            addressline={Al-Sina'a Street},
+            city={Baghdad},
+            country={Iraq}}
+\affiliation[2]{organization={Center for Artificial Intelligence Technology (CAIT), Faculty of Information Science and Technology (FTSM), Universiti Kebangsaan Malaysia (UKM)},
+            addressline={UKM Bangi},
+            city={Bangi},
+            state={Selangor},
+            postcode={43600},
+            country={Malaysia}}
+\affiliation[3]{organization={Department of Engineering Education, Faculty of Engineering and Built Environment, Universiti Kebangsaan Malaysia (UKM)},
+            addressline={UKM Bangi},
+            city={Bangi},
+            state={Selangor},
+            postcode={43600},
+            country={Malaysia}}
+\affiliation[4]{organization={Polytechnic College for Technical Trainers Preparation, Middle Technical University (MTU)},
+            city={Baghdad},
+            postcode={10074},
+            country={Iraq}}
+
+\author[1]{Fanan Hikmat Jasim}[orcid=0009-0007-3991-3957]
+\credit{Supervision, Writing -- review and editing}
+
+\author[3,4]{Ahmed Hefdhi Hussein Hussein}[orcid=0009-0008-6270-7956]
+\credit{Writing -- review and editing}
+
+\author[4]{Ali Abdulwahhab Abdulrazzaq}
+\credit{Writing -- review and editing}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+Retrieval-augmented generation (RAG) grounds language models in external text, but dense retrieval that scores each passage on its own often misses the second supporting passage of a multi-hop question. We study a lightweight two-hop re-ranking step. A passage--entity graph is built offline with rule-based and spaCy entity extractors and needs no LLM calls. At query time the top dense passages are the first hop; the passages linked to them through bridge entities receive a boost computed from a query expanded with the first-hop passage, plus a bonus when their Wikipedia title is a bridge entity. Unlinked passages keep their score, but their rank can fall. A question-type gate selected on training data skips comparison questions. On pooled corpora of about \nPHotpotQA{} paragraphs and a BGE bi-encoder, the method retrieves all supporting passages (All@5) for \RSampleAHybridTwoAllSupp\% and \RSampleBHybridTwoAllSupp\% of HotpotQA questions on two samples, against \RSampleADenseAllSupp\% and \RSampleBDenseAllSupp\% for dense retrieval (paired bootstrap, $p<0.001$), and for \ExtHAGateAll\% and \ExtHBGateAll\% with the gate. With settings frozen on HotpotQA, All@5 also rises on 2WikiMultiHopQA (\ExtTWDenseAll\% to \ExtTWGateAll\%) and on MuSiQue (\ExtMQDenseAll\% to \ExtMQGateAll\%); within MuSiQue the gain is confined to two-hop questions (\TypMQDenseTwohop\% to \TypMQGateTwohop\%), with none for three- and four-hop questions. Controls qualify the mechanism: scoring the same expanded queries without the graph helps little (\CtlHAExpFAll\% on sample A), while a variant that keeps only the graph and the title link reaches \CtlHATitTAll\% on HotpotQA sample A and \CtlTWTitTAll\% on 2WikiMultiHopQA, so most of the gain on these datasets comes from the title link; expansion helps mainly on MuSiQue. On HotpotQA we detect no significant All@5 difference from a cross-encoder over the dense top-20 (not evidence of equivalence); the cross-encoder gives no gain on 2WikiMultiHopQA. With Qwen2.5-1.5B-Instruct, exact match rises from \AnsDenseEM\% to \AnsGateEM\% on HotpotQA sample A. Unsupported answers fall only slightly, so we do not claim reduced hallucination. A personalized-PageRank variant gave no gain and is reported as a negative result. All claims concern pooled corpora (up to 66\,635 passages). Code and table scripts are released.
+\end{abstract}
+
+\begin{highlights}
+\item Two-hop graph re-ranking adds no LLM calls at indexing time
+\item HotpotQA All@5 rises from about 70\% to 80\% over BGE
+\item Controls: the graph title link, not query expansion, drives most gain
+\item No significant All@5 gap to a cross-encoder on HotpotQA
+\item Claims are limited to pooled corpora of Wikipedia benchmarks
+\end{highlights}
+
+\begin{keywords}
+retrieval-augmented generation \sep knowledge graph \sep multi-hop question answering \sep re-ranking \sep entity graph \sep personalized PageRank
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+Large language models (LLMs) answer fluently even when they lack the facts, and statements that are not supported by any source are a central reliability problem \citep{ji2023hallucination,huang2023hallsurvey}. Retrieval-augmented generation (RAG) reduces this risk by conditioning the model on retrieved passages \citep{lewis2020rag,guu2020realm,izacard2021fid,gao2023ragsurvey}, so the quality of the answer depends on the quality of the evidence. Retrieval also helps with facts that the model has seen rarely during training \citep{mallen2023trust}, which makes the retriever, rather than the generator, the component that decides whether a long-tail fact can be reached.
+
+Multi-hop questions stress this dependency. In ``Where was the director of film $X$ born?'', the passage that holds the answer mentions the director but not the film. A retriever that scores each passage against the question alone can rank the first-hop passage highly and miss the second one, because the second passage shares little vocabulary with the question. This is the main difficulty of datasets such as HotpotQA \citep{yang2018hotpotqa}, 2WikiMultiHopQA \citep{ho2020twowiki} and MuSiQue \citep{trivedi2022musique}. Two families of methods address it. Iterative methods interleave retrieval with reasoning \citep{trivedi2023ircot,qi2019golden,xiong2021mdr,jiang2023flare}, at the cost of several retrieval or LLM calls per question. Graph-based methods organise the corpus as a graph \citep{edge2024graphrag,guo2024lightrag,gutierrez2024hipporag,sarthi2024raptor}, but most of them use an LLM to extract the graph, which makes indexing expensive and ties the quality of the graph to the extraction model. Lighter graph retrievers that avoid LLM indexing have appeared recently \citep{zhuang2025linearrag,wang2026sprig,melo2025griever}; Section~\ref{sec:lightgraph} states how we differ from them.
+
+We take a lighter route and report what worked and what did not. The corpus is turned into a passage--entity bipartite graph with a rule-based extractor and inverse-document-frequency (IDF) edge weights, with no LLM call. Our first design spread relevance over this graph with personalized PageRank (PPR) and fused it with the dense score; on top of a BGE dense retriever it gave no measurable gain (Section~\ref{sec:results}). Our second design is a two-hop re-ranking step. The graph decides \emph{which} passages may be boosted, and the dense scorer decides \emph{by how much}, using a query expanded with the first-hop passage. The settings of this second design were chosen on the training split only, and its evaluation used two random samples of 1\,000 questions that share \nOverlapAB{} questions, the second of which was first run once with the frozen ungated configuration (Section~\ref{sec:evalprot}).
+
+Closest to our expansion step are GoldEn Retriever and multi-hop dense retrieval (MDR), which also condition a second retrieval on the first-hop passage \citep{qi2019golden,xiong2021mdr}. GoldEn Retriever generates the new query with a trained query generator and MDR trains a joint question--passage encoder, so both need multi-hop training data. Our step differs in one respect: the expanded query is scored by an off-the-shelf encoder, only for passages that the entity graph links to the first hop, with no training and no LLM.
+
+\paragraph{Research questions.} We ask seven questions. \textbf{RQ1:} Does graph-restricted two-hop re-ranking retrieve more of the supporting passages than the dense retriever it is built on? \textbf{RQ2:} Which components matter: the first-hop width, the title link, and the entity extractor? \textbf{RQ3:} Where does the method fail, and can a question-type gate repair it? \textbf{RQ4:} How does it compare with a cross-encoder re-ranker, in quality and in cost? \textbf{RQ5:} Do the settings transfer to 2WikiMultiHopQA and MuSiQue without re-tuning? \textbf{RQ6:} Does better evidence lead to better answers from a small generator, and to fewer unsupported answers? \textbf{RQ7:} Which part of the method does the work: the graph restriction, the title link or the expanded query, and does the gain persist in larger pools?
+
+\paragraph{Contributions.}
+(i) A graph-restricted two-hop re-ranker for dense retrieval that needs no LLM calls at indexing time and $m$ extra dense query encodings at query time (Section~\ref{sec:method}).
+(i$'$) A simpler variant, TitleLink, that keeps only the graph and the Wikipedia-title bonus and adds no query encoding; it is stronger than the full re-ranker on HotpotQA and 2WikiMultiHopQA and weaker on MuSiQue, so the paper's supported finding is that title links explain most of the gain on the first two datasets while graph-restricted expansion helps on MuSiQue (Sections~\ref{sec:variants} and~\ref{sec:controls}).
+(ii) A short analysis of the re-ranker (a guaranteed boost for linked passages, and its cost) and of the earlier PPR variant (a lower bound on bridge mass and a convergence result), with the bounds checked numerically in the released tests (Section~\ref{sec:theory}).
+(iii) A question-type gate, selected on training data, that removes most of the loss on comparison questions (Section~\ref{sec:gate}).
+(iv) An evaluation with train-split tuning, two HotpotQA samples, zero-shot transfer to 2WikiMultiHopQA and MuSiQue, a cross-encoder baseline, ablations, paired bootstrap tests, a groundedness proxy, a cost measurement and an error analysis by question type. It includes a negative result for the PPR variant, a failure on 3- and 4-hop MuSiQue questions, and a statement of which claims the data do not support (Sections~\ref{sec:setup}--\ref{sec:discussion}).
+(v) Control experiments that separate query expansion from the graph and title link, a candidate-coverage analysis (R@20, All@20), an audit of the 2WikiMultiHopQA failure and a corpus-scale test (Section~\ref{sec:controls}); they show that the title link, not the expansion, accounts for most of the gain on two datasets.
+
+\paragraph{Organisation.} Section~\ref{sec:related} reviews related work and positions our method. Section~\ref{sec:problem} fixes notation, Section~\ref{sec:method} describes the method and Section~\ref{sec:theory} analyses it. Sections~\ref{sec:setup} and~\ref{sec:results} give the setup and results, Section~\ref{sec:discussion} discusses limitations and threats to validity, and Section~\ref{sec:conclusion} concludes.
+
+\section{Related Work}\label{sec:related}
+\subsection{Retrieval-augmented generation and dense retrieval}
+RAG couples a retriever with a generator \citep{lewis2020rag}. Early systems pre-trained or fine-tuned the retriever jointly with the reader \citep{guu2020realm,izacard2021fid,izacard2023atlas}, retrieved from very large text collections during training \citep{borgeaud2022retro}, or prepended retrieved text to a frozen model \citep{ram2023incontext,shi2024replug}. Later work lets the model decide when to retrieve and how to critique the evidence \citep{asai2024selfrag,jiang2023flare}. Surveys cover the design space of RAG \citep{gao2023ragsurvey,fan2024ragmeetingllms,wang2024bestpractices}.
+
+The first stage of a RAG pipeline is usually sparse or dense. BM25 \citep{robertson2009bm25} scores lexical overlap. Dense bi-encoders embed questions and passages separately \citep{karpukhin2020dpr,reimers2019sbert,xiong2021ance,izacard2022contriever,wang2022e5,xiao2023bge}, with late-interaction variants that keep token-level vectors \citep{khattab2020colbert}. Most of these encoders descend from BERT \citep{devlin2019bert}. Cross-encoder re-rankers rescore a short list jointly with the question \citep{nogueira2019rerank}. Zero-shot comparisons show that no single retriever is best everywhere \citep{thakur2021beir}, and rank-fusion rules combine several rankers \citep{cormack2009rrf}. Dense indexes are searched with approximate nearest-neighbour libraries \citep{johnson2021faiss}. Single-hop open-domain benchmarks such as Natural Questions \citep{kwiatkowski2019nq} are the usual test for these retrievers, and systems such as DrQA already combined a retriever with a reader \citep{chen2017drqa}, and surveys of the area are available \citep{zhu2021retrieving}. Our dense component is the standard BGE bi-encoder; the contribution lies in what is added on top of it, and it does not depend on the particular encoder.
+
+\subsection{Multi-hop question answering and iterative retrieval}
+Multi-hop datasets require combining several passages. WikiHop and MedHop were built from document links \citep{welbl2018qangaroo}; HotpotQA adds sentence-level supporting facts and two question types, bridge and comparison \citep{yang2018hotpotqa}; 2WikiMultiHopQA uses structured evidence to build the reasoning path \citep{ho2020twowiki}; and MuSiQue composes single-hop questions to reduce shortcuts \citep{trivedi2022musique}. Reading-comprehension models for these sets decompose the question \citep{min2019decomp}, build entity or document graphs \citep{decao2019entitygcn,ding2019cogqa,tu2020sae,fang2020hgn}, or learn to walk a paragraph graph \citep{asai2020graphretriever}. These models are trained on the benchmark, whereas our re-ranker has no trainable parameters other than the frozen dense encoder.
+
+Retrieval-side approaches generate a new query from the evidence found so far. GoldEn Retriever reformulates the query from the first-hop passage \citep{qi2019golden}, multi-hop dense retrieval encodes the question together with the retrieved passage \citep{xiong2021mdr}, and IRCoT interleaves retrieval with chain-of-thought steps \citep{trivedi2023ircot}. Related prompting methods decompose or ask follow-up questions \citep{press2023selfask,khot2023decomposed,wei2022cot,yao2023react}. Our expanded query $x\oplus p$ follows the same idea as the first two, but it is applied only to passages linked to the first hop by a shared entity, and no LLM generates the query. This restriction is what keeps the cost to $m$ extra encodings.
+
+\subsection{Graph-based retrieval and knowledge-graph-enhanced LLMs}
+Knowledge graphs store facts as entity--relation--entity triples \citep{hogan2021kg,ji2022kgsurvey}. Several methods connect them to LLMs for question answering \citep{yasunaga2021qagnn,sun2024tog,he2024gretriever}, and a survey covers the graph-RAG literature \citep{peng2024graphragsurvey}. For text corpora, GraphRAG builds an LLM-extracted entity graph with community summaries for query-focused summarisation \citep{edge2024graphrag}. LightRAG uses graph structures in indexing and a two-level retrieval \citep{guo2024lightrag}. RAPTOR clusters and summarises passages into a tree \citep{sarthi2024raptor}. HippoRAG extracts a knowledge graph with an LLM and applies personalized PageRank for retrieval \citep{gutierrez2024hipporag}, and its successor adds passage nodes and recognition memory \citep{gutierrez2025hipporag2}. HippoRAG is the closest design to our first variant. We differ in using no LLM at indexing time, a rule-based extractor with IDF-weighted bipartite edges, dense-seeded restarts, and an explicit fusion with the dense score. Our second variant departs further: it does not walk the graph at all, and uses it only as a filter.
+
+\subsection{Graph retrieval without LLM indexing}\label{sec:lightgraph}
+Three recent systems are closest to our setting because they also avoid, or limit, LLM use. We describe them from their papers and did not run them. LinearRAG \citep{zhuang2025linearrag} builds a ``Tri-Graph'' of passages, sentences and entities with spaCy named-entity recognition, with no relation extraction and no LLM tokens at indexing time. At query time, query entities are linked to graph entities by embedding similarity, activation is propagated through the entity--sentence graph with a pruning threshold, and passages are then ranked by a PageRank-style aggregation on the passage--entity graph. It is evaluated on 1\,000 questions from each of HotpotQA, 2WikiMultiHopQA and MuSiQue, with answer accuracy judged by GPT-4o-mini. SPRIG \citep{wang2026sprig} builds an entity--document bipartite graph with spaCy (\texttt{en\_core\_web\_sm}) or a regular-expression extractor, hub pruning and TF-IDF-style edge weights, and runs personalized PageRank seeded by query entities and by BM25 or dense top-$k$ passages. It is evaluated on the full HotpotQA and 2WikiMultiHopQA development sets with retrieval metrics, and its authors report that graph seeding improves Recall@10 over BM25 but does not clearly beat a strong BM25--dense fusion on HotpotQA. GRiever \citep{melo2025griever} is an LLM-free multi-step retriever at query time: it splits the question into sub-queries, retrieves with a BM25-filtered dense or hybrid retriever, restricts later iterations to passages that share joinable entities with the current subgraph, and rewrites the query from matched triples. Its triples, however, are extracted with GPT-4o mini according to its appendix, so its index is not LLM-free.
+
+Our method differs from these in four ways. (i) It does not propagate scores over the graph; the graph only decides which passages \emph{may} be boosted, and a dense score of a first-hop-expanded query decides by how much. LinearRAG and SPRIG both rank by a random-walk score. (ii) It has no sentence nodes, no query-entity linking by embeddings, and no query decomposition or rewriting. (iii) It needs no triples, unlike GRiever, whose restriction to joinable entities in later iterations is the closest mechanism to ours. (iv) Its final score keeps the dense score for every passage and adds a bounded boost, so the change relative to the base retriever is explicit (Proposition~\ref{prop:boost}). Our PPR hybrid (Section~\ref{sec:ppr}) is related to SPRIG's dense-seeded PPR in spirit, and our negative result for it agrees with SPRIG's observation that PageRank over such a graph does not clearly beat strong baselines on HotpotQA; it is our own implementation, not a reproduction of SPRIG, and the metrics, corpora and samples differ, so the numbers cannot be compared. We have not run LinearRAG, SPRIG or GRiever under our protocol, so we make no claim of superiority over them, and the novelty claim is limited to the design differences above and to the controls in Section~\ref{sec:controls}.
+
+\subsection{PageRank and score fusion}
+PageRank \citep{page1999pagerank} and its topic-sensitive and personalized variants \citep{haveliwala2002topic,jeh2003ppr} bias a random walk toward a restart distribution; we use this restart to encode the question in our first variant. Fusing a graph score with a dense score is a form of rank or score fusion \citep{cormack2009rrf}. Our boost in Eq.~\eqref{eq:final} is an additive fusion in which the graph score is binary (linked or not) and the strength comes from a dense score.
+
+\subsection{Context use, hallucination and faithfulness evaluation}
+Better evidence does not guarantee better answers: models are distracted by irrelevant context \citep{shi2023distracted}, use information in the middle of a long context poorly \citep{liu2024lost}, and need to be made robust to irrelevant passages \citep{yoran2024robust}. RAG benchmarks test noise robustness and negative rejection \citep{chen2024rgb}. Faithfulness is measured with factual-consistency metrics \citep{honovich2022true}, claim-level precision \citep{min2023factscore}, sampling-based consistency \citep{manakul2023selfcheck}, reference-free RAG scores \citep{es2024ragas}, or citation quality \citep{gao2023alce}. These metrics need a judge model or an entailment model. Our groundedness measure is a lexical proxy, which is cheaper but weaker (Section~\ref{sec:discussion}).
+
+\subsection{Positioning}
+Table~\ref{tab:position} summarises the design choices that distinguish our method from the closest approaches. It is a qualitative comparison of designs taken from the cited papers, not a comparison of results; we did not run the other systems.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Design comparison with related retrieval approaches for multi-hop questions (qualitative; the other systems were not run).}
+\label{tab:position}
+\begin{tabular}{p{3.6cm}p{2.7cm}p{3.0cm}p{3.6cm}}
+\toprule
+Approach & Index-time LLM & Query-time LLM calls & Second-hop mechanism \\
+\midrule
+IRCoT \citep{trivedi2023ircot} & no & several per question & reasoning step as new query \\
+MDR \citep{xiong2021mdr} & no & none (trained encoder) & question plus passage re-encoded \\
+GraphRAG \citep{edge2024graphrag} & yes (graph, summaries) & answer synthesis & community summaries \\
+HippoRAG \citep{gutierrez2024hipporag} & yes (triples) & query entity extraction & PPR over the graph \\
+LinearRAG \citep{zhuang2025linearrag} & no & none for graph search & entity activation over sentences, then PageRank \\
+SPRIG \citep{wang2026sprig} & no & none & PPR seeded by dense or BM25 passages \\
+GRiever \citep{melo2025griever} & yes (triples, GPT-4o mini) & none for retrieval & sub-queries restricted to joinable entities, query rewriting \\
+Ours (two-hop) & no & none for retrieval & graph-restricted expanded query \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Problem Formulation and Notation}\label{sec:problem}
+Let $\mathcal{P}=\{p_1,\dots,p_n\}$ be a corpus of passages, each with a title and a text. Given a question $x$, the system returns an ordered list of $k$ passages $R_k(x)\subset\mathcal{P}$ and a generator produces an answer $\hat y$ from $x$ and $R_k(x)$. For each question the benchmark gives a gold answer $y$ and a set $S(x)\subset\mathcal{P}$ of supporting passages, with $|S(x)|=2$ in HotpotQA. We write $d(p)$ for the dense similarity between $x$ and $p$, and $\widetilde d$ for its min--max normalisation over $\mathcal{P}$. A question is \emph{fully supported} at $k$ if $S(x)\subseteq R_k(x)$; the share of such questions is All@$k$. This event is necessary for a multi-hop answer that needs both passages, which is why we report it next to recall. The goal is to raise All@$k$ over the dense retriever at a cost that does not involve the generator and without training a new encoder.
+
+\section{Method}\label{sec:method}
+Figure~\ref{fig:overview} gives an overview and Algorithm~\ref{alg:two} the procedure. The method has an offline stage (graph construction) and an online stage (two-hop re-ranking).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/pipeline_lucid.png}
+\caption{Pipeline of the two-hop re-ranker (diagram drawn with Lucidchart). The dense retriever scores the question; the top-$m$ passages are the first hop. Their entities that are not in the question are bridge entities, which select candidate passages in the offline entity graph. Candidates are re-scored with a query expanded by the first-hop passage, and the boost is added to the dense score before the top-$k$ passages go to the generator.}
+\label{fig:overview}
+\end{figure}
+
+\subsection{Offline stage: passage--entity graph}
+Let $\mathcal{P}=\{p_1,\dots,p_n\}$ be the passages, each with a title and a text, and $\mathcal{E}=\{e_1,\dots,e_m\}$ the entities. An entity is found by a rule-based extractor (capitalised spans and four-digit years), by spaCy NER (\texttt{en\_core\_web\_sm}), or by the union of both; the passage title is always added as an entity of its passage. Entity strings are lower-cased and tokenised to form keys. Let $\mathrm{df}(e)$ be the number of passages containing $e$. The incidence matrix $A\in\mathbb{R}_{\ge0}^{n\times m}$ has $a_{pe}=w_e=\log(1+n/\mathrm{df}(e))$ if $e$ occurs in $p$. Entities with $\mathrm{df}(e)$ above one fifth of the passages are hubs, which link everything and carry no signal, so their edges are removed. The question entities $\mathcal{E}_x$ are the vocabulary entities that appear as token $n$-grams ($n\le4$) of $x$.
+
+\subsection{Online stage: two-hop re-ranking}
+For a question $x$ let $d(p)$ be the dense score and $\widetilde d$ its min--max normalisation over all passages. The first-hop set $P_1$ holds the $m$ passages with the highest $d$, each with weight $w_p=\exp\big((\widetilde d(p)-\max_{P_1}\widetilde d)/\tau\big)\in(0,1]$. For $p\in P_1$:
+\begin{itemize}\setlength\itemsep{0pt}
+\item \emph{Bridge entities} $B(p)$ are the entities of $p$ that are not in $\mathcal{E}_x$ (hubs were removed from the graph).
+\item \emph{Candidates} $C(p)$ are the other passages that contain at least one entity of $B(p)$.
+\item The \emph{expanded query} $x_p$ is $x$ followed by the title of $p$ and its first 40 words. Let $\widetilde d_p$ be the min--max normalised dense score of $x_p$ over all passages. The expanded query is therefore scored against the whole corpus (an exhaustive similarity computation, as for the question itself), but only the passages in $C(p)$ below can receive a boost.
+\end{itemize}
+The boost of a candidate is
+\begin{equation}
+\mathrm{boost}(c)=\max_{p\in P_1:\,c\in C(p)} w_p\big(\widetilde d_p(c)+t_b\,\mathbb{1}[\mathrm{title}(c)\in B(p)]\big),
+\label{eq:boost}
+\end{equation}
+with $\mathrm{boost}(c)=0$ for passages in no $C(p)$. The final score is
+\begin{equation}
+\mathrm{score}(c)=\widetilde d(c)+\gamma\,\mathrm{boost}(c),
+\label{eq:final}
+\end{equation}
+and the top-$k$ passages go to the generator as numbered passages. The title-link term rewards a candidate whose own title is one of the bridge entities, which is the typical pattern ``the first passage mentions the title of the second''.
+
+\begin{algorithm}[t]
+\caption{Graph-restricted two-hop re-ranking}\label{alg:two}
+\KwIn{question $x$; graph $A$; dense scorer; $k,m,\gamma,t_b,\tau$}
+\KwOut{top-$k$ passages}
+$d\leftarrow$ dense scores of $x$; $\widetilde d\leftarrow$ min--max$(d)$; $P_1\leftarrow$ top-$m$ by $d$; $w_p\leftarrow\exp((\widetilde d(p)-\max\widetilde d)/\tau)$\;
+\lIf{the gate fires}{\Return{top-$k$ by $d$}}
+$\mathrm{boost}\leftarrow \mathbf 0$\;
+\ForEach{$p\in P_1$}{
+ $B\leftarrow$ entities of $p$ not in $\mathcal{E}_x$; $C\leftarrow$ passages sharing an entity with $B$, except $p$\;
+ $\widetilde d_p\leftarrow$ min--max, over all passages, of the dense scores of $x\oplus\mathrm{title}(p)\oplus\mathrm{head}(p)$\;
+ \ForEach{$c\in C$}{$\mathrm{boost}(c)\leftarrow\max\big(\mathrm{boost}(c),\,w_p(\widetilde d_p(c)+t_b\mathbb 1[\mathrm{title}(c)\in B])\big)$}}
+\Return{top-$k$ of $\widetilde d+\gamma\,\mathrm{boost}$}
+\end{algorithm}
+
+\subsection{Question-type gate}\label{sec:gate}
+The re-ranker helps bridge questions but hurts comparison questions, whose two entities are both named in the question (Section~\ref{sec:bytype}). The gate is a cheap test that returns the dense top-$k$ unchanged when it fires. The \emph{titles} gate fires when at least two of the dense top-$k$ passages have a title that is an entity of the question. The \emph{rule} gate fires when the question contains comparison cue words (for example ``both'', ``same'', ``older'', or two alternatives joined by ``or''). The gate is chosen among \{none, titles, rule\} by All@5 on the training sample only (Section~\ref{sec:hyper}); an \emph{oracle} gate that uses the gold question type is used only as an upper bound. When the gate fires, the ranking is identical to the dense ranking, and the extra encodings are skipped.
+
+\subsection{Reduced variants: the expansion-only control and the title-link method}\label{sec:variants}
+Equation~\eqref{eq:boost} has two terms that can be separated, and we add two reduced variants to find out which one does the work. They share the encoder, the first-hop set $P_1$, the weights $w_p$ and Equation~\eqref{eq:final}; only the boost differs.
+\begin{itemize}\setlength\itemsep{0pt}
+\item \emph{Title-link only}: $\mathrm{boost}(c)=\max_{p\in P_1} w_p\,t_b\,\mathbb{1}[\mathrm{title}(c)\in B(p)]$. The graph and the title match are kept, the expanded query is dropped. This variant needs no extra query encoding and no exhaustive scoring beyond the question itself.
+\item \emph{Expansion only}: $\mathrm{boost}(c)=\max_{p\in P_1,\,c\ne p} w_p\,\widetilde d_p(c)$ for \emph{every} passage $c$. The expanded query is kept, scored against the whole corpus, and the graph and the title bonus are dropped, so the scoring budget equals that of the full method.
+\end{itemize}
+For each variant $\gamma$ is chosen on the training questions only (Section~\ref{sec:hyper}). Because the title-link boost is a constant for linked passages, the value of $\gamma t_b$ alone matters for it, and its training accuracy is flat for $\gamma\ge1$. We call the title-link variant \emph{TitleLink} and treat it as a principal method alongside the full two-hop method, not only as a control: it needs no extra query encoding, and Section~\ref{sec:controls} shows that it is stronger than the full method on HotpotQA and 2WikiMultiHopQA and weaker on MuSiQue.
+
+\subsection{Earlier variant: PPR hybrid}\label{sec:ppr}
+Our first design started a personalized PageRank walk on the bipartite graph. The restart distribution mixes question entities and the top dense passages, $\mathbf{s}=\lambda\,\mathbf{s}^{\mathrm{ent}}+(1-\lambda)\,\mathbf{s}^{\mathrm{den}}$ with $s^{\mathrm{den}}_p\propto\exp(d(p)/\tau)$ on the top-$s$ passages and $s^{\mathrm{ent}}_e\propto1/\log(1+\mathrm{df}(e))$ on $\mathcal{E}_x$. The PPR vector $\pi=\alpha\mathbf{s}+(1-\alpha)\pi P$, with $P$ the row-normalised transition matrix of the bipartite graph, is computed by power iteration, and the final score is $\beta\widetilde d+(1-\beta)\widetilde\pi$. In its generator prompt the retrieved passages are annotated with the entities that link them. We keep this variant as a baseline (``PPR hybrid'') and as the subject of the analysis in Section~\ref{sec:theory}.
+
+\subsection{Design rationale}
+Two observations motivate the design. First, in bridge questions the second supporting passage is usually named in the first one, often by its title, so an entity shared between the two is a cheap and fairly reliable link. Second, the dense score of the second passage against the question alone is low, but its score against the question \emph{plus the first passage} is high, because the first passage supplies the missing vocabulary. Using the graph only as a filter keeps the boost away from passages that are not linked to the first hop: such passages keep their dense score (Proposition~\ref{prop:boost}), although their rank can still fall when linked passages are lifted above them. The min--max normalisation puts the two dense scores on a common scale, and the weights $w_p$ make a lower-ranked first-hop passage contribute less. These two observations were our hypotheses, not findings. The controls of Section~\ref{sec:controls} test them separately and support the first (the title link) much more than the second (the expanded-query score).
+
+\subsection{Generator prompt}
+The generator receives the question and the numbered top-$k$ passages and is asked for the shortest answer supported by them. The two-hop re-ranker passes plain numbered passages; the PPR hybrid additionally annotates each passage with the entities that link it to the question.
+
+\subsection{Complexity}
+Graph construction needs one pass over the corpus for entity extraction and one sparse incidence matrix, so indexing costs $O(\mathrm{nnz}(A))$ memory and no model call beyond the optional spaCy tagger. At query time the re-ranker needs one dense scoring of the question and $m$ scorings of expanded queries, plus index look-ups (Proposition~\ref{prop:boost}). Each scoring is an exhaustive matrix--vector product over all $n$ passage embeddings, $O(n\,\delta)$ for embedding size $\delta$, followed by a min--max normalisation, so the query-time cost grows linearly with the corpus, as it does for exhaustive dense retrieval; the normalisation would have to be replaced to use an approximate nearest-neighbour index, which we did not test. With $m=\tTwoM$ the number of query encodings is $\tTwoM+1$ per question; the measured wall-clock cost is given in Section~\ref{sec:cost}.
+
+\section{Theoretical Analysis}\label{sec:theory}
+\begin{proposition}[Guaranteed boost and cost of the re-ranker]\label{prop:boost}
+Let $c\ne p$ be a passage and $p\in P_1$. (a) If $c$ lies in no $C(p')$, then $\mathrm{score}(c)=\widetilde d(c)$: such passages keep their dense score and their order relative to one another, but their rank in the final list can fall when linked passages are boosted above them. (b) If $\mathrm{title}(c)\in B(p)$ and the title entity of $c$ is not a hub, then $c\in C(p)$ and $\mathrm{score}(c)\ \ge\ \widetilde d(c)+\gamma\,w_p\,t_b$. (c) The method adds $|P_1|=m$ dense query encodings, each followed by one similarity scoring against all $n$ passages (needed for the min--max normalisation), and $O\big(\sum_{p\in P_1}\sum_{e\in B(p)}\mathrm{df}(e)\big)$ index lookups per question; no LLM call is made.
+\end{proposition}
+\begin{pf}
+(a) holds because $\mathrm{boost}(c)=0$ by definition. (b) The title of $c$ is an entity of $c$, so $c$ contains an entity of $B(p)$ and lies in $C(p)$; the indicator in Eq.~\eqref{eq:boost} is one and $\widetilde d_p(c)\ge0$, so $\mathrm{boost}(c)\ge w_pt_b$ and Eq.~\eqref{eq:final} gives the claim. (c) is read off Algorithm~\ref{alg:two}.
+\end{pf}
+When the gate of Section~\ref{sec:gate} fires, the output is the dense top-$k$, so the guarantees above apply only to questions the gate lets through. The proposition says what the re-ranker can and cannot do. A passage that names a first-hop bridge entity in its title is raised by a fixed margin that does not depend on lexical overlap with the question, while the \emph{scores} of unlinked passages are unchanged, so the graph can lift only linked evidence; an unlinked passage can still lose rank when linked passages are lifted above it. It does not say that the boosted passage becomes relevant; whether the boost helps is an empirical question (Section~\ref{sec:results}). The bounds below concern the earlier PPR variant.
+
+\subsection{PPR variant}
+We analyse the retrieval step. Throughout, the graph is the one in Section~\ref{sec:method}, nodes with no incident edge (for example entities removed as hubs) are deleted, and $P$ is therefore row-stochastic. For a restart distribution $\mathbf{s}$ and $\alpha\in(0,1)$ the PPR vector is
+\begin{equation}
+\pi=\alpha\sum_{t=0}^{\infty}(1-\alpha)^t\,\mathbf{s}P^t .
+\label{eq:pprseries}
+\end{equation}
+
+\begin{proposition}[Path mass]\label{prop:path}
+For any walk $v_0,v_1,\dots,v_t$ in the graph,
+\[\pi(v_t)\ \ge\ \alpha(1-\alpha)^t\,s(v_0)\prod_{i=1}^{t}P(v_{i-1},v_i).\]
+\end{proposition}
+\begin{pf}
+All terms of~\eqref{eq:pprseries} are nonnegative, so $\pi(v_t)$ is at least its $t$-th term, $\alpha(1-\alpha)^t(\mathbf{s}P^t)(v_t)$. The entry $(\mathbf{s}P^t)(v_t)$ is the sum over all length-$t$ walks ending in $v_t$ of the start mass times the transition probabilities, and a single walk contributes the product in the statement.
+\end{pf}
+
+\begin{corollary}[Two-hop bridge]\label{cor:bridge}
+Let $q$ be a seed entity and $p_1,p_2$ passages that both contain an entity $e$, with $q\in p_1$. Then
+\[
+\pi(p_2)\ \ge\ \alpha(1-\alpha)^3\, s(q)\ \frac{1}{\mathrm{df}(q)}\ \frac{w_e}{\sum_{e'\in p_1}w_{e'}}\ \frac{1}{\mathrm{df}(e)} .
+\]
+\end{corollary}
+\begin{pf}
+Apply Proposition~\ref{prop:path} to the walk $q\to p_1\to e\to p_2$ with the transition probabilities $P(q,p_1)=1/\mathrm{df}(q)$, $P(p_1,e)=w_e/\sum_{e'\in p_1}w_{e'}$ and $P(e,p_2)=1/\mathrm{df}(e)$, which follow from the weights.
+\end{pf}
+
+\begin{remark}
+The bound is positive whenever the passages are connected through a shared entity, whatever the lexical overlap between the question and $p_2$, which is the case where scoring $p_2$ against the question alone gives no guarantee. It also shows how the weights act. A rare bridge entity (small $\mathrm{df}(e)$, large $w_e$) transmits more mass, while a hub entity transmits little, which motivates the IDF weights and the hub threshold. The bound is a lower bound from one path; it does not say that $p_2$ is ranked above all distractors, and the fusion with the dense score and the experiments address that part.
+\end{remark}
+
+\begin{proposition}[Convergence and cost]\label{prop:conv}
+Let $\pi_0=\mathbf{s}$ and $\pi_{t+1}=\alpha\mathbf{s}+(1-\alpha)\pi_tP$. Then $\|\pi_T-\pi\|_1\le 2(1-\alpha)^T$, so $T\ge\ln(2/\varepsilon)/\alpha$ iterations give $\ell_1$ error at most $\varepsilon$. Each iteration costs $O(\mathrm{nnz}(A))$.
+\end{proposition}
+\begin{pf}
+The fixed-point equation gives $\pi_{t+1}-\pi=(1-\alpha)(\pi_t-\pi)P$. A row-stochastic $P$ does not increase the $\ell_1$ norm, so $\|\pi_T-\pi\|_1\le(1-\alpha)^T\|\mathbf{s}-\pi\|_1\le 2(1-\alpha)^T$, because both vectors are probability distributions. The bound on $T$ follows from $(1-\alpha)^T\le e^{-\alpha T}$. One multiplication by $P$ touches each nonzero of $A$ twice.
+\end{pf}
+
+\section{Experimental Setup}\label{sec:setup}
+\subsection{Data and corpora}
+We use the HotpotQA distractor development set \citep{yang2018hotpotqa}. A sample of 1\,000 questions (fixed seed) has its paragraphs pooled into one de-duplicated corpus (\nPHotpotQA{} paragraphs for sample A), so retrieval must find evidence among the paragraphs of other questions as well. Sample A (seed 0) was used for development comparisons of the PPR variant; sample B (seed 1, a second random draw of 1\,000 questions; \nOverlapAB{} questions occur in both samples) was first run once for the frozen ungated configuration, after all settings were fixed, and later reused for the gate and the cross-encoder (Section~\ref{sec:evalprot}). HotpotQA questions are of two types, bridge and comparison \citep{yang2018hotpotqa}. For transfer we use 1\,000 random questions each from the validation split of 2WikiMultiHopQA \citep{ho2020twowiki} (compositional, inference, comparison and bridge-comparison questions; 6\,223 pooled paragraphs) and from the answerable dev split of MuSiQue \citep{trivedi2022musique} (2- to 4-hop questions; 11\,525 pooled paragraphs), built in the same way. All pooled corpora are smaller than open-domain retrieval over Wikipedia (Section~\ref{sec:discussion}).
+
+\subsection{Compared systems}
+\emph{No retrieval}; \emph{BM25} \citep{robertson2009bm25}; \emph{Dense}, the BGE-small-en-v1.5 bi-encoder \citep{xiao2023bge}; \emph{Graph-PPR} (entity seeds only); the \emph{PPR hybrid} (Section~\ref{sec:ppr}); the proposed \emph{two-hop re-ranking} with and without the question-type gate (Section~\ref{sec:gate}); and \emph{gold passages} as an upper bound. As a re-ranking baseline we use a \emph{cross-encoder}, \texttt{bge-reranker-base} \citep{xiao2023bge}, which re-scores the top-20 passages of a first-stage retriever \citep{nogueira2019rerank}; we apply it to the dense top-20 (``CE (dense)'') and to the top-20 of the two-hop re-ranker (``CE (two-hop)''). All retrievers that use a dense score share the same encoder. Ablations of the re-ranker remove the title-link bonus ($t_b=0$), use only the top-1 first-hop passage ($m=1$), or use regex entities only. An \emph{oracle gate}, which uses the gold question type, is reported as an upper bound for the gate only. Official GraphRAG, LightRAG and HippoRAG are not run and are not compared; running them requires an LLM at indexing time, which was outside our compute budget.
+
+\subsection{Implementation details}
+The dense encoder is BGE-small-en-v1.5 with its query instruction prefix, loaded through the Transformers library \citep{wolf2020transformers}. Entities come from the rule-based extractor and from spaCy \texttt{en\_core\_web\_sm} (version 3.8). The generator is Qwen2.5-1.5B-Instruct \citep{qwen2024qwen25} in half precision with greedy decoding and at most 32 new tokens. The main experiments (the two HotpotQA samples, the cross-encoder runs, 2WikiMultiHopQA, MuSiQue and the answer generation) ran on a single Apple M4 laptop (GPU through the Metal backend, no external API). The controls, candidate-coverage, audit, corpus-scale and repeated-timing experiments of Sections~\ref{sec:controls} and~\ref{sec:cost} were rerun on a two-core cloud CPU container with the same code, encoder and models; their numbers are reported separately and not mixed with the laptop timings, and the CPU results for dense, two-hop and gated retrieval reproduce the laptop All@5 to within rounding (Table~\ref{tab:controls}). The fixed settings are $k=5$, $\tau=0.1$, 40 expansion words and a hub threshold of 20\% of the passages. Every table and macro in this paper is produced from the stored per-question result files by the released scripts.
+
+\subsection{Hyper-parameter and gate selection}\label{sec:hyper}
+Both methods were tuned on HotpotQA \emph{training} questions (\tTuneN{} questions with their own pooled corpus), never on the evaluation sets. The PPR hybrid used $\alpha\in\{0.15,0.3\}$, $\lambda\in\{0.25,0.5,0.75\}$, $\beta\in\{0.3,0.5,0.7\}$ and selected $\alpha=\tAlpha$, $\lambda=\tLam$, $\beta=\tBeta$. The re-ranker used $m\in\{2,3\}$, $\gamma\in\{0.1,0.2,0.3,0.5,1,2\}$, $t_b\in\{0,0.5\}$ and the entity extractor in \{regex, spaCy, both\}, and selected $m=\tTwoM$, $\gamma=\tTwoGamma$, $t_b=\tTwoTb$ and extractor \texttt{\tTwoNer}. The first sweep covered $\gamma\in\{0.5,1,2\}$ and placed the optimum at the lower edge, so a second sweep of $\{0.1,0.2,0.3\}$ was added, again on the training sample only. On the training sample the selected configuration reaches All@5 of \tTwoAll\% against \tTwoDense\% for dense retrieval. With these settings frozen, the gate was selected on the same training sample from \{none, titles, rule\}: All@5 was \GateNoneTrain\%, \GateTitlesTrain\% and \GateRuleTrain\% respectively, so the \texttt{\GateChosen} gate was chosen (it fires for \GateTitlesShare\% of training questions). The oracle gate (\GateOracleTrain\%) was never a candidate. The two controls of Section~\ref{sec:variants} were tuned in the same way on the same training sample (\ClTrainN{} questions, \ClTrainP{} passages): $\gamma\in\{0.1,0.2,0.3,0.5,1,1.5,2,3,5\}$ for each variant with $m=\tTwoM$ and $t_b=\tTwoTb$ fixed. Training All@5 of the expansion-only control peaks at $\gamma=\CtlGammaExp$ (\CtlTrainExpAll\%), against \ClDenseTrain\% for dense retrieval; the title-link-only control reaches \CtlTrainTitAll\% from $\gamma=\CtlGammaTit$ upward and is flat beyond (the constant boost already moves every linked passage above the dense scores), so the smallest value of that plateau was chosen; and the full method peaks at \CtlTrainTwoAll\% at $\gamma=\tTwoGamma$. A first run used the narrower grid $\gamma\le1$ and put the optimum of the title-link control at the upper edge; the grid was then widened (the first-grid results are kept in the released files). The selection itself uses training questions only. No setting was tuned on 2WikiMultiHopQA or MuSiQue.
+
+\subsection{Evaluation protocol}\label{sec:evalprot}
+Sample B had been run once with the frozen ungated configuration before the gate and the cross-encoder were added. The extended runs reuse samples A and B and add the new systems to them; because the gate was selected on training data and the cross-encoder was not tuned, this does not use the evaluation labels for selection, but sample B should no longer be read as a sample that was seen exactly once by every system. 2WikiMultiHopQA and MuSiQue were each run once, retrieval only. The generator was run on sample A for no retrieval, BM25, dense retrieval, the PPR hybrid, the re-ranker, the gated re-ranker, the cross-encoder on dense and gold passages.
+
+\subsection{Evaluation metrics}
+\paragraph{Retrieval.} Recall of supporting passages in the top-5 (R@5) and the share of questions for which all supporting passages are retrieved (All@5). On MuSiQue up to four passages are supporting, so All@5 is very strict for 3- and 4-hop questions.
+\paragraph{Answers.} Exact match (EM) and token-level F1 after the usual normalisation \citep{rajpurkar2016squad}.
+\paragraph{Groundedness.} The rate of answers for which less than 0.8 of the content tokens occur in the retrieved evidence, reported as ``Unsup.'' (lower is better). This is a lexical proxy, not an entailment-based or claim-level faithfulness score \citep{honovich2022true,min2023factscore}.
+
+\subsection{Statistical testing}
+Differences between systems on the same questions are tested with a paired bootstrap \citep{efron1979bootstrap,berg2012bootstrap,koehn2004signif} with 10\,000 resamples over questions; we report the mean difference, the 95\% percentile interval and a two-sided $p$ value. No correction is made for the number of comparisons.
+
+\section{Results}\label{sec:results}
+\IfFileExists{tables/retr2.tex}{\input{tables/retr2.tex}}{}
+
+\subsection{Retrieval quality (RQ1)}
+Table~\ref{tab:retr2} gives retrieval on the two HotpotQA samples. The two-hop re-ranker retrieves all supporting passages for \RSampleAHybridTwoAllSupp\% (sample A) and \RSampleBHybridTwoAllSupp\% (sample B) of the questions, against \RSampleADenseAllSupp\% and \RSampleBDenseAllSupp\% for dense retrieval and \RSampleABmTwoAllSupp\% and \RSampleBBmTwoAllSupp\% for BM25. Recall in the top-5 rises from \RSampleADenseRecall\% to \RSampleAHybridTwoRecall\% and from \RSampleBDenseRecall\% to \RSampleBHybridTwoRecall\%. The gain is similar on the second sample, which supports the claim that it is not an artefact of development on sample A. The paired bootstrap in Table~\ref{tab:signif} excludes zero for every retrieval comparison. In contrast, the PPR hybrid is indistinguishable from dense retrieval (All@5 \RSampleAHybridAllSupp\% against \RSampleADenseAllSupp\% on sample A and \RSampleBHybridAllSupp\% against \RSampleBDenseAllSupp\% on sample B), and Graph-PPR with entity seeds alone reaches only \RHotpotQAGraphAllSupp\% (Table~\ref{tab:main}). The graph walk therefore did not help on top of BGE, whereas the same graph used to restrict a second dense scoring pass did.
+
+\IfFileExists{tables/signif.tex}{\input{tables/signif.tex}}{}
+
+\subsection{Ablation (RQ2)}
+Removing the title-link bonus lowers All@5 to \RSampleAAblTwoNoTitleAllSupp\% (sample A) and \RSampleBAblTwoNoTitleAllSupp\% (sample B), and using only the top-1 first-hop passage gives \RSampleAAblTwoOneSeedAllSupp\% and \RSampleBAblTwoOneSeedAllSupp\%, so both the title link and several first-hop passages contribute. Restricting entities to the regex extractor gives \RSampleAAblTwoRegexNerAllSupp\% and \RSampleBAblTwoRegexNerAllSupp\%, which is equal to the selected union with spaCy within sampling noise; spaCy therefore does not add measurable value here, and the cheaper extractor suffices. The ablations of the PPR variant (Table~\ref{tab:ablation}) show that dropping the dense seeds is damaging (All@5 \RHotpotQAAblNoDenseSeedAllSupp\%), dropping the dense-score fusion costs about two points (\RHotpotQAAblNoFusionAllSupp\%), and removing the entity seeds (\RHotpotQAAblNoEntitySeedAllSupp\%), the IDF weights (\RHotpotQAAblNoIdfAllSupp\%) or changing the restart probability (\RHotpotQAAblAlphaZeroAllSupp\%) stays within one point of the full PPR hybrid (\RHotpotQAHybridAllSupp\%), which itself equals dense retrieval.
+
+\IfFileExists{tables/ablation.tex}{\input{tables/ablation.tex}}{}
+
+\subsection{Error analysis and the question-type gate (RQ3)}\label{sec:bytype}
+\input{tables/ext_bytype.tex}
+Table~\ref{tab:bytype2} splits All@5 by question type. On HotpotQA the whole gain of the ungated re-ranker comes from bridge questions, where All@5 rises from \TypHADensebridge\% to \TypHATwobridge\% on sample A ($n=\TypNHAbridge$) and from \TypHBDensebridge\% to \TypHBTwobridge\% on sample B ($n=\TypNHBbridge$). On comparison questions the ungated re-ranker is \emph{worse}: All@5 falls from \TypHADensecomparison\% to \TypHATwocomparison\% on sample A ($n=\TypNHAcomparison$) and from \TypHBDensecomparison\% to \TypHBTwocomparison\% on sample B ($n=\TypNHBcomparison$). The same drop appears on the comparison questions of 2WikiMultiHopQA (\TypTWDensecomparison\% to \TypTWTwocomparison\%). A comparison question names both entities, so the dense retriever already finds both passages, and our hypothesis is that the boost for linked passages then displaces one of them from the top-5. We did not test this explanation directly.
+
+The question-type gate of Section~\ref{sec:gate} removes most of the loss. With the gate, comparison questions are at \TypHAGatecomparison\% (sample A), \TypHBGatecomparison\% (sample B) and \TypTWGatecomparison\% (2WikiMultiHopQA), close to dense retrieval and to the oracle gate (\TypHAOraccomparison\% on sample A), and the gate fires for \ExtHAGateGated\% of the questions on sample A. Overall All@5 rises from \ExtHATwoAll\% to \ExtHAGateAll\% on sample A and from \ExtHBTwoAll\% to \ExtHBGateAll\% on sample B. The paired differences are \ExtHAGateVTwoAllD{} points (95\% interval \ExtHAGateVTwoAllLo{} to \ExtHAGateVTwoAllHi{}) on sample A, which includes zero, and \ExtHBGateVTwoAllD{} points (\ExtHBGateVTwoAllLo{} to \ExtHBGateVTwoAllHi{}) on sample B, which does not (Table~\ref{tab:extsig}). The gate is therefore a small but consistent repair, not a large gain. It is imperfect: the title-based gate loses about one point on bridge questions on sample A (\TypHATwobridge\% to \TypHAGatebridge\%), and the oracle gate would add a further point or so (\ExtHAOracAll\% against \ExtHAGateAll\% on sample A).
+
+The win--loss counts of the ungated re-ranker agree with this picture. On sample A, both systems retrieve all supporting passages for \WABoth{} questions, the dense retriever alone for \WADenseOnly{}, the re-ranker alone for \WAHtwoOnly{}, and neither for \WANeither{}; on sample B the counts are \WBBoth{}, \WBDenseOnly{}, \WBHtwoOnly{} and \WBNeither{}. The re-ranker thus fixes roughly two and a half to three times as many questions as it breaks.
+
+\subsection{Comparison with a cross-encoder (RQ4)}
+\input{tables/ext_retrieval.tex}
+Table~\ref{tab:ext} adds a cross-encoder re-ranker. On HotpotQA the cross-encoder over the dense top-20 improves All@5 from \ExtHADenseAll\% to \ExtHACEAll\% on sample A and from \ExtHBDenseAll\% to \ExtHBCEAll\% on sample B. The two-hop re-ranker with the gate reaches \ExtHAGateAll\% and \ExtHBGateAll\%. In All@5 the difference between the two is not significant on either sample (\ExtHAGateVCEAllD{} points, interval \ExtHAGateVCEAllLo{} to \ExtHAGateVCEAllHi{} on sample A; \ExtHBGateVCEAllD{} points, \ExtHBGateVCEAllLo{} to \ExtHBGateVCEAllHi{} on sample B), although the cross-encoder has slightly higher recall on sample A (\ExtHAGateVCERecD{} points for the gated method, interval \ExtHAGateVCERecLo{} to \ExtHAGateVCERecHi{}). The two methods cost very different amounts: the cross-encoder takes \ExtHACESec\,s per 1\,000 questions against \ExtHAGateSec\,s for the gated re-ranker in the single laptop run, and the repeated CPU measurements of Section~\ref{sec:cost} confirm the direction, because it scores 20 passage--question pairs per question.
+
+The two methods are complementary on HotpotQA. Applying the cross-encoder to the top-20 of the gated re-ranker raises All@5 to \ExtHACEGateAll\% on sample A and \ExtHBCEGateAll\% on sample B, which is \ExtHACEGateVCEAllD{} and \ExtHBCEGateVCEAllD{} points over the cross-encoder alone (intervals above zero in both cases, Table~\ref{tab:extsig}). The picture differs on 2WikiMultiHopQA. There the cross-encoder gives no gain over dense retrieval (\ExtTWDenseAll\% to \ExtTWCEAll\%), whereas the two-hop re-ranker raises All@5 to \ExtTWTwoAll\%. Placing the cross-encoder \emph{after} the two-hop step still beats the cross-encoder alone (\ExtTWCETwoAll\%) but falls well below the two-hop step alone, mainly on compositional questions (\TypTWTwocompositional\% to \TypTWCETwocompositional\%, Table~\ref{tab:bytype2}). A plausible reason is that a cross-encoder trained to match a question with a passage ranks the bridge passage, which shares little with the question, below distractors, but we did not test this. The two re-rankers should therefore not be stacked without checking the dataset.
+
+\IfFileExists{tables/ext_signif.tex}{\input{tables/ext_signif.tex}}{}
+
+\subsection{Transfer to 2WikiMultiHopQA and MuSiQue (RQ5)}
+With the settings frozen on HotpotQA training data, the two-hop re-ranker transfers to both datasets (Table~\ref{tab:ext}). On 2WikiMultiHopQA All@5 rises from \ExtTWDenseAll\% to \ExtTWTwoAll\% (\ExtTWTwoVDenseAllD{} points, interval \ExtTWTwoVDenseAllLo{} to \ExtTWTwoVDenseAllHi{}), and to \ExtTWGateAll\% with the gate; recall rises from \ExtTWDenseRec\% to \ExtTWTwoRec\%. The gain is largest for compositional questions (\TypTWDensecompositional\% to \TypTWTwocompositional\%) and also clear for inference questions (\TypTWDenseinference\% to \TypTWTwoinference\%). All systems score close to zero on the bridge-comparison questions ($n=\TypNTWbridgecomparison$); Section~\ref{sec:controls} shows that this is not an evaluation error: every such question has a supporting set of \AudSizeBridgecomparison{} passages, which fits in five, but dense retrieval finds all four for \AudDenseBridgecomparisonAll\% of them (\AudDenseBridgecomparisonAllTwenty\% at 20).
+
+On MuSiQue the result is mixed. All@5 rises from \ExtMQDenseAll\% to \ExtMQTwoAll\% (\ExtMQTwoVDenseAllD{} points, interval \ExtMQTwoVDenseAllLo{} to \ExtMQTwoVDenseAllHi{}), but recall in the top-5 does not (\ExtMQDenseRec\% to \ExtMQTwoRec\%, difference \ExtMQTwoVDenseRecD{} points, interval \ExtMQTwoVDenseRecLo{} to \ExtMQTwoVDenseRecHi{}), and the cross-encoder has higher recall than the two-hop method (\ExtMQCERec\%). The gain comes from 2-hop questions (\TypMQDenseTwohop\% to \TypMQTwoTwohop\%). For 3-hop questions the re-ranker is worse than dense retrieval (\TypMQDenseThreehop\% to \TypMQTwoThreehop\%) and for 4-hop questions all systems are near zero. The method, which follows one bridge from the first hop, does not recover chains of three or more supporting passages in this setup. The gate has no measurable effect on MuSiQue (\ExtMQGateAll\%), as expected from a dataset without comparison questions.
+
+\subsection{Controls, candidate coverage, audit and scale}\label{sec:controls}
+\paragraph{What does the graph add? (controls).}
+Tables~\ref{tab:controls} and~\ref{tab:controlsgate} separate query expansion from the graph and title link (Section~\ref{sec:variants}); the paired differences are in Table~\ref{tab:ctlsig}. Scoring the same expanded queries against the whole corpus, without the graph, raises HotpotQA sample A from \CtlHADenseAll\% to only \CtlHAExpFAll\%, far below the full method (\CtlHATwoFAll\%); the graph restriction is therefore needed for the expansion to help. The reverse control is more important: keeping only the graph and the title link, with no expanded query, reaches \CtlHATitFAll\% at $\gamma=0.3$ and \CtlHATitTAll\% with $\gamma$ tuned on the training split, which is \emph{higher} than the full method on sample A (the paired interval in Table~\ref{tab:ctlsig} excludes zero) and not distinguishable from it on sample B. On 2WikiMultiHopQA the title-link-only variant is much better than the full method (\CtlTWTitTAll\% against \CtlTWTwoFAll\%), whereas on MuSiQue it is worse (\CtlMQTitTAll\% against \CtlMQTwoFAll\%, with dense at \CtlMQDenseAll\%). We conclude that most of the gain on HotpotQA and 2WikiMultiHopQA comes from the graph-restricted title link, and that the expanded query matters mainly where titles are not the link, as in MuSiQue. The title bonus works because the linked passages' Wikipedia titles are bridge entities; on corpora without such titles the expansion would carry more of the load, which we did not test. The two-hop method as evaluated above is therefore not the best use of the graph on two of the three datasets.
+
+\paragraph{Sample overlap.}
+Samples A and B share \nOverlapAB{} questions. On the 841 questions of B$\setminus$A the gated method improves All@5 over dense retrieval by \CtlVDHXGateD{} points (interval \CtlVDHXGateLo{} to \CtlVDHXGateHi{}) and the ungated one by \CtlVDHXTwoD{} (\CtlVDHXTwoLo{} to \CtlVDHXTwoHi{}), so the second-sample result does not depend on the shared questions. The sample identifiers are released.
+
+\paragraph{Candidate coverage before re-ranking.}
+Table~\ref{tab:coverage} reports R@20 and All@20 of each first-stage ranking. A cross-encoder over the top-20 cannot exceed these values. On HotpotQA sample A the dense top-20 contains all supporting passages for \CovHADenseAllTwenty\% of the questions and the two-hop ranking for \CovHATwoAllTwenty\% (\CovHAGateAllTwenty\% with the gate), so part of the two-hop advantage is candidate discovery and part is ordering: the cross-encoder is limited by the first. For 2WikiMultiHopQA, the dense top-20 covers all supporting passages for only \CovTWDenseAllTwenty\% of questions, which explains why a cross-encoder over it cannot help there. The common-pool comparison, in which the cross-encoder reranks the two-hop top-20, is the ``cross-encoder after two-hop'' row of Table~\ref{tab:ext}.
+
+\paragraph{Audit of 2WikiMultiHopQA.}
+Table~\ref{tab:audit} gives the support-set size, the share of questions whose set fits in five passages, and retrieval by question type. Bridge-comparison questions have exactly four supporting passages, so All@5 is attainable (all fit in five) but demanding; dense retrieval reaches \AudDenseBridgecomparisonRec\% recall and \AudDenseBridgecomparisonAll\% All@5 on them, the two-hop method \AudTwoBridgecomparisonAll\%, and the title-link-only variant \AudTitBridgecomparisonAll\%. We also checked the mapping of gold passages into the corpus: for all 1\,000 questions every supporting title named in the annotation is present in the question's context (0 of 2\,480 supporting titles missing, 960 of them in the bridge-comparison questions), so no gold passage is lost when the corpus is built; a few contexts contain a repeated title (38 in the sample), which the corpus builder merges when the text is identical. The near-zero value is therefore a retrieval failure on a hard question type, not a metric, mapping or deduplication artefact; with the title link the failure is partly repaired.
+
+\paragraph{Corpus scale.}
+\input{tables/ctl_scale.tex}
+Table~\ref{tab:scale} retrieves the same 1\,000 sample-A questions from corpora pooled from more development questions, with the configuration frozen as above. Indexing time and peak memory are reported for the cloud CPU container. With the full pool of \ScaleFullPass{} passages (all 7\,405 development questions that the pooling uses), dense All@5 falls from \ScaleOneDAll\% to \ScaleFullDAll\%, the two-hop method reaches \ScaleFullTAll\% (\ScaleFullGAll\% with the gate) and the title-link-only variant \ScaleFullLAll\%. The gain over dense retrieval therefore persists in a pool about seven times larger, and so does the ordering of the controls. Candidate coverage also holds: All@20 is \ScaleFullDTwenty\% for dense retrieval and \ScaleFullTTwenty\% for the two-hop ranking. Dense encoding and graph construction take about \ScaleFullIndexMin{} minutes on two CPU cores for this pool (\ScaleOneIndexMin{} minutes for the 1\,000-question pool), and the process peaks at \ScaleFullRSSgb\,GB of resident memory; the embedding matrix is \ScaleFullEmbMB\,MB and the graph has \ScaleFullGraphNNZ{} non-zeros. Every query still scores the expanded queries exhaustively against all passages, so query time grows linearly with the pool (Section~\ref{sec:cost}). The pool is nevertheless built from development questions and is not a standard full retrieval corpus such as the complete Wikipedia, so the claim remains limited to pooled corpora.
+
+\input{tables/ctl_controls.tex}
+\input{tables/ctl_sig.tex}
+\input{tables/ctl_coverage.tex}
+\input{tables/ctl_audit.tex}
+
+\subsection{Answer quality and groundedness}
+\IfFileExists{tables/main_results.tex}{\input{tables/main_results.tex}}{}
+\input{tables/ext_answers.tex}
+With Qwen2.5-1.5B-Instruct on sample A, the re-ranker raises exact match from \RHotpotQADenseEM\% to \RHotpotQAHybridTwoEM\% and F1 from \RHotpotQADenseFOne\% to \RHotpotQAHybridTwoFOne\%; both differences are significant (Table~\ref{tab:signif}), whereas the PPR hybrid reaches \RHotpotQAHybridEM\% EM, not above dense retrieval. The gated re-ranker gives \AnsGateEM\% EM and \AnsGateFOne\% F1 (\AnsGateVDenseEMD{} and \AnsGateVDenseFOneD{} points over dense retrieval, both intervals above zero). It is not better than the ungated one in answer quality (\AnsGateVTwoEMD{} points EM, interval \AnsGateVTwoEMLo{} to \AnsGateVTwoEMHi{}), even though it has higher All@5. The cross-encoder over the dense top-20 reaches \AnsCEEM\% EM and \AnsCEFOne\% F1 (Table~\ref{tab:answers}). It has higher All@5 than the two-hop re-ranker, but lower EM: the two-hop method is ahead by \AnsTwoVCEEMD{} points (interval \AnsTwoVCEEMLo{} to \AnsTwoVCEEMHi{}), and by \AnsTwoVCEFOneD{} points in F1 (interval \AnsTwoVCEFOneLo{} to \AnsTwoVCEFOneHi{}, borderline). We have not isolated the reason; one candidate is that the two-hop method places the bridge passage and the answer passage in the top-5 in a way that suits the generator. The share of answers flagged as lexically unsupported is \AnsTwoUnsup\% for the re-ranker, \AnsGateUnsup\% with the gate, \AnsCEUnsup\% for the cross-encoder and \AnsDenseUnsup\% for dense retrieval. The difference between the gated re-ranker and dense retrieval is small and borderline (\AnsGateVDenseUnsupD{} points, interval \AnsGateVDenseUnsupLo{} to \AnsGateVDenseUnsupHi{}), so the data do \emph{not} support a claim that the method reduces unsupported answers; they support better evidence retrieval and better answers. Even with gold passages EM is \RHotpotQAOracleEM\%, which shows that a 1.5B generator, not retrieval, is the main remaining bottleneck.
+
+\begin{figure}[t]
+\centering
+\IfFileExists{figs/main.pdf}{\includegraphics[width=0.78\textwidth]{figs/main.pdf}}{}
+\caption{F1 on sample A for the retrievers that were run with the generator (generated by \texttt{make\_tables.py}).}
+\label{fig:main}
+\end{figure}
+
+\subsection{Efficiency and runtime}\label{sec:cost}
+\input{tables/ctl_timing.tex}
+The laptop run on sample A takes \RSampleABmTwoSec\,s for BM25, \RSampleADenseSec\,s for dense retrieval, \RSampleAHybridSec\,s for the PPR hybrid, \RSampleAHybridTwoSec\,s for the two-hop re-ranker and \ExtHAGateSec\,s with the gate for 1\,000 questions, against \ExtHACESec\,s for the cross-encoder; with the generator included the whole run takes \RHotpotQAHybridTwoSec\,s for the re-ranker, \RHotpotQADenseSec\,s for dense retrieval and \AnsCESec\,s for the cross-encoder. That run was a single pass without warm-up control, so we repeated the measurement. Table~\ref{tab:timing} gives per-question retrieval latency on the two-core cloud CPU after 10 warm-up questions, as the mean and standard deviation of three passes over 90 questions on a 992-passage pool, with batch size one for the question encoder and the cross-encoder scoring 20 pairs per question in one batch. The two-hop re-ranker takes \TmCpukTwo\,$\pm$\,\TmCpukTwoSd\,ms per question against \TmCpukDense\,$\pm$\,\TmCpukDenseSd\,ms for dense retrieval, about \TmCpukSlow{} times more, and \TmCpukGate\,$\pm$\,\TmCpukGateSd\,ms with the gate; the cross-encoder takes \TmCpukCE\,$\pm$\,\TmCpukCESd\,ms. The cost of the cross-encoder relative to the two-hop step is therefore large on this CPU (a factor of about \TmCpukRatio), but the factor depends on hardware, batch size and model, and we do not claim a single ratio. The title-link-only variant needs no extra encoding and is close to dense retrieval in latency. The two-hop cost includes the $m$ extra query encodings, the exhaustive scoring of every expanded query against all passage embeddings and the min--max normalisation over all passages (Section~\ref{sec:method}); it grows linearly with the pool size. Indexing and memory are reported in Table~\ref{tab:scale}: dense encoding dominates indexing time (about \ScaleOneIndexMin{} minutes for 9\,760 passages including graph construction, \ScaleFullIndexMin{} minutes for \ScaleFullPass{} passages), and the process peaks at \ScaleOneRSSgb\,GB and \ScaleFullRSSgb\,GB respectively. These times are for CPU cores and are indicative; the retrieval cost is small next to generation.
+
+\section{Discussion and Limitations}\label{sec:discussion}
+\subsection{What the results show}
+A graph restricts which passages may be boosted, and a gate keeps the step away from comparison questions. With the settings frozen on HotpotQA, the step raises All@5 on all three datasets, and the control experiments tell us why. The graph-restricted title link accounts for most of the gain on HotpotQA and 2WikiMultiHopQA, where a variant with no query expansion does as well or better; query expansion adds value mainly on MuSiQue, and only when the graph restricts it. The expanded query alone, scored over the whole corpus, gives little. On HotpotQA we detect no significant All@5 difference from a cross-encoder at lower retrieval cost, and the cross-encoder gives no gain on 2WikiMultiHopQA, where candidate coverage of the dense top-20 is low. Personalised PageRank on the same graph did not add anything over BGE. The entity graph needs to be only as good as a capitalised-span extractor. We caution against reading this as evidence that entity graphs help in general: the benefit we measure is largely a Wikipedia-title effect, and the method follows one bridge, so it did not help on 3-hop and 4-hop MuSiQue questions.
+
+\subsection{What the results do not show}
+The data do not show that the method reduces hallucination: the unsupported-answer rate changes by a small amount with an interval that touches zero, and the metric is lexical. They do not show that the method works on a full retrieval corpus, with other encoders, with corpora whose passage titles are not entities, or with larger generators; the corpus-scale test of Section~\ref{sec:controls} enlarges the distractor pool but is still pooled from the development questions. They also do not show that it is better than LLM-built graph retrievers or iterative methods, because those were not run, and only one cross-encoder was tested.
+
+\subsection{Threats to validity}
+\paragraph{Internal validity.} The hyper-parameters and the gate were chosen on the training split, yet sample A had earlier been used to evaluate the PPR variant, and sample B was reused for the extended systems (Section~\ref{sec:evalprot}). The first $\gamma$ sweep hit the edge of its grid and was extended on the training split only. Answers were generated with greedy decoding and a single seed, so generator variance is not measured.
+\paragraph{External validity.} The corpora pool the paragraphs of 1\,000 questions each and are far smaller than a Wikipedia index; the gain may shrink with more distractors. The title-link signal is specific to Wikipedia-style titles, and the three datasets are all Wikipedia-based. Answers were generated for HotpotQA only.
+\paragraph{Construct validity.} All@5 is necessary but not sufficient for a correct answer. The groundedness proxy compares tokens, not meaning, and cannot detect a contradiction of the evidence. EM and F1 penalise correct answers that are phrased differently. The cross-encoder sees only the top-20, so its All@5 is bounded by the All@20 of its candidate list (Table~\ref{tab:coverage}).
+\paragraph{Statistical validity.} The bootstrap treats questions as independent and does not correct for the number of comparisons. The retrieval gains are large relative to their intervals, but the gate effect and the unsupported-answer difference are not.
+
+\subsection{Further limitations and future work}
+The title-based gate is a simple rule and trails the oracle gate; a trained question-type classifier is a natural next step. The re-ranker follows a single bridge, so multi-step chains need either an iterated version or a different method. LoRA fine-tuning of the generator \citep{hu2022lora,dettmers2023qlora} was implemented but not evaluated. Official GraphRAG, LightRAG and HippoRAG and iterative LLM-based retrieval are not compared; they may be stronger, at higher cost. Future work also includes larger corpora, other encoders and rerankers, and measuring faithfulness with an entailment-based or claim-level metric \citep{honovich2022true,min2023factscore,es2024ragas} before making any claim about hallucination.
+
+\section{Conclusion}\label{sec:conclusion}
+A passage--entity graph built without any LLM call can restrict a second, boosted scoring pass to passages that are linked to the first-hop evidence. On HotpotQA with BGE-small this raises All@5 by about 9 to 12 points on two samples when combined with a question-type gate, and improves the answer F1 of a 1.5B generator. Control experiments show that most of this gain comes from the graph-restricted title link rather than from query expansion: a variant with the title link only is as good or better on HotpotQA and much better on 2WikiMultiHopQA, while the expansion matters on MuSiQue, where the gain is confined to two-hop questions. On HotpotQA we detect no significant All@5 difference from a cross-encoder, which does not show equivalence; the cross-encoder gives no gain on 2WikiMultiHopQA. Without the gate, comparison questions get worse, and a personalised-PageRank walk on the same graph does not help. The study is limited to Wikipedia-based benchmarks with pooled corpora and one encoder, so the results are evidence for a cheap and transparent re-ranking idea whose main ingredient is the title link, not a general claim about graph-based RAG.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+During the preparation of this work the authors used Claude (Anthropic) to edit the language of the manuscript and to assist with drafting the text and with writing and debugging the experiment code. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the published article. The main experiments were run on the authors' laptop. The control, candidate-coverage, corpus-scale and timing experiments of Sections~\ref{sec:controls} and~\ref{sec:cost} were executed with the released scripts in a cloud container through the same assistant, at the authors' request. All reported numbers are produced by the released scripts from the stored result files.
+
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.
+
+\section*{Data availability}
+HotpotQA \citep{yang2018hotpotqa}, 2WikiMultiHopQA \citep{ho2020twowiki} and MuSiQue \citep{trivedi2022musique} are public datasets. The code, configuration files, tuned hyper-parameters, per-question outputs and the scripts that regenerate every table and figure are available in a public repository at \url{\repourl}.
+
+\section*{Ethics statement}
+The study uses public benchmark data and involves no human participants or personal data.
+
+\printcredits
+
+\bibliographystyle{cas-model2-names}
+\bibliography{refs}
+\end{document}

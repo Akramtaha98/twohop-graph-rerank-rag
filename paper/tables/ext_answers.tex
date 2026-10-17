@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Answers of Qwen2.5-1.5B-Instruct on sample A (\%). Unsup.: lexically unsupported answers (lower is better). Sec.: end-to-end time for 1\,000 questions.}
+\label{tab:answers}
+\begin{tabular}{lrrrrr}
+\toprule
+System & All@5 & EM & F1 & Unsup.$\downarrow$ & Sec. \\
+\midrule
+Dense & 70.2 & 37.5 & 47.6 & 11.9 & 505 \\
+Cross-encoder on dense top-20 & 81.2 & 39.7 & 50.7 & 9.3 & 832 \\
+Two-hop re-ranking & 78.6 & 42.6 & 53.2 & 10.7 & 538 \\
+Two-hop + gate & 79.6 & 42.3 & 52.8 & 10.5 & 541 \\
+Gold passages (upper bound) & 100.0 & 54.0 & 67.2 & 9.4 & 255 \\
+\bottomrule
+\end{tabular}
+\end{table}

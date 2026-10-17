@@ -1,0 +1,57 @@
+{
+ "n_passages": 992,
+ "n_timed_questions": 90,
+ "repeats": 3,
+ "warmup": 10,
+ "index_seconds_dense_or_cache_load": 57.9,
+ "index_seconds_graph": 15.1,
+ "embedding_mb": 1.5,
+ "graph_nnz": 18367,
+ "graph_entities": 11888,
+ "graph_matrix_mb": 0.5,
+ "peak_rss_mb": 1213.0,
+ "dense": {
+  "ms_per_question_mean": 27.06,
+  "ms_per_question_sd": 0.62,
+  "runs_ms": [
+   27.31,
+   27.52,
+   26.36
+  ]
+ },
+ "two_hop": {
+  "ms_per_question_mean": 161.65,
+  "ms_per_question_sd": 4.61,
+  "runs_ms": [
+   163.95,
+   156.35,
+   164.66
+  ]
+ },
+ "two_hop_gate": {
+  "ms_per_question_mean": 129.9,
+  "ms_per_question_sd": 1.86,
+  "runs_ms": [
+   130.42,
+   127.84,
+   131.44
+  ]
+ },
+ "title_only": {
+  "ms_per_question_mean": 30.29,
+  "ms_per_question_sd": 0.35,
+  "runs_ms": [
+   30.07,
+   30.1,
+   30.69
+  ]
+ },
+ "ce_dense_top20": {
+  "ms_per_question_mean": 5725.24,
+  "ms_per_question_sd": 37.05,
+  "runs_ms": [
+   5699.04,
+   5751.44
+  ]
+ }
+}

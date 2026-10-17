@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Retrieval on two independent samples of 1\,000 HotpotQA questions (\%). Sample~A was also used to evaluate the earlier PPR variant; sample~B was used only once, for the final configuration. Best non-oracle value in bold.}
+\label{tab:retr2}
+\begin{tabular}{lrrrr}
+\toprule
+System & \multicolumn{2}{c}{SampleA} & \multicolumn{2}{c}{SampleB} \\
+& R@5 & All@5 & R@5 & All@5 \\
+\midrule
+BM25 & 73.8 & 51.3 & 71.6 & 48.1 \\
+Dense & 84.3 & 70.2 & 84.1 & 69.8 \\
+PPR hybrid (v1) & 84.3 & 70.1 & 84.0 & 69.8 \\
+Two-hop graph re-ranking (ours) & 88.1 & 78.6 & \textbf{88.8} & \textbf{80.3} \\
+w/o title-link bonus & 85.5 & 73.5 & 85.4 & 73.4 \\
+first hop from top-1 only & 84.7 & 73.5 & 85.9 & 76.1 \\
+regex entities only & \textbf{88.2} & \textbf{78.8} & 88.6 & 79.8 \\
+Gold passages (upper bound) & 100.0 & 100.0 & 100.0 & 100.0 \\
+\bottomrule
+\end{tabular}
+\end{table}

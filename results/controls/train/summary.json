@@ -1,0 +1,472 @@
+{
+ "meta": {
+  "dataset": "hotpot",
+  "n_questions": 500,
+  "n_passages": 4930,
+  "pool_questions": 500,
+  "seed": 0,
+  "seconds_dense_index": 5.9,
+  "seconds_graph_build": 77.5,
+  "seconds_eval": 210.3,
+  "peak_rss_mb": 1780.0,
+  "embedding_mb": 7.6,
+  "graph_nnz": 93131,
+  "graph_entities": 50956,
+  "gammas": [
+   0.3,
+   0.1,
+   0.2,
+   0.5,
+   1.0,
+   1.5,
+   2.0,
+   3.0,
+   5.0
+  ],
+  "tb": 0.5,
+  "m": 3,
+  "gate": "titles"
+ },
+ "rows": {
+  "dense": {
+   "all_support": 75.6,
+   "recall": 86.9,
+   "all10": 87.2,
+   "all20": 91.4,
+   "recall20": 95.7,
+   "n": 500
+  },
+  "two_hop@0.3": {
+   "all_support": 85.8,
+   "recall": 91.7,
+   "all10": 93.0,
+   "all20": 96.4,
+   "recall20": 97.8,
+   "n": 500
+  },
+  "two_hop@0.3+gate": {
+   "all_support": 86.8,
+   "recall": 92.1,
+   "all10": 92.8,
+   "all20": 96.4,
+   "recall20": 97.8,
+   "n": 500
+  },
+  "expand_all@0.3": {
+   "all_support": 79.4,
+   "recall": 88.7,
+   "all10": 89.8,
+   "all20": 93.2,
+   "recall20": 96.6,
+   "n": 500
+  },
+  "expand_all@0.3+gate": {
+   "all_support": 79.0,
+   "recall": 88.4,
+   "all10": 89.6,
+   "all20": 93.2,
+   "recall20": 96.6,
+   "n": 500
+  },
+  "title_only@0.3": {
+   "all_support": 84.2,
+   "recall": 91.1,
+   "all10": 90.6,
+   "all20": 94.0,
+   "recall20": 97.0,
+   "n": 500
+  },
+  "title_only@0.3+gate": {
+   "all_support": 83.2,
+   "recall": 90.6,
+   "all10": 90.6,
+   "all20": 93.8,
+   "recall20": 96.9,
+   "n": 500
+  },
+  "two_hop@0.1": {
+   "all_support": 84.2,
+   "recall": 90.7,
+   "all10": 91.0,
+   "all20": 95.4,
+   "recall20": 97.7,
+   "n": 500
+  },
+  "two_hop@0.1+gate": {
+   "all_support": 83.4,
+   "recall": 90.3,
+   "all10": 90.8,
+   "all20": 95.4,
+   "recall20": 97.7,
+   "n": 500
+  },
+  "expand_all@0.1": {
+   "all_support": 77.6,
+   "recall": 87.7,
+   "all10": 89.4,
+   "all20": 92.2,
+   "recall20": 96.1,
+   "n": 500
+  },
+  "expand_all@0.1+gate": {
+   "all_support": 77.4,
+   "recall": 87.6,
+   "all10": 89.2,
+   "all20": 92.2,
+   "recall20": 96.1,
+   "n": 500
+  },
+  "title_only@0.1": {
+   "all_support": 81.8,
+   "recall": 90.0,
+   "all10": 88.6,
+   "all20": 92.4,
+   "recall20": 96.2,
+   "n": 500
+  },
+  "title_only@0.1+gate": {
+   "all_support": 80.8,
+   "recall": 89.5,
+   "all10": 88.6,
+   "all20": 92.4,
+   "recall20": 96.2,
+   "n": 500
+  },
+  "two_hop@0.2": {
+   "all_support": 85.4,
+   "recall": 91.6,
+   "all10": 93.0,
+   "all20": 96.4,
+   "recall20": 98.0,
+   "n": 500
+  },
+  "two_hop@0.2+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 92.8,
+   "all20": 96.4,
+   "recall20": 98.0,
+   "n": 500
+  },
+  "expand_all@0.2": {
+   "all_support": 78.4,
+   "recall": 88.2,
+   "all10": 90.0,
+   "all20": 92.6,
+   "recall20": 96.3,
+   "n": 500
+  },
+  "expand_all@0.2+gate": {
+   "all_support": 77.8,
+   "recall": 87.9,
+   "all10": 89.8,
+   "all20": 92.6,
+   "recall20": 96.3,
+   "n": 500
+  },
+  "title_only@0.2": {
+   "all_support": 82.6,
+   "recall": 90.3,
+   "all10": 90.0,
+   "all20": 93.4,
+   "recall20": 96.7,
+   "n": 500
+  },
+  "title_only@0.2+gate": {
+   "all_support": 81.6,
+   "recall": 89.8,
+   "all10": 90.0,
+   "all20": 93.4,
+   "recall20": 96.7,
+   "n": 500
+  },
+  "two_hop@0.5": {
+   "all_support": 79.2,
+   "recall": 87.7,
+   "all10": 91.8,
+   "all20": 95.4,
+   "recall20": 97.1,
+   "n": 500
+  },
+  "two_hop@0.5+gate": {
+   "all_support": 82.8,
+   "recall": 89.8,
+   "all10": 93.0,
+   "all20": 95.6,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "expand_all@0.5": {
+   "all_support": 77.2,
+   "recall": 86.6,
+   "all10": 90.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "expand_all@0.5+gate": {
+   "all_support": 76.6,
+   "recall": 86.3,
+   "all10": 90.4,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "title_only@0.5": {
+   "all_support": 85.2,
+   "recall": 91.5,
+   "all10": 91.4,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@0.5+gate": {
+   "all_support": 84.2,
+   "recall": 91.0,
+   "all10": 91.2,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "two_hop@1.0": {
+   "all_support": 46.8,
+   "recall": 64.5,
+   "all10": 68.8,
+   "all20": 81.4,
+   "recall20": 88.4,
+   "n": 500
+  },
+  "two_hop@1.0+gate": {
+   "all_support": 60.4,
+   "recall": 75.6,
+   "all10": 79.4,
+   "all20": 88.4,
+   "recall20": 93.2,
+   "n": 500
+  },
+  "expand_all@1.0": {
+   "all_support": 42.2,
+   "recall": 65.2,
+   "all10": 65.6,
+   "all20": 81.8,
+   "recall20": 90.2,
+   "n": 500
+  },
+  "expand_all@1.0+gate": {
+   "all_support": 49.4,
+   "recall": 69.1,
+   "all10": 68.8,
+   "all20": 83.6,
+   "recall20": 91.1,
+   "n": 500
+  },
+  "title_only@1.0": {
+   "all_support": 85.8,
+   "recall": 91.7,
+   "all10": 91.8,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@1.0+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 91.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "two_hop@1.5": {
+   "all_support": 33.0,
+   "recall": 54.8,
+   "all10": 48.0,
+   "all20": 60.2,
+   "recall20": 73.0,
+   "n": 500
+  },
+  "two_hop@1.5+gate": {
+   "all_support": 48.8,
+   "recall": 68.5,
+   "all10": 62.8,
+   "all20": 72.4,
+   "recall20": 83.4,
+   "n": 500
+  },
+  "expand_all@1.5": {
+   "all_support": 28.4,
+   "recall": 58.2,
+   "all10": 45.8,
+   "all20": 58.8,
+   "recall20": 78.5,
+   "n": 500
+  },
+  "expand_all@1.5+gate": {
+   "all_support": 41.4,
+   "recall": 64.9,
+   "all10": 53.8,
+   "all20": 64.0,
+   "recall20": 81.1,
+   "n": 500
+  },
+  "title_only@1.5": {
+   "all_support": 85.8,
+   "recall": 91.6,
+   "all10": 91.8,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@1.5+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 91.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "two_hop@2.0": {
+   "all_support": 27.2,
+   "recall": 51.0,
+   "all10": 37.8,
+   "all20": 48.2,
+   "recall20": 65.1,
+   "n": 500
+  },
+  "two_hop@2.0+gate": {
+   "all_support": 44.8,
+   "recall": 66.2,
+   "all10": 54.6,
+   "all20": 62.4,
+   "recall20": 77.4,
+   "n": 500
+  },
+  "expand_all@2.0": {
+   "all_support": 24.6,
+   "recall": 56.0,
+   "all10": 37.0,
+   "all20": 45.2,
+   "recall20": 71.4,
+   "n": 500
+  },
+  "expand_all@2.0+gate": {
+   "all_support": 39.8,
+   "recall": 63.8,
+   "all10": 49.2,
+   "all20": 54.8,
+   "recall20": 76.2,
+   "n": 500
+  },
+  "title_only@2.0": {
+   "all_support": 85.8,
+   "recall": 91.6,
+   "all10": 91.8,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@2.0+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 91.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "two_hop@3.0": {
+   "all_support": 22.4,
+   "recall": 48.2,
+   "all10": 32.4,
+   "all20": 39.0,
+   "recall20": 59.1,
+   "n": 500
+  },
+  "two_hop@3.0+gate": {
+   "all_support": 41.4,
+   "recall": 64.5,
+   "all10": 51.0,
+   "all20": 56.2,
+   "recall20": 73.6,
+   "n": 500
+  },
+  "expand_all@3.0": {
+   "all_support": 19.6,
+   "recall": 53.2,
+   "all10": 30.2,
+   "all20": 37.6,
+   "recall20": 67.2,
+   "n": 500
+  },
+  "expand_all@3.0+gate": {
+   "all_support": 35.8,
+   "recall": 61.6,
+   "all10": 44.8,
+   "all20": 50.8,
+   "recall20": 73.8,
+   "n": 500
+  },
+  "title_only@3.0": {
+   "all_support": 85.8,
+   "recall": 91.6,
+   "all10": 91.8,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@3.0+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 91.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  },
+  "two_hop@5.0": {
+   "all_support": 19.0,
+   "recall": 45.8,
+   "all10": 29.6,
+   "all20": 34.2,
+   "recall20": 55.9,
+   "n": 500
+  },
+  "two_hop@5.0+gate": {
+   "all_support": 38.8,
+   "recall": 62.9,
+   "all10": 48.8,
+   "all20": 53.0,
+   "recall20": 71.7,
+   "n": 500
+  },
+  "expand_all@5.0": {
+   "all_support": 15.8,
+   "recall": 50.9,
+   "all10": 24.8,
+   "all20": 32.4,
+   "recall20": 64.4,
+   "n": 500
+  },
+  "expand_all@5.0+gate": {
+   "all_support": 33.6,
+   "recall": 60.1,
+   "all10": 41.2,
+   "all20": 47.6,
+   "recall20": 72.1,
+   "n": 500
+  },
+  "title_only@5.0": {
+   "all_support": 85.8,
+   "recall": 91.6,
+   "all10": 91.8,
+   "all20": 94.6,
+   "recall20": 97.3,
+   "n": 500
+  },
+  "title_only@5.0+gate": {
+   "all_support": 84.8,
+   "recall": 91.2,
+   "all10": 91.6,
+   "all20": 94.4,
+   "recall20": 97.2,
+   "n": 500
+  }
+ }
+}

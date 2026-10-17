@@ -1,0 +1,37 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Candidate coverage (\%): recall and All@$k$ of the first-stage rankings. A cross-encoder over the top-20 of a ranking cannot exceed the R@20 and All@20 of that ranking.}
+\label{tab:coverage}
+\begin{tabular}{llrrrrr}
+\toprule
+Set & Ranking & R@5 & All@5 & All@10 & R@20 & All@20 \\
+\midrule
+HotpotQA A & Dense & 84.3 & 70.2 & 79.6 & 92.7 & 85.9 \\
+ & Two-hop & 88.1 & 78.6 & 88.3 & 95.5 & 91.9 \\
+ & Two-hop + gate & 88.6 & 79.6 & 87.8 & 95.6 & 92.1 \\
+ & Title-link only & 90.3 & 82.3 & 88.4 & 95.5 & 91.4 \\
+\midrule
+HotpotQA B & Dense & 84.1 & 69.8 & 79.7 & 92.7 & 85.9 \\
+ & Two-hop & 88.8 & 80.3 & 89.2 & 96.0 & 92.9 \\
+ & Two-hop + gate & 89.5 & 81.6 & 89.2 & 95.9 & 92.8 \\
+ & Title-link only & 90.0 & 81.6 & 87.2 & 95.1 & 90.8 \\
+\midrule
+B$\setminus$A & Dense & 83.9 & 69.6 & 80.0 & 93.0 & 86.4 \\
+ & Two-hop & 89.2 & 81.0 & 89.9 & 96.4 & 93.6 \\
+ & Two-hop + gate & 90.0 & 82.5 & 90.0 & 96.4 & 93.5 \\
+ & Title-link only & 90.0 & 81.6 & 87.5 & 95.3 & 91.1 \\
+\midrule
+2Wiki & Dense & 69.5 & 38.2 & 43.8 & 74.8 & 47.4 \\
+ & Two-hop & 80.8 & 59.4 & 68.6 & 90.1 & 73.2 \\
+ & Two-hop + gate & 80.6 & 60.5 & 67.3 & 87.5 & 71.1 \\
+ & Title-link only & 90.3 & 75.2 & 80.8 & 94.0 & 83.2 \\
+\midrule
+MuSiQue & Dense & 49.8 & 15.3 & 22.0 & 63.9 & 30.4 \\
+ & Two-hop & 48.3 & 21.6 & 32.1 & 68.5 & 42.6 \\
+ & Two-hop + gate & 49.2 & 21.8 & 31.3 & 68.0 & 41.5 \\
+ & Title-link only & 43.6 & 16.5 & 25.0 & 65.4 & 36.3 \\
+
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,13 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Retrieval latency per question (ms; mean $\pm$ standard deviation over repeated passes, after warm-up). The cross-encoder rescored the dense top-20.}
+\label{tab:timing}
+\begin{tabular}{lrrrr}
+\toprule
+Setting & Dense & Two-hop & Two-hop + gate & CE (dense top-20) \\
+\midrule
+Cloud CPU: 992 passages & 27 $\pm$ 1 & 162 $\pm$ 5 & 130 $\pm$ 2 & 5725 $\pm$ 37 \\
+\bottomrule
+\end{tabular}
+\end{table}

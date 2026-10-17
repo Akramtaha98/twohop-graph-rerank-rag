@@ -1,0 +1,129 @@
+{
+ "meta": {
+  "dataset": "hotpot",
+  "n_questions": 1000,
+  "n_passages": 66635,
+  "pool_questions": 7405,
+  "seed": 0,
+  "seconds_dense_index": 3170.1,
+  "seconds_graph_build": 1055.8,
+  "seconds_eval": 514.7,
+  "peak_rss_mb": 1518.0,
+  "embedding_mb": 102.4,
+  "graph_nnz": 1232287,
+  "graph_entities": 489619,
+  "gammas": [
+   0.3,
+   1.0
+  ],
+  "tb": 0.5,
+  "m": 3,
+  "gate": "titles"
+ },
+ "rows": {
+  "dense": {
+   "all_support": 60.8,
+   "recall": 78.85,
+   "all10": 68.0,
+   "all20": 74.0,
+   "recall20": 86.35,
+   "n": 1000
+  },
+  "two_hop@0.3": {
+   "all_support": 66.4,
+   "recall": 80.65,
+   "all10": 76.9,
+   "all20": 83.4,
+   "recall20": 90.75,
+   "n": 1000
+  },
+  "two_hop@0.3+gate": {
+   "all_support": 69.4,
+   "recall": 82.25,
+   "all10": 76.9,
+   "all20": 82.6,
+   "recall20": 90.35,
+   "n": 1000
+  },
+  "expand_all@0.3": {
+   "all_support": 62.4,
+   "recall": 79.5,
+   "all10": 71.3,
+   "all20": 77.3,
+   "recall20": 88.2,
+   "n": 1000
+  },
+  "expand_all@0.3+gate": {
+   "all_support": 63.1,
+   "recall": 79.85,
+   "all10": 71.1,
+   "all20": 77.0,
+   "recall20": 88.05,
+   "n": 1000
+  },
+  "title_only@0.3": {
+   "all_support": 72.9,
+   "recall": 84.7,
+   "all10": 78.4,
+   "all20": 83.5,
+   "recall20": 91.15,
+   "n": 1000
+  },
+  "title_only@0.3+gate": {
+   "all_support": 71.9,
+   "recall": 84.25,
+   "all10": 77.2,
+   "all20": 82.4,
+   "recall20": 90.6,
+   "n": 1000
+  },
+  "two_hop@1.0": {
+   "all_support": 22.6,
+   "recall": 44.55,
+   "all10": 34.2,
+   "all20": 42.1,
+   "recall20": 59.75,
+   "n": 1000
+  },
+  "two_hop@1.0+gate": {
+   "all_support": 38.4,
+   "recall": 59.15,
+   "all10": 48.6,
+   "all20": 55.5,
+   "recall20": 71.5,
+   "n": 1000
+  },
+  "expand_all@1.0": {
+   "all_support": 27.2,
+   "recall": 52.2,
+   "all10": 38.3,
+   "all20": 49.5,
+   "recall20": 69.4,
+   "n": 1000
+  },
+  "expand_all@1.0+gate": {
+   "all_support": 37.5,
+   "recall": 58.05,
+   "all10": 44.8,
+   "all20": 54.1,
+   "recall20": 71.95,
+   "n": 1000
+  },
+  "title_only@1.0": {
+   "all_support": 72.3,
+   "recall": 83.55,
+   "all10": 80.7,
+   "all20": 85.2,
+   "recall20": 92.0,
+   "n": 1000
+  },
+  "title_only@1.0+gate": {
+   "all_support": 71.5,
+   "recall": 83.2,
+   "all10": 79.3,
+   "all20": 84.0,
+   "recall20": 91.4,
+   "n": 1000
+  }
+ }
+}
