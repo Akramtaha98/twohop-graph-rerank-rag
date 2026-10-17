@@ -49,3 +49,6 @@ MIT.
 `code/run_gpu_v5.sh` runs simplified re-implementations of the LinearRAG and SPRIG ideas (`SprigLike`, `LinearLike` in `kgrag/retrievers.py`; not the authors' code, untuned defaults) on all four sets, and all systems' answers on sample A on one GPU (`results/answersA_gpu`). `python -m kgrag.report_gpu --res results --out paper` regenerates the tables.
 
 Figures: `python -m kgrag.make_figures --res results --out paper/figs` (vector PDF and 300 dpi PNG from the stored per-question files).
+
+## One-machine reproduction (NVIDIA H200)
+`bash code/run_h200_all.sh` reruns every experiment in the paper (tuning, all systems on the four sets, answers, controls, coverage, scale, latency) on a single GPU server and writes `results_h200_all.tar.gz`. Retrieval results are device independent; generated answers can differ in under 1% of questions between devices.
