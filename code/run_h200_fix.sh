@@ -7,13 +7,23 @@ cd "$(dirname "$0")"
 export TOKENIZERS_PARALLELISM=false CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 R=../results_h200; MODEL=${MODEL:-Qwen/Qwen2.5-1.5B-Instruct}
 python -m kgrag.tune2 --n 500 --dense bge --out $R/tuned2.json
+python - <<'PY'
+import json
+d = json.load(open("../results_h200/tuned2.json"))
+grid = d["grid"]; top = max(r["all_support"] for r in grid)
+ties = [r for r in grid if abs(r["all_support"] - top) < 1e-12]
+print("best train All@5", top, "| tied configurations:", [(r["ner"], r["m"], r["gamma"], r["tb"]) for r in ties])
+# The paper froze m=3, gamma=0.3, tb=0.5, ner=both (selected on the train grid); the full grid has an exact tie with m=2, gamma=0.2. Keep the frozen entry and record the tie.
+fz = [r for r in grid if (r["ner"], r["m"], r["gamma"], r["tb"]) == ("both", 3, 0.3, 0.5)][0]
+assert abs(fz["all_support"] - top) < 1e-12, "frozen setting is not among the best on train"
+d["best_by_argmax"] = d["best"]; d["best"] = fz; d["ties"] = ties
+json.dump(d, open("../results_h200/tuned2.json", "w"), indent=2)
+PY
 python -m kgrag.tune3 --tuned2 $R/tuned2.json --n 500 --dense bge --out $R/tuned3.json
 python - <<'PY'
 import json
-b=json.load(open("../results_h200/tuned2.json"))["best"]; g=json.load(open("../results_h200/tuned3.json"))["best"]
-print("tuned2 best", b, "tuned3 best", g)
-assert (b["ner"], b["m"], b["gamma"], b["tb"]) == ("both", 3, 0.3, 0.5), "frozen settings changed"
-assert g["gate"] == "titles", "gate changed"
+g=json.load(open("../results_h200/tuned3.json"))["best"]; print("tuned3 best", g)
+assert g["gate"]=="titles", "gate changed"
 PY
 GATE=$(python -c "import json;print(json.load(open('$R/tuned3.json'))['best']['gate'])")
 B="ner=both,m=3,gamma=0.3,tb=0.5"; T="ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only"
