@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{TitleLink (graph and title link only, no expanded query, $\gamma=\CtlGammaTit$ chosen on training questions) next to the other systems: R@5 and All@5 (\%).}
+\label{tab:titlelink}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+System & \multicolumn{2}{c}{HotpotQA A} & \multicolumn{2}{c}{HotpotQA B} & \multicolumn{2}{c}{2Wiki} & \multicolumn{2}{c}{MuSiQue} \\
+& R@5 & All@5 & R@5 & All@5 & R@5 & All@5 & R@5 & All@5 \\
+\midrule
+Dense & 84.3 & 70.2 & 84.1 & 69.8 & 69.5 & 38.2 & 49.8 & 15.3 \\
+Two-hop & 88.1 & 78.6 & 88.8 & 80.3 & 80.8 & 59.4 & 48.3 & 21.6 \\
+Two-hop + gate & 88.6 & 79.6 & 89.5 & 81.6 & 80.6 & 60.5 & 49.2 & 21.8 \\
+TitleLink & 90.3 & 82.3 & 90.0 & 81.6 & 90.3 & 75.2 & 43.6 & 16.5 \\
+Cross-encoder on dense top-20 & 90.2 & 81.2 & 90.0 & 81.0 & 70.2 & 38.7 & 53.7 & 18.0 \\
+Cross-encoder on gated two-hop top-20 & 92.3 & 85.7 & 92.7 & 86.6 & 74.7 & 47.4 & 54.9 & 22.8 \\
+Cross-encoder on TitleLink top-20 & 91.8 & 84.3 & 91.8 & 84.4 & 74.8 & 46.0 & 53.7 & 20.4 \\
+\bottomrule
+\end{tabular}
+\end{table*}

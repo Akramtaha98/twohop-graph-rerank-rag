@@ -1,0 +1,128 @@
+{
+ "meta": {
+  "dataset": "hotpot",
+  "n_questions": 1000,
+  "n_passages": 9760,
+  "pool_questions": 1000,
+  "seed": 0,
+  "seconds_dense_index": 17.1,
+  "seconds_graph_build": 101.5,
+  "seconds_eval": 102.7,
+  "peak_rss_mb": 3062.0,
+  "embedding_mb": 15.0,
+  "graph_nnz": 184404,
+  "graph_entities": 94042,
+  "gammas": [
+   0.3
+  ],
+  "tb": 0.5,
+  "m": 3,
+  "gate": "titles"
+ },
+ "rows": {
+  "dense": {
+   "all_support": 70.2,
+   "recall": 84.3,
+   "all10": 79.6,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "two_hop@0.3": {
+   "all_support": 78.6,
+   "recall": 88.15,
+   "all10": 88.3,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "two_hop@0.3+gate": {
+   "all_support": 79.6,
+   "recall": 88.65,
+   "all10": 87.8,
+   "all20": 92.1,
+   "recall20": 95.6,
+   "n": 1000
+  },
+  "poolD:ce": {
+   "all_support": 81.2,
+   "recall": 90.25,
+   "all10": 84.8,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolD:dense": {
+   "all_support": 70.2,
+   "recall": 84.3,
+   "all10": 79.6,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolD:two_hop": {
+   "all_support": 74.1,
+   "recall": 85.85,
+   "all10": 81.7,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolH:ce": {
+   "all_support": 85.3,
+   "recall": 92.15,
+   "all10": 90.6,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "poolH:dense": {
+   "all_support": 70.1,
+   "recall": 84.0,
+   "all10": 80.6,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "poolH:two_hop": {
+   "all_support": 78.6,
+   "recall": 88.15,
+   "all10": 88.3,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "expand_all@0.3": {
+   "all_support": 72.5,
+   "recall": 85.5,
+   "all10": 82.4,
+   "all20": 88.8,
+   "recall20": 94.15,
+   "n": 1000
+  },
+  "expand_all@0.3+gate": {
+   "all_support": 72.3,
+   "recall": 85.4,
+   "all10": 82.3,
+   "all20": 88.5,
+   "recall20": 94.0,
+   "n": 1000
+  },
+  "title_only@0.3": {
+   "all_support": 80.7,
+   "recall": 89.6,
+   "all10": 87.2,
+   "all20": 90.5,
+   "recall20": 95.05,
+   "n": 1000
+  },
+  "title_only@0.3+gate": {
+   "all_support": 80.0,
+   "recall": 89.25,
+   "all10": 86.6,
+   "all20": 90.3,
+   "recall20": 94.95,
+   "n": 1000
+  }
+ }
+}

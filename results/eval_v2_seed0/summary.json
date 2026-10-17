@@ -109,6 +109,18 @@
       "all_support": 0.857,
       "gated": 0.0,
       "seconds": 356.6
+    },
+    "titlelink": {
+      "recall": 0.903,
+      "all_support": 0.823,
+      "gated": 0.0,
+      "seconds": 9.7
+    },
+    "ce_titlelink": {
+      "recall": 0.9185,
+      "all_support": 0.843,
+      "gated": 0.0,
+      "seconds": 54.6
     }
   }
 }

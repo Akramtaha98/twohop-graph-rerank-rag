@@ -48,7 +48,12 @@
     "dense": {
       "recall": 0.841,
       "all_support": 0.698,
-      "seconds": 7.8
+      "gated": 0.0,
+      "em": 0.375,
+      "f1": 0.4922931713353615,
+      "support": 0.8962571428571429,
+      "unsupported": 0.11,
+      "seconds": 158.4
     },
     "hybrid": {
       "recall": 0.84,
@@ -84,7 +89,11 @@
       "recall": 0.8945,
       "all_support": 0.816,
       "gated": 0.229,
-      "seconds": 29.0
+      "em": 0.442,
+      "f1": 0.5696378068168391,
+      "support": 0.8933833333333332,
+      "unsupported": 0.115,
+      "seconds": 96.6
     },
     "hybrid2_oracle": {
       "recall": 0.898,
@@ -96,7 +105,11 @@
       "recall": 0.9005,
       "all_support": 0.81,
       "gated": 0.0,
-      "seconds": 319.9
+      "em": 0.416,
+      "f1": 0.5361587780025161,
+      "support": 0.9058333333333333,
+      "unsupported": 0.099,
+      "seconds": 117.1
     },
     "ce_hybrid2": {
       "recall": 0.9275,
@@ -109,6 +122,22 @@
       "all_support": 0.866,
       "gated": 0.0,
       "seconds": 387.2
+    },
+    "titlelink": {
+      "recall": 0.9,
+      "all_support": 0.816,
+      "gated": 0.0,
+      "em": 0.423,
+      "f1": 0.5470411067332969,
+      "support": 0.8991904761904761,
+      "unsupported": 0.109,
+      "seconds": 78.0
+    },
+    "ce_titlelink": {
+      "recall": 0.9175,
+      "all_support": 0.844,
+      "gated": 0.0,
+      "seconds": 55.3
     }
   }
 }

@@ -37,6 +37,8 @@ python -m spacy download en_core_web_sm
 cd code && python -m unittest discover -s tests && bash run_gpu_v4.sh      # TitleLink retrieval, sample-B answers, TitleLink answers, cross-encoder common pool
 ```
 
+After the GPU run: `python -m kgrag.report_gpu --res ../results --out ../paper` regenerates the TitleLink, common-pool and answer tables (`paper/tables/gpu_*.tex`).
+
 ## Data
 HotpotQA is downloaded from the Hugging Face hub at run time. Models: `BAAI/bge-small-en-v1.5`, `Qwen/Qwen2.5-1.5B-Instruct`, spaCy `en_core_web_sm`.
 

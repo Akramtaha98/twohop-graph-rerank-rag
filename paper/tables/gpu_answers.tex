@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Answers of Qwen2.5-1.5B-Instruct (\%). Unsup.: lexically unsupported answers (lower is better). On sample A the TitleLink answers were generated on a GPU server and the other systems on the laptop; on sample B all systems were run on the GPU server, so the comparisons within B are like for like.}
+\label{tab:gpuanswers}
+\begin{tabular}{llrrrr}
+\toprule
+Sample & System & All@5 & EM & F1 & Unsup.$\downarrow$ \\
+\midrule
+Sample A & Dense & 70.2 & 37.5 & 47.6 & 11.9 \\
+ & Two-hop & 78.6 & 42.6 & 53.2 & 10.7 \\
+ & Two-hop + gate & 79.6 & 42.3 & 52.8 & 10.5 \\
+ & Cross-encoder (dense top-20) & 81.2 & 39.7 & 50.7 & 9.3 \\
+ & TitleLink & 82.3 & 42.6 & 54.0 & 10.5 \\
+\midrule
+Sample B & Dense & 69.8 & 37.5 & 49.2 & 11.0 \\
+ & Two-hop + gate & 81.6 & 44.2 & 57.0 & 11.5 \\
+ & Cross-encoder (dense top-20) & 81.0 & 41.6 & 53.6 & 9.9 \\
+ & TitleLink & 81.6 & 42.3 & 54.7 & 10.9 \\
+\bottomrule
+\end{tabular}
+\end{table}

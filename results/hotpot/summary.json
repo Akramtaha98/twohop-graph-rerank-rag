@@ -142,6 +142,16 @@
       "support": 0.9123333333333332,
       "unsupported": 0.093,
       "seconds": 832.4
+    },
+    "titlelink": {
+      "recall": 0.903,
+      "all_support": 0.823,
+      "gated": 0.0,
+      "em": 0.426,
+      "f1": 0.540357371069012,
+      "support": 0.8993722222222222,
+      "unsupported": 0.105,
+      "seconds": 164.2
     }
   }
 }

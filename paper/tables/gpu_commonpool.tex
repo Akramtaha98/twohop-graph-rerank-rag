@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Common-pool comparison, All@5 (\%): the same 20 candidates are ordered by the dense score, the two-hop score or the cross-encoder. Pool D is the dense top-20, pool H the (ungated) two-hop top-20. The last column is the All@20 of the pool.}
+\label{tab:commonpool}
+\begin{tabular}{llrrrr}
+\toprule
+Set & Pool & Dense order & Two-hop order & Cross-encoder order & Pool All@20 \\
+\midrule
+HotpotQA A & D (dense top-20) & 70.2 & 74.1 & 81.2 & 85.9 \\
+ & H (two-hop top-20) & 70.1 & 78.6 & 85.3 & 91.9 \\
+HotpotQA B & D (dense top-20) & 69.8 & 75.0 & 81.0 & 85.9 \\
+ & H (two-hop top-20) & 70.5 & 80.3 & 86.8 & 92.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
