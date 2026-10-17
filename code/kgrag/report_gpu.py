@@ -39,12 +39,12 @@ def main():
     a = ap.parse_args()
     R, out = Path(a.res), Path(a.out)
     (out / "tables").mkdir(parents=True, exist_ok=True)
-    mac = []
+    mac = [f"\\newcommand{{\\GpuAnsGpuA}}{{{'1' if (R / 'answersA_gpu').exists() else '0'}}}"]
 
     # ---- TitleLink retrieval on the four sets, and a cross-encoder after it
     sets = [("HA", "HotpotQA A", R / "eval_v2_seed0"), ("HB", "HotpotQA B", R / "eval_v2_seed1"), ("TW", "2Wiki", R / "eval_2wiki"), ("MQ", "MuSiQue", R / "eval_musique")]
     rows = [("dense", "Dense", "Dense"), ("hybrid2", "Two-hop", "Two"), ("hybrid2_gate", "Two-hop + gate", "Gate"), ("titlelink", "TitleLink", "TL"),
-            ("ce_dense", "Cross-encoder on dense top-20", "CE"), ("ce_hybrid2_gate", "Cross-encoder on gated two-hop top-20", "CEGate"), ("ce_titlelink", "Cross-encoder on TitleLink top-20", "CETL")]
+            ("spriglike", "SPRIG-style (re-implemented)", "Sprig"), ("linearlike", "LinearRAG-style (re-implemented)", "Lin"), ("ce_dense", "Cross-encoder on dense top-20", "CE"), ("ce_hybrid2_gate", "Cross-encoder on gated two-hop top-20", "CEGate"), ("ce_titlelink", "Cross-encoder on TitleLink top-20", "CETL")]
     T = ["\\begin{table*}[t]", "\\centering", "\\footnotesize",
          "\\caption{TitleLink (graph and title link only, no expanded query, $\\gamma=\\CtlGammaTit$ chosen on training questions) next to the other systems: R@5 and All@5 (\\%).}",
          "\\label{tab:titlelink}", "\\begin{tabular}{l" + "rr" * len(sets) + "}", "\\toprule",
@@ -69,20 +69,22 @@ def main():
     T += ["\\bottomrule", "\\end{tabular}", "\\end{table*}"]
     (out / "tables" / "gpu_titlelink.tex").write_text("\n".join(T) + "\n")
     for k, _, _ in sets:  # paired: TitleLink vs two-hop (ungated) and vs gated two-hop
-        for ref, code in (("hybrid2", "Two"), ("hybrid2_gate", "Gate"), ("ce_dense", "CE")):
+        for ref, code in (("hybrid2", "Two"), ("hybrid2_gate", "Gate"), ("ce_dense", "CE"), ("spriglike", "Sprig"), ("linearlike", "Lin")):
             if (k, "titlelink") in data and (k, ref) in data:
                 d, lo, hi, _ = paired(data[(k, "titlelink")], data[(k, ref)], "all_support")
                 mac += [f"\\newcommand{{\\GpuPair{k}TLv{code}D}}{{{sg(d)}}}", f"\\newcommand{{\\GpuPair{k}TLv{code}Lo}}{{{sg(lo)}}}", f"\\newcommand{{\\GpuPair{k}TLv{code}Hi}}{{{sg(hi)}}}"]
 
     # ---- answers: sample A (Mac for the original systems, GPU for TitleLink) and sample B (all on the GPU)
-    A = {s: rd(R / "hotpot" / f"{s}.jsonl") for s in ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink")}
+    gpuA = (R / "answersA_gpu").exists()
+    adir = R / "answersA_gpu" if gpuA else R / "hotpot"
+    A = {s: rd(adir / f"{s}.jsonl") for s in ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink", "spriglike", "linearlike")}
     B = {s: rd(R / "eval_v2_seed1" / f"{s}.jsonl") for s in ("dense", "hybrid2_gate", "ce_dense", "titlelink")}
-    lab = {"dense": "Dense", "hybrid2": "Two-hop", "hybrid2_gate": "Two-hop + gate", "ce_dense": "Cross-encoder (dense top-20)", "titlelink": "TitleLink"}
-    code = {"dense": "Dense", "hybrid2": "Two", "hybrid2_gate": "Gate", "ce_dense": "CE", "titlelink": "TL"}
+    lab = {"dense": "Dense", "hybrid2": "Two-hop", "hybrid2_gate": "Two-hop + gate", "ce_dense": "Cross-encoder (dense top-20)", "titlelink": "TitleLink", "spriglike": "SPRIG-style", "linearlike": "LinearRAG-style"}
+    code = {"dense": "Dense", "hybrid2": "Two", "hybrid2_gate": "Gate", "ce_dense": "CE", "titlelink": "TL", "spriglike": "Sprig", "linearlike": "Lin"}
     U = ["\\begin{table}[t]", "\\centering", "\\footnotesize",
-         "\\caption{Answers of Qwen2.5-1.5B-Instruct (\\%). Unsup.: lexically unsupported answers (lower is better). On sample A the TitleLink answers were generated on a GPU server and the other systems on the laptop; on sample B all systems were run on the GPU server, so the comparisons within B are like for like.}",
+         "\\caption{Answers of Qwen2.5-1.5B-Instruct (\\%). Unsup.: lexically unsupported answers (lower is better). " + ("All systems on both samples were run on the same GPU server." if gpuA else "On sample A the TitleLink answers were generated on a GPU server and the other systems on the laptop; on sample B all systems were run on the GPU server, so the comparisons within B are like for like.") + "}",
          "\\label{tab:gpuanswers}", "\\begin{tabular}{llrrrr}", "\\toprule", "Sample & System & All@5 & EM & F1 & Unsup.$\\downarrow$ \\\\", "\\midrule"]
-    for key, D, sysl in (("A", A, ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink")), ("B", B, ("dense", "hybrid2_gate", "ce_dense", "titlelink"))):
+    for key, D, sysl in (("A", A, ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink", "spriglike", "linearlike")), ("B", B, ("dense", "hybrid2_gate", "ce_dense", "titlelink"))):
         for i, s in enumerate(sysl):
             r = D[s]
             if r is None:
@@ -94,7 +96,7 @@ def main():
         U.append("\\midrule" if key == "A" else "")
     U = [u for u in U if u] + ["\\bottomrule", "\\end{tabular}", "\\end{table}"]
     (out / "tables" / "gpu_answers.tex").write_text("\n".join(U) + "\n")
-    pairs = [("A", "titlelink", "dense"), ("A", "titlelink", "hybrid2_gate"), ("A", "titlelink", "ce_dense"), ("B", "titlelink", "dense"), ("B", "titlelink", "hybrid2_gate"), ("B", "titlelink", "ce_dense"),
+    pairs = [("A", "hybrid2_gate", "ce_dense"), ("A", "hybrid2_gate", "dense"), ("A", "hybrid2_gate", "spriglike"), ("A", "hybrid2_gate", "linearlike"), ("A", "titlelink", "dense"), ("A", "titlelink", "hybrid2_gate"), ("A", "titlelink", "ce_dense"), ("B", "titlelink", "dense"), ("B", "titlelink", "hybrid2_gate"), ("B", "titlelink", "ce_dense"),
              ("B", "hybrid2_gate", "dense"), ("B", "hybrid2_gate", "ce_dense"), ("B", "ce_dense", "dense")]
     for key, x, y in pairs:
         D = A if key == "A" else B

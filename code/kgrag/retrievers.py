@@ -257,3 +257,103 @@ class CrossRerank:
         s = self.ce.predict([(q, _ptext(self.passages[p])) for p in pids], batch_size=20, show_progress_bar=False)
         order = np.argsort(-np.asarray(s))[:k]
         return [pids[i] for i in order], {}
+
+
+class SprigLike:
+    """Re-implementation of the idea of SPRIG (seeded propagation over a NER co-occurrence graph, CPU only), not the authors' code.
+
+    Seeds are the top-s dense passages (weighted by softmax of the dense score); personalised PageRank runs on the passage-entity graph;
+    the dense ranking and the PageRank ranking are fused with reciprocal rank fusion. No tuning: alpha, s, temp and RRF k are fixed defaults.
+    """
+
+    name = "spriglike"
+
+    def __init__(self, dense, alpha=0.15, seeds_k=5, temp=0.1, rrf=60, ner="regex", idf=True, max_df_frac=0.2):
+        self.dense, self.alpha, self.seeds_k, self.temp, self.rrf = dense, alpha, seeds_k, temp, rrf
+        self.ner, self.idf, self.max_df_frac = ner, idf, max_df_frac
+
+    def fit(self, passages):
+        self.g = EntityGraph(passages, self.ner, self.idf, self.max_df_frac)
+        return self
+
+    def search(self, q, k, qtype=None):
+        d = self.dense.scores(q)
+        seed = np.zeros(self.g.n + self.g.m)
+        top = np.argsort(-d)[: self.seeds_k]
+        w = np.exp((d[top] - d[top].max()) / self.temp)
+        seed[top] = w / w.sum()
+        pi = self.g.ppr(seed, self.alpha)[: self.g.n]
+        rd = np.empty(len(d)); rd[np.argsort(-d)] = np.arange(len(d))
+        rp = np.empty(len(d)); rp[np.argsort(-pi)] = np.arange(len(d))
+        f = 1.0 / (self.rrf + rd + 1) + 1.0 / (self.rrf + rp + 1)
+        return list(np.argsort(-f)[:k]), {}
+
+
+class LinearLike:
+    """Re-implementation of the idea of LinearRAG (relation-free entity-sentence-passage graph, local semantic bridging, global PageRank
+    aggregation), not the authors' code. Entities come from the same extractor as the other graph systems.
+
+    Activation: question entities get weight 1/log(1+df). Bridging (hops rounds): sentences that contain an active entity are scored by
+    the cosine to the question; the best `bridge_k` sentences activate their other entities with weight parent*cosine.
+    Aggregation: personalised PageRank from the activation weights; passage score = beta*minmax(dense)+(1-beta)*minmax(PageRank).
+    Untuned fixed defaults.
+    """
+
+    name = "linearlike"
+
+    def __init__(self, dense, alpha=0.15, beta=0.5, hops=2, bridge_k=10, ner="regex", idf=True, max_df_frac=0.2):
+        self.dense, self.alpha, self.beta, self.hops, self.bridge_k = dense, alpha, beta, hops, bridge_k
+        self.ner, self.idf, self.max_df_frac = ner, idf, max_df_frac
+
+    def fit(self, passages):
+        self.g = EntityGraph(passages, self.ner, self.idf, self.max_df_frac)
+        sents, ents, inv = [], [], {}
+        for pid, p in enumerate(passages):
+            for s in re.split(r"(?<=[.!?])\s+", p["text"]):
+                if len(s.split()) < 3:
+                    continue
+                e = self.g.query_entities(s)
+                if not e:
+                    continue
+                sid = len(sents)
+                sents.append(s)
+                ents.append(e)
+                for j in e:
+                    inv.setdefault(j, []).append(sid)
+        self.sents, self.sent_ents, self.inv = sents, ents, inv
+        self.S = self.dense.st.encode(sents, batch_size=128, normalize_embeddings=True, show_progress_bar=False) if sents else np.zeros((0, 1))
+        return self
+
+    def search(self, q, k, qtype=None):
+        d = self.dense.scores(q)
+        ents = self.g.query_entities(q)
+        if not ents or len(self.sents) == 0:
+            return list(np.argsort(-d)[:k]), {}
+        qe = self.dense.st.encode(["Represent this sentence for searching relevant passages: " + q], normalize_embeddings=True)[0]
+        wt = {j: 1.0 / np.log(1.0 + self.g.df[j]) for j in ents}
+        frontier = dict(wt)
+        for _ in range(self.hops):
+            cand = sorted({s for j in frontier for s in self.inv.get(j, [])})
+            if not cand:
+                break
+            sim = self.S[cand] @ qe
+            order = np.argsort(-sim)[: self.bridge_k]
+            new = {}
+            for o in order:
+                if sim[o] <= 0:
+                    continue
+                sid = cand[o]
+                par = max((frontier[j] for j in self.sent_ents[sid] if j in frontier), default=0.0)
+                for j in self.sent_ents[sid]:
+                    if j not in wt:
+                        new[j] = max(new.get(j, 0.0), par * float(sim[o]))
+            wt.update(new)
+            frontier = new
+            if not frontier:
+                break
+        seed = np.zeros(self.g.n + self.g.m)
+        for j, v in wt.items():
+            seed[self.g.n + j] = v
+        pi = self.g.ppr(seed, self.alpha)[: self.g.n]
+        score = self.beta * _minmax(d) + (1 - self.beta) * _minmax(pi)
+        return list(np.argsort(-score)[:k]), {}

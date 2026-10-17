@@ -15,7 +15,7 @@ import numpy as np
 from . import data as D
 from . import metrics as M
 from .generate import Extractive, HFGenerator, build_context
-from .retrievers import BM25, CrossRerank, Dense, GraphPPR, Hybrid, Hybrid2
+from .retrievers import BM25, CrossRerank, Dense, GraphPPR, Hybrid, Hybrid2, LinearLike, SprigLike
 
 def default_systems(best=None, best2=None):
     """Baselines, the proposed hybrid and its ablations. `best` overrides hyper-parameters (from tune.py)."""
@@ -62,6 +62,10 @@ def build(kind, kw, dense, passages, args):
         return GraphPPR(ner=args.ner, **kw).fit(passages)
     if kind == "hybrid":
         return Hybrid(dense, ner=args.ner, **kw).fit(passages)
+    if kind == "spriglike":
+        return SprigLike(dense, ner=args.ner, **kw).fit(passages)
+    if kind == "linearlike":
+        return LinearLike(dense, ner=args.ner, **kw).fit(passages)
     if kind == "hybrid2":
         return Hybrid2(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind in {"ce", "ce_h2"}:  # cross-encoder over the top-`top` of dense ("ce") or of the two-hop re-ranker ("ce_h2")
@@ -123,7 +127,7 @@ def main():
             elif kind == "oracle":
                 pids = sorted(ex["sup_pids"])
             else:
-                pids, extra = r.search(ex["question"], args.k, ex.get("qtype")) if kind in {"hybrid2", "ce", "ce_h2"} else r.search(ex["question"], args.k)
+                pids, extra = r.search(ex["question"], args.k, ex.get("qtype")) if kind in {"hybrid2", "ce", "ce_h2", "spriglike", "linearlike"} else r.search(ex["question"], args.k)
                 bridges = extra.get("bridges", {})
             rec = {
                 "qid": ex["qid"],
