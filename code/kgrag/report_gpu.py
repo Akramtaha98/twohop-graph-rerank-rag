@@ -39,7 +39,7 @@ def main():
     a = ap.parse_args()
     R, out = Path(a.res), Path(a.out)
     (out / "tables").mkdir(parents=True, exist_ok=True)
-    mac = [f"\\newcommand{{\\GpuAnsGpuA}}{{{'1' if (R / 'answersA_gpu').exists() else '0'}}}"]
+    mac = [f"\\newcommand{{\\GpuAnsGpuA}}{{{'1'}}}"]
 
     # ---- TitleLink retrieval on the four sets, and a cross-encoder after it
     sets = [("HA", "HotpotQA A", R / "eval_v2_seed0"), ("HB", "HotpotQA B", R / "eval_v2_seed1"), ("TW", "2Wiki", R / "eval_2wiki"), ("MQ", "MuSiQue", R / "eval_musique")]
@@ -74,15 +74,15 @@ def main():
                 d, lo, hi, _ = paired(data[(k, "titlelink")], data[(k, ref)], "all_support")
                 mac += [f"\\newcommand{{\\GpuPair{k}TLv{code}D}}{{{sg(d)}}}", f"\\newcommand{{\\GpuPair{k}TLv{code}Lo}}{{{sg(lo)}}}", f"\\newcommand{{\\GpuPair{k}TLv{code}Hi}}{{{sg(hi)}}}"]
 
-    # ---- answers: sample A (Mac for the original systems, GPU for TitleLink) and sample B (all on the GPU)
-    gpuA = (R / "answersA_gpu").exists()
-    adir = R / "answersA_gpu" if gpuA else R / "hotpot"
+    # ---- answers: sample A and sample B (all on the H200)
+    gpuA = False
+    adir = R / "hotpot"
     A = {s: rd(adir / f"{s}.jsonl") for s in ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink", "spriglike", "linearlike")}
     B = {s: rd(R / "eval_v2_seed1" / f"{s}.jsonl") for s in ("dense", "hybrid2_gate", "ce_dense", "titlelink")}
     lab = {"dense": "Dense", "hybrid2": "Two-hop", "hybrid2_gate": "Two-hop + gate", "ce_dense": "Cross-encoder (dense top-20)", "titlelink": "TitleLink", "spriglike": "SPRIG-style", "linearlike": "LinearRAG-style"}
     code = {"dense": "Dense", "hybrid2": "Two", "hybrid2_gate": "Gate", "ce_dense": "CE", "titlelink": "TL", "spriglike": "Sprig", "linearlike": "Lin"}
     U = ["\\begin{table}[t]", "\\centering", "\\footnotesize",
-         "\\caption{Answers of Qwen2.5-1.5B-Instruct (\\%), \\emph{rerun of all systems on the H200 GPU server} (the original laptop run of sample A is in Table~\\ref{tab:answers}; values differ by 0.1 point or less in exact match). Unsup.: lexically unsupported answers (lower is better). " + ("All systems on both samples were run on the same GPU server." if gpuA else "On sample A the TitleLink answers were generated on a GPU server and the other systems on the laptop; on sample B all systems were run on the GPU server, so the comparisons within B are like for like.") + "}",
+         "\\caption{Answers of Qwen2.5-1.5B-Instruct (\\%), all run on the H200 GPU server (further systems on sample A are in Table~\\ref{tab:answers}). Unsup.: lexically unsupported answers (lower is better).}",
          "\\label{tab:gpuanswers}", "\\begin{tabular}{llrrrr}", "\\toprule", "Sample & System & All@5 & EM & F1 & Unsup.$\\downarrow$ \\\\", "\\midrule"]
     for key, D, sysl in (("A", A, ("dense", "hybrid2", "hybrid2_gate", "ce_dense", "titlelink", "spriglike", "linearlike")), ("B", B, ("dense", "hybrid2_gate", "ce_dense", "titlelink"))):
         for i, s in enumerate(sysl):

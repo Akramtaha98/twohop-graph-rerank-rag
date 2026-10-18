@@ -53,7 +53,7 @@ def main():
 
     # ---- main retrieval table (R@5 / All@5 / seconds)
     L = ["\\begin{table*}[t]", "\\centering", "\\footnotesize",
-         "\\caption{Retrieval with two-hop re-ranking, a question-type gate and a cross-encoder on four evaluation sets (\\%; 1\\,000 questions each). Settings were frozen from HotpotQA training data; 2WikiMultiHopQA and MuSiQue are zero-shot transfer. Sec.: retrieval time for 1\\,000 questions on the M4 laptop. Best non-oracle value per column in bold.}",
+         "\\caption{Retrieval with two-hop re-ranking, a question-type gate and a cross-encoder on four evaluation sets (\\%; 1\\,000 questions each). Settings were frozen from HotpotQA training data; 2WikiMultiHopQA and MuSiQue are zero-shot transfer. Sec.: retrieval time for 1\\,000 questions on the H200 server. Best non-oracle value per column in bold.}",
          "\\label{tab:ext}", "\\begin{tabular}{l" + "rrr" * len(DS) + "}", "\\toprule",
          "System & " + " & ".join(f"\\multicolumn{{3}}{{c}}{{{n}}}" for _, n in DS) + " \\\\",
          "& " + " & ".join("R@5 & All@5 & Sec." for _ in DS) + " \\\\", "\\midrule"]
@@ -144,7 +144,7 @@ def main():
     hr = {s: rd(Path(a.hotpot) / f"{s}.jsonl") for s in ("dense", "ce_dense", "hybrid2", "hybrid2_gate", "oracle")}
     rows = [("dense", "Dense", "Dense"), ("ce_dense", "Cross-encoder on dense top-20", "CE"), ("hybrid2", "Two-hop re-ranking", "Two"),
             ("hybrid2_gate", "Two-hop + gate", "Gate"), ("oracle", "Gold passages (upper bound)", "Orac")]
-    L = ["\\begin{table}[t]", "\\centering", "\\small", "\\caption{Answers of Qwen2.5-1.5B-Instruct on sample A (\\%), \\emph{original run on the Apple M4 laptop}. Unsup.: lexically unsupported answers (lower is better). Sec.: end-to-end time for 1\\,000 questions. The GPU-server rerun of the same systems is in Table~\\ref{tab:gpuanswers}; its exact-match values differ by 0.1 point or less.}",
+    L = ["\\begin{table}[t]", "\\centering", "\\small", "\\caption{Answers of Qwen2.5-1.5B-Instruct on sample A (\\%), \\emph{run on the H200 GPU server}. Unsup.: lexically unsupported answers (lower is better). Sec.: end-to-end time for 1\\,000 questions. TitleLink, the re-implemented baselines and sample B are in Table~\\ref{tab:gpuanswers}.}",
          "\\label{tab:answers}", "\\begin{tabular}{lrrrrr}", "\\toprule", "System & All@5 & EM & F1 & Unsup.$\\downarrow$ & Sec. \\\\", "\\midrule"]
     for s, name, c in rows:
         v = hs[s]

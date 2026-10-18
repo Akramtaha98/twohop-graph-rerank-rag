@@ -1,7 +1,7 @@
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{Answers of Qwen2.5-1.5B-Instruct (\%), \emph{rerun of all systems on the H200 GPU server} (the original laptop run of sample A is in Table~\ref{tab:answers}; values differ by 0.1 point or less in exact match). Unsup.: lexically unsupported answers (lower is better). All systems on both samples were run on the same GPU server.}
+\caption{Answers of Qwen2.5-1.5B-Instruct (\%), all run on the H200 GPU server (further systems on sample A are in Table~\ref{tab:answers}). Unsup.: lexically unsupported answers (lower is better).}
 \label{tab:gpuanswers}
 \begin{tabular}{llrrrr}
 \toprule
@@ -10,13 +10,13 @@ Sample & System & All@5 & EM & F1 & Unsup.$\downarrow$ \\
 Sample A & Dense & 70.2 & 37.6 & 47.8 & 11.9 \\
  & Two-hop & 78.6 & 42.6 & 53.3 & 10.7 \\
  & Two-hop + gate & 79.6 & 42.4 & 53.1 & 10.5 \\
- & Cross-encoder (dense top-20) & 81.2 & 39.8 & 50.7 & 9.3 \\
+ & Cross-encoder (dense top-20) & 81.2 & 39.7 & 50.6 & 9.2 \\
  & TitleLink & 82.3 & 42.5 & 53.9 & 10.5 \\
  & SPRIG-style & 70.3 & 37.2 & 47.4 & 11.7 \\
  & LinearRAG-style & 62.0 & 36.5 & 46.4 & 11.6 \\
 \midrule
 Sample B & Dense & 69.8 & 37.5 & 49.2 & 11.0 \\
- & Two-hop + gate & 81.6 & 44.2 & 57.0 & 11.5 \\
+ & Two-hop + gate & 81.6 & 44.2 & 56.9 & 11.5 \\
  & Cross-encoder (dense top-20) & 81.0 & 41.6 & 53.6 & 9.9 \\
  & TitleLink & 81.6 & 42.3 & 54.7 & 10.9 \\
 \bottomrule

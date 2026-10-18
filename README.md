@@ -5,50 +5,44 @@ Code and results for **"Graph-Augmented Retrieval for Multi-Hop Question Answeri
 A passage–entity graph (no LLM calls at indexing time) restricts which passages a dense retriever may boost after a first hop; the boost is a second dense scoring pass with a query expanded by the first-hop passage. Evaluated on HotpotQA (distractor dev, pooled corpus) with BGE-small and Qwen2.5-1.5B-Instruct.
 
 ## Layout
-- `code/kgrag/` retrievers (BM25, dense, PPR hybrid, two-hop re-ranker), graph, metrics, runner, table generation
-- `code/tests/` unit tests (metrics, entity extraction, PPR bounds, re-ranker)
-- `results/` tuned hyper-parameters (`tuned*.json`), summaries, and per-question retrieval/answer files for dense and the re-ranker
-- `paper/` generated LaTeX tables
+- `code/kgrag/` retrievers (BM25, dense, PPR hybrid, two-hop re-ranker, TitleLink, SPRIG-/LinearRAG-style baselines), graph, metrics, runner, table and figure generation
+- `code/tests/` unit tests
+- `results/` tuned hyper-parameters (`tuned*.json`), summaries and per-question files of every run reported in the paper; `results/controls/` holds the controls, coverage, corpus-scale and audit runs; `results/sample_ids/` the exact question ids
+- `paper/` LaTeX source, generated tables and figures
 
-## Reproduce (Apple silicon or CUDA)
+## Hardware
+Every number in the paper comes from one machine with a single NVIDIA H200 NVL GPU (driver 595.71.05; see `results/gpu.txt`).
+
+## Reproduce (CUDA, e.g. H200)
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install -r code/requirements-mac.txt        # or code/requirements.txt
+pip install -r code/requirements.txt && python -m spacy download en_core_web_sm
 cd code && python -m unittest discover -s tests
-bash run_mac.sh          # tune on train, run sample A with the generator
-bash run_mac_v2.sh       # two-hop method: samples A and B, ablations, bootstrap
+bash run_h200_all.sh     # tuning on train, all systems on the four sets, answers, controls, coverage, scale, latency
+bash run_h200_fix.sh     # re-runs tune2/tune3 with the full grid (records the train tie) and the main HotpotQA run with all baselines
+bash run_h200_abl.sh     # retrieval-only ablations of the earlier PPR hybrid
 ```
-Settings were tuned on HotpotQA **train** questions only (`results/tuned2.json`); sample B (seed 1) was evaluated once.
+Settings were tuned on HotpotQA **train** questions only (`results/tuned2.json`; the train tie between m=2, gamma=0.2 and m=3, gamma=0.3 is recorded there and the frozen setting was kept).
 
-## Controls, coverage, scale and timing (review revision)
+## Tables and figures
 ```bash
-cd code && bash run_controls.sh      # expansion-only and title-link-only controls, sample B, 2Wiki, MuSiQue, corpus-scale pools (resumable)
-python -m kgrag.timing --n 100 --repeats 3 --warmup 10 --ce --cache ../ctl/emb --out ../ctl/timing_cpu_1k.json
-python -m kgrag.report_controls --dir ../ctl --out ../paper --timing cpuk=../ctl/timing_cpu_1k.json
-python check_review3.py claims      # also: related controls audit coverage timing scale sampleids cover build
-```
-Exact sample identifiers are in `results/sample_ids/` (samples A and B overlap in 159 questions). Per-question control results are in `results/controls/`.
-
-## GPU run for the generator-dependent items (CUDA, e.g. H200)
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install torch transformers accelerate sentence-transformers numpy scipy scikit-learn matplotlib datasets spacy rank_bm25
-python -m spacy download en_core_web_sm
-cd code && python -m unittest discover -s tests && bash run_gpu_v4.sh      # TitleLink retrieval, sample-B answers, TitleLink answers, cross-encoder common pool
+cd code
+H=../results
+python -m kgrag.make_tables --runs "HotpotQA=$H/hotpot" --eval "SampleA=$H/eval_v2_seed0" "SampleB=$H/eval_v2_seed1" \
+  --signif "HotpotQA (sample A)=$H/hotpot" "HotpotQA (sample B)=$H/eval_v2_seed1" --tuned $H/tuned.json --tuned2 $H/tuned2.json --out ../paper
+python -m kgrag.extended --hotpot $H/hotpot --a $H/eval_v2_seed0 --b $H/eval_v2_seed1 --wiki $H/eval_2wiki --musique $H/eval_musique --out ../paper
+python -m kgrag.analysis --a $H/eval_v2_seed0 --b $H/eval_v2_seed1 --out ../paper
+python -m kgrag.report_controls --dir ../results/controls --out ../paper --timing "Gpu small=$H/timing_h200_1k.json" "Gpu full=$H/timing_h200_full.json"
+python -m kgrag.report_gpu --res $H --out ../paper
+python -m kgrag.make_figures --res $H --out ../paper/figs
+python check_review3.py claims      # also: related cover build sampleids
 ```
 
-After the GPU run: `python -m kgrag.report_gpu --res ../results --out ../paper` regenerates the TitleLink, common-pool and answer tables (`paper/tables/gpu_*.tex`).
+## Baselines
+`SprigLike` and `LinearLike` (`kgrag/retrievers.py`) are simplified re-implementations of the LinearRAG and SPRIG ideas with untuned defaults; they are not the authors' code.
 
 ## Data
-HotpotQA is downloaded from the Hugging Face hub at run time. Models: `BAAI/bge-small-en-v1.5`, `Qwen/Qwen2.5-1.5B-Instruct`, spaCy `en_core_web_sm`.
+HotpotQA, 2WikiMultiHopQA and MuSiQue are downloaded from the Hugging Face hub at run time. Models: `BAAI/bge-small-en-v1.5`, `BAAI/bge-reranker-base`, `Qwen/Qwen2.5-1.5B-Instruct`, spaCy `en_core_web_sm`.
 
 ## License
 MIT.
-
-## Baselines and like-for-like answers (GPU v5)
-`code/run_gpu_v5.sh` runs simplified re-implementations of the LinearRAG and SPRIG ideas (`SprigLike`, `LinearLike` in `kgrag/retrievers.py`; not the authors' code, untuned defaults) on all four sets, and all systems' answers on sample A on one GPU (`results/answersA_gpu`). `python -m kgrag.report_gpu --res results --out paper` regenerates the tables.
-
-Figures: `python -m kgrag.make_figures --res results --out paper/figs` (vector PDF and 300 dpi PNG from the stored per-question files).
-
-## One-machine reproduction (NVIDIA H200)
-`bash code/run_h200_all.sh` reruns every experiment in the paper (tuning, all systems on the four sets, answers, controls, coverage, scale, latency) on a single GPU server and writes `results_h200_all.tar.gz`. Retrieval results are device independent; generated answers can differ in under 1% of questions between devices.

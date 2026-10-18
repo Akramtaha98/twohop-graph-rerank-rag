@@ -14,30 +14,40 @@
     "systems": [
       "bm25",
       "dense",
+      "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
       "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
       "oracle",
       "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
       "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
       "ce_dense:ce:top=20",
       "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
-      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+      "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+      "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+      "spriglike:spriglike:alpha=0.15,seeds_k=5",
+      "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
     ],
     "gen_systems": null,
     "append": false,
     "tuned": null,
     "tuned2": null,
-    "out": "../results/eval_musique"
+    "out": "../results_h200/eval_musique"
   },
   "systems_run": [
     "bm25",
     "dense",
+    "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
     "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
     "oracle",
     "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
     "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
     "ce_dense:ce:top=20",
     "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
-    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+    "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+    "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+    "spriglike:spriglike:alpha=0.15,seeds_k=5",
+    "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
   ],
   "n_questions": 1000,
   "n_passages": 11525,
@@ -46,19 +56,25 @@
       "recall": 0.4359166666666666,
       "all_support": 0.1,
       "gated": 0.0,
-      "seconds": 1.6
+      "seconds": 1.7
     },
     "dense": {
       "recall": 0.4979166666666666,
       "all_support": 0.153,
       "gated": 0.0,
-      "seconds": 7.5
+      "seconds": 3.7
+    },
+    "hybrid": {
+      "recall": 0.5120833333333332,
+      "all_support": 0.161,
+      "gated": 0.0,
+      "seconds": 18.2
     },
     "hybrid2": {
       "recall": 0.4834166666666666,
       "all_support": 0.216,
       "gated": 0.0,
-      "seconds": 35.2
+      "seconds": 22.1
     },
     "oracle": {
       "recall": 1.0,
@@ -70,43 +86,55 @@
       "recall": 0.49175,
       "all_support": 0.218,
       "gated": 0.116,
-      "seconds": 33.7
+      "seconds": 19.3
     },
     "hybrid2_oracle": {
       "recall": 0.4834166666666666,
       "all_support": 0.216,
       "gated": 0.0,
-      "seconds": 34.3
+      "seconds": 20.6
     },
     "ce_dense": {
       "recall": 0.5368333333333334,
       "all_support": 0.18,
       "gated": 0.0,
-      "seconds": 321.4
+      "seconds": 46.2
     },
     "ce_hybrid2": {
       "recall": 0.5438333333333333,
       "all_support": 0.229,
       "gated": 0.0,
-      "seconds": 382.9
+      "seconds": 71.9
     },
     "ce_hybrid2_gate": {
       "recall": 0.549,
       "all_support": 0.228,
       "gated": 0.0,
-      "seconds": 369.3
+      "seconds": 68.5
     },
     "titlelink": {
       "recall": 0.4363333333333333,
       "all_support": 0.165,
       "gated": 0.0,
-      "seconds": 9.6
+      "seconds": 9.7
     },
     "ce_titlelink": {
       "recall": 0.5366666666666666,
       "all_support": 0.204,
       "gated": 0.0,
-      "seconds": 58.1
+      "seconds": 59.9
+    },
+    "spriglike": {
+      "recall": 0.4979166666666666,
+      "all_support": 0.153,
+      "gated": 0.0,
+      "seconds": 18.7
+    },
+    "linearlike": {
+      "recall": 0.45558333333333334,
+      "all_support": 0.13,
+      "gated": 0.0,
+      "seconds": 29.8
     }
   }
 }

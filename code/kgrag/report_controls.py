@@ -189,7 +189,7 @@ def main():
         sc.append((nm, code_, m, g("dense"), g("two_hop@0.3"), g("title_only@1.0"), g("dense", "all20"), g("two_hop@0.3", "all20"), g("title_only@1.0", "all20")))
     if sc:
         T = ["\\begin{table}[t]", "\\centering", "\\footnotesize",
-             "\\caption{Corpus scale: the same 1\\,000 HotpotQA questions (sample A) retrieved from corpora pooled from more development questions (D: dense; T: two-hop; L: title-link only). Index: dense encoding plus graph construction on the cloud CPU container (2 cores), not the laptop; RSS: peak resident memory of the whole process.}",
+             "\\caption{Corpus scale: the same 1\\,000 HotpotQA questions (sample A) retrieved from corpora pooled from more development questions (D: dense; T: two-hop; L: title-link only). Index: dense encoding plus graph construction on the H200 server; RSS: peak resident memory of the whole process.}",
              "\\label{tab:scale}", "\\begin{tabular}{lrrrrrrrrr}", "\\toprule",
              "Pool (questions) & Passages & D All@5 & T All@5 & L All@5 & D All@20 & T All@20 & L All@20 & Index (min) & RSS (GB) \\\\", "\\midrule"]
         for (nm, code_, m, dA, tA, lA, d20, t20, l20) in sc:
@@ -211,7 +211,7 @@ def main():
         for lab, t in tm.items():
             def c(key):
                 return f"{t[key]['ms_per_question_mean']:.0f} $\\pm$ {t[key]['ms_per_question_sd']:.0f}" if key in t else "--"
-            U.append(f"Cloud CPU: {t["n_passages"]:,} passages & {c('dense')} & {c('two_hop')} & {c('two_hop_gate')} & {c('ce_dense_top20')} \\\\".replace(",", "\\,"))
+            U.append(f"H200: {t["n_passages"]:,} passages & {c('dense')} & {c('two_hop')} & {c('two_hop_gate')} & {c('ce_dense_top20')} \\\\".replace(",", "\\,"))
             code_ = "".join(w.capitalize() for w in lab.replace("-", " ").split())
             for key, nm in (("dense", "Dense"), ("two_hop", "Two"), ("two_hop_gate", "Gate"), ("ce_dense_top20", "CE")):
                 if key in t:

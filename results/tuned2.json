@@ -10,6 +10,48 @@
     {
       "ner": "regex",
       "m": 2,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.798
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.826
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.818
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.85
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.808
+    },
+    {
+      "ner": "regex",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.842
+    },
+    {
+      "ner": "regex",
+      "m": 2,
       "gamma": 0.5,
       "tb": 0.0,
       "all_support": 0.738
@@ -48,6 +90,48 @@
       "gamma": 2.0,
       "tb": 0.5,
       "all_support": 0.274
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.798
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.826
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.818
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.848
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.812
+    },
+    {
+      "ner": "regex",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.844
     },
     {
       "ner": "regex",
@@ -94,6 +178,48 @@
     {
       "ner": "spacy",
       "m": 2,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.81
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.826
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.808
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.83
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.796
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.822
+    },
+    {
+      "ner": "spacy",
+      "m": 2,
       "gamma": 0.5,
       "tb": 0.0,
       "all_support": 0.734
@@ -132,6 +258,48 @@
       "gamma": 2.0,
       "tb": 0.5,
       "all_support": 0.246
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.81
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.828
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.812
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.832
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.8
+    },
+    {
+      "ner": "spacy",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.826
     },
     {
       "ner": "spacy",
@@ -178,6 +346,48 @@
     {
       "ner": "both",
       "m": 2,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.812
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.842
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.822
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.858
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.816
+    },
+    {
+      "ner": "both",
+      "m": 2,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.856
+    },
+    {
+      "ner": "both",
+      "m": 2,
       "gamma": 0.5,
       "tb": 0.0,
       "all_support": 0.742
@@ -220,6 +430,48 @@
     {
       "ner": "both",
       "m": 3,
+      "gamma": 0.1,
+      "tb": 0.0,
+      "all_support": 0.81
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.1,
+      "tb": 0.5,
+      "all_support": 0.842
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.0,
+      "all_support": 0.822
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.2,
+      "tb": 0.5,
+      "all_support": 0.854
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.0,
+      "all_support": 0.816
+    },
+    {
+      "ner": "both",
+      "m": 3,
+      "gamma": 0.3,
+      "tb": 0.5,
+      "all_support": 0.858
+    },
+    {
+      "ner": "both",
+      "m": 3,
       "gamma": 0.5,
       "tb": 0.0,
       "all_support": 0.76
@@ -258,62 +510,25 @@
       "gamma": 2.0,
       "tb": 0.5,
       "all_support": 0.272
-    },
-    {
-      "ner": "regex",
-      "m": 3,
-      "gamma": 0.1,
-      "tb": 0.5,
-      "all_support": 0.826
-    },
-    {
-      "ner": "regex",
-      "m": 3,
-      "gamma": 0.2,
-      "tb": 0.5,
-      "all_support": 0.848
-    },
-    {
-      "ner": "regex",
-      "m": 3,
-      "gamma": 0.3,
-      "tb": 0.5,
-      "all_support": 0.844
-    },
-    {
-      "ner": "spacy",
-      "m": 3,
-      "gamma": 0.1,
-      "tb": 0.5,
-      "all_support": 0.828
-    },
-    {
-      "ner": "spacy",
-      "m": 3,
-      "gamma": 0.2,
-      "tb": 0.5,
-      "all_support": 0.832
-    },
-    {
-      "ner": "spacy",
-      "m": 3,
-      "gamma": 0.3,
-      "tb": 0.5,
-      "all_support": 0.826
-    },
+    }
+  ],
+  "n": 500,
+  "dense": "bge",
+  "dense_baseline": 0.756,
+  "best_by_argmax": {
+    "ner": "both",
+    "m": 2,
+    "gamma": 0.2,
+    "tb": 0.5,
+    "all_support": 0.858
+  },
+  "ties": [
     {
       "ner": "both",
-      "m": 3,
-      "gamma": 0.1,
-      "tb": 0.5,
-      "all_support": 0.842
-    },
-    {
-      "ner": "both",
-      "m": 3,
+      "m": 2,
       "gamma": 0.2,
       "tb": 0.5,
-      "all_support": 0.854
+      "all_support": 0.858
     },
     {
       "ner": "both",
@@ -322,8 +537,5 @@
       "tb": 0.5,
       "all_support": 0.858
     }
-  ],
-  "n": 500,
-  "dense": "bge",
-  "dense_baseline": 0.756
+  ]
 }

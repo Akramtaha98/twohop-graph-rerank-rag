@@ -424,7 +424,7 @@
 {"qid": "5a7c827e55429907fabeefa7", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "12", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5aba77be55429955dce3ee44", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "7\u00b056'", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a733caa5542992359bc32a3", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Obsession", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a86fde6554299211dda2b7f", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "business process outsourcing (BPO)", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5a86fde6554299211dda2b7f", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "business process outsourcing", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7d3cbb5542995f4f402243", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Disney Channel", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a9042825542990a984935d6", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "designated hitter rule", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8aecff55429950cd6afbef", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "400", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
@@ -908,7 +908,7 @@
 {"qid": "5a8c6bd55542995e66a475ea", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Afro-Russian", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8081975542992097ad2fef", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Leslie Goodwins", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ac0e6fa5542996f0d89cc35", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Mad Hot Ballroom", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a88a35c554299206df2b316", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Haile Selassie I", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5a88a35c554299206df2b316", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Haile Selassie", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a760ab65542994ccc918697", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Nelson Rockefeller", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5add2b435542990d50227e11", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Saoirse Ronan", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7a3cea5542994f819ef182", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Choma, Zambia", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}

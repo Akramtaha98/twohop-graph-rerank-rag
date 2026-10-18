@@ -95,7 +95,7 @@
 {"qid": "5a777fd655429949eeb29e93", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Imelda Marcos", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae4843455429970de88d997", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Derry City F.C", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7149cf5542994082a3e773", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Brooklyn", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a7642f7554299109176e6e8", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Luca Parmitano", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5a7642f7554299109176e6e8", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Ulrich Walter", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae2e61455429928c423953e", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "religion", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae73c065542991e8301cc18", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "\"The Marshall Mathers LP 2\"", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae3606b5542991a06ce99a8", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Amyotrophic lateral sclerosis (ALS)", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
@@ -203,11 +203,11 @@
 {"qid": "5a8ae61955429970aeb70326", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ac3d21e554299204fd21e8b", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Luigi Cherubini", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a713a5a5542994082a3e6a9", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Aston Villa F.C", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5ae4bc7955429913cc2044e9", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "World Indoor Championships", "em": 0.0, "f1": 0.8571428571428571, "support": 1.0, "unsupported": 0.0}
+{"qid": "5ae4bc7955429913cc2044e9", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "The 2016 World Indoor Championships", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae496735542995dadf2435d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Big 12 Conference", "em": 0.0, "f1": 0.8, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8484495542997175ce1ee8", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "one", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ac294b955429921a00aafd0", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Macworld", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5ac13e195542994ab5c67cc5", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Armin Shimerman", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5ac13e195542994ab5c67cc5", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "John Prosky", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae56fb85542993aec5ec1a9", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Delphine Software", "em": 0.0, "f1": 0.8, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7929c8554299029c4b5f11", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Old German Shepherd Dog", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8008b95542992097ad2fcf", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Sun, Moon, and Talia", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
@@ -312,7 +312,7 @@
 {"qid": "5ae1389655429901ffe4ae05", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Southern State Parkway", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a750de95542993748c897ac", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Sam Neill", "em": 0.0, "f1": 0.3333333333333333, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a862da855429960ec39b640", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Berk Communications", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5adfd56655429925eb1afaac", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Antony Kenneth \"Tony\" Blackburn", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5adfd56655429925eb1afaac", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Antony Kenneth Blackburn", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8c62f5554299585d9e367b", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Edward I of England", "em": 0.0, "f1": 0.4, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7369da55429901807db037", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "ABBA", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae5e8c85542996de7b71a69", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Jeremy Renner", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
@@ -397,7 +397,7 @@
 {"qid": "5a80fd17554299260e20a1f1", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "no", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5adc0644554299438c868d08", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "1999", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5adc294c5542996e685252cf", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Minnesota State University, Mankato", "em": 0.0, "f1": 0.5714285714285715, "support": 1.0, "unsupported": 0.0}
-{"qid": "5ab6d09255429954757d337d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "1992-1996", "em": 0.0, "f1": 0.0, "support": 0.5, "unsupported": 1.0}
+{"qid": "5ab6d09255429954757d337d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "1992-1995", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ab56f7a554299637185c59a", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Chicago", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ab9dd9a554299232ef4a231", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "40", "em": 0.0, "f1": 0.6666666666666666, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7e14a65542995ed0d16686", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Grease", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
@@ -780,7 +780,7 @@
 {"qid": "5a72160e55429971e9dc9253", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "John Cheever", "em": 0.0, "f1": 0.4, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7efa7a55429930675135ea", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Colonel John Jacob Astor IV", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8cc602554299653c1aa11a", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
-{"qid": "5ab2342a5542993be8fa98c3", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "107 acre", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5ab2342a5542993be8fa98c3", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "107", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8241a855429940e5e1a819", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "TD Garden", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ac2570a5542992f1f2b3861", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Le Mans 24 Hours", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5abc41315542993a06baf8bb", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Julie Taymor", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
@@ -974,7 +974,7 @@
 {"qid": "5ae1e8575542997f29b3c19a", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Dactylis", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8dee2455429917b4a5bce1", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "30 Rock", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae237cf5542992decbdcc78", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Mika H\u00e4kkinen", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a863ff0554299211dda2ac6", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "No", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
+{"qid": "5a863ff0554299211dda2ac6", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "no", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ae7e8b855429952e35ea9dd", "recall": 0.0, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "\"I Know How the River Feels\"", "em": 0.0, "f1": 0.25, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ab761d955429928e1fe3856", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Christian Kern", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ab7209a554299110f219aba", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Mammals", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}

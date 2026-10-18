@@ -201,7 +201,7 @@
 {"qid": "5a80840f554299485f59863b", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Charmed", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a74397055429974ef308bbe", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Gregg Popovich", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8ae61955429970aeb70326", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "Yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
-{"qid": "5ac3d21e554299204fd21e8b", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "Luigi Cherubini", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5ac3d21e554299204fd21e8b", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "Michael Tippett", "em": 0.0, "f1": 0.8, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a713a5a5542994082a3e6a9", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Manchester United F.C", "em": 0.0, "f1": 0.8, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae4bc7955429913cc2044e9", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Colonial Athletic Association", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae496735542995dadf2435d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Big 12 Conference", "em": 0.0, "f1": 0.8, "support": 1.0, "unsupported": 0.0}
@@ -385,7 +385,7 @@
 {"qid": "5a79c8fa5542994bb94570a1", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": true, "pred": "software programmer", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ab2c418554299545a2cfa67", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Hotchkiss M1914 machine gun", "em": 0.0, "f1": 0.6666666666666665, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7cfb2755429907fabef084", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "1993", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a8da0b85542994ba4e3dcd3", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "Yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
+{"qid": "5a8da0b85542994ba4e3dcd3", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "No", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ae4869755429970de88d99a", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": true, "pred": "1940", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ab6266555429953192ad277", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "27", "em": 0.0, "f1": 0.6666666666666666, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae0b0af55429945ae959424", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Sam Raimi", "em": 0.0, "f1": 0.5, "support": 1.0, "unsupported": 0.0}
@@ -589,13 +589,13 @@
 {"qid": "5ae33a3b5542992f92d8224a", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "bobsled", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5adc99cf554299438c868e0d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Robert", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5adfad2b554299603e41835c", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Kenny Young", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5ae241005542994d89d5b3a4", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": true, "pred": "French", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5ae241005542994d89d5b3a4", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": true, "pred": "English", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae4d3a55542990ba0bbb164", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Hidebehind", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7e05ba5542995f4f402392", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Late Late Show", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ac4f7e955429924173fb523", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Sammy", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a78f05155429970f5fffde3", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Golden Globe Award", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae198bf5542997b2ef7d20d", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "yes", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
-{"qid": "5abbaf6c554299660624171c", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "writer/director", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5abbaf6c554299660624171c", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Director", "em": 0.0, "f1": 0.6666666666666666, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7e5ec25542991319bc947a", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "John Newcombe", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8b3c0055429949d91db4f8", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5a82817555429954d2e2eb5a", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Naked Killer", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}

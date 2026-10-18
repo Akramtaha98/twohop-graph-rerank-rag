@@ -5,10 +5,10 @@
   "n_passages": 9760,
   "pool_questions": 1000,
   "seed": 0,
-  "seconds_dense_index": 6.6,
-  "seconds_graph_build": 156.5,
-  "seconds_eval": 435.6,
-  "peak_rss_mb": 880.0,
+  "seconds_dense_index": 9.9,
+  "seconds_graph_build": 101.6,
+  "seconds_eval": 106.4,
+  "peak_rss_mb": 2614.0,
   "embedding_mb": 15.0,
   "graph_nnz": 184404,
   "graph_entities": 94042,
@@ -50,6 +50,54 @@
    "all10": 87.8,
    "all20": 92.1,
    "recall20": 95.6,
+   "n": 1000
+  },
+  "poolD:ce": {
+   "all_support": 81.2,
+   "recall": 90.25,
+   "all10": 84.8,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolD:dense": {
+   "all_support": 70.2,
+   "recall": 84.3,
+   "all10": 79.6,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolD:two_hop": {
+   "all_support": 74.1,
+   "recall": 85.85,
+   "all10": 81.7,
+   "all20": 85.9,
+   "recall20": 92.7,
+   "n": 1000
+  },
+  "poolH:ce": {
+   "all_support": 85.3,
+   "recall": 92.15,
+   "all10": 90.6,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "poolH:dense": {
+   "all_support": 70.1,
+   "recall": 84.0,
+   "all10": 80.6,
+   "all20": 91.9,
+   "recall20": 95.5,
+   "n": 1000
+  },
+  "poolH:two_hop": {
+   "all_support": 78.6,
+   "recall": 88.15,
+   "all10": 88.3,
+   "all20": 91.9,
+   "recall20": 95.5,
    "n": 1000
   },
   "expand_all@0.3": {

@@ -14,30 +14,40 @@
     "systems": [
       "bm25",
       "dense",
+      "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
       "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
       "oracle",
       "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
       "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
       "ce_dense:ce:top=20",
       "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
-      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+      "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+      "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+      "spriglike:spriglike:alpha=0.15,seeds_k=5",
+      "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
     ],
     "gen_systems": null,
     "append": false,
     "tuned": null,
     "tuned2": null,
-    "out": "../results/eval_2wiki"
+    "out": "../results_h200/eval_2wiki"
   },
   "systems_run": [
     "bm25",
     "dense",
+    "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
     "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
     "oracle",
     "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
     "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
     "ce_dense:ce:top=20",
     "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
-    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20"
+    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+    "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+    "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+    "spriglike:spriglike:alpha=0.15,seeds_k=5",
+    "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
   ],
   "n_questions": 1000,
   "n_passages": 6223,
@@ -52,13 +62,19 @@
       "recall": 0.69475,
       "all_support": 0.382,
       "gated": 0.0,
-      "seconds": 7.2
+      "seconds": 3.8
+    },
+    "hybrid": {
+      "recall": 0.70825,
+      "all_support": 0.403,
+      "gated": 0.0,
+      "seconds": 11.4
     },
     "hybrid2": {
       "recall": 0.8085,
       "all_support": 0.594,
       "gated": 0.0,
-      "seconds": 33.6
+      "seconds": 17.4
     },
     "oracle": {
       "recall": 1.0,
@@ -70,43 +86,55 @@
       "recall": 0.80625,
       "all_support": 0.605,
       "gated": 0.354,
-      "seconds": 25.6
+      "seconds": 12.5
     },
     "hybrid2_oracle": {
       "recall": 0.80425,
       "all_support": 0.607,
       "gated": 0.472,
-      "seconds": 20.9
+      "seconds": 10.8
     },
     "ce_dense": {
       "recall": 0.7015,
       "all_support": 0.387,
       "gated": 0.0,
-      "seconds": 483.7
+      "seconds": 57.8
     },
     "ce_hybrid2": {
       "recall": 0.7495,
       "all_support": 0.474,
       "gated": 0.0,
-      "seconds": 537.3
+      "seconds": 79.7
     },
     "ce_hybrid2_gate": {
       "recall": 0.747,
       "all_support": 0.474,
       "gated": 0.0,
-      "seconds": 495.6
+      "seconds": 72.2
     },
     "titlelink": {
       "recall": 0.90275,
       "all_support": 0.752,
       "gated": 0.0,
-      "seconds": 6.2
+      "seconds": 6.1
     },
     "ce_titlelink": {
       "recall": 0.7475,
       "all_support": 0.46,
       "gated": 0.0,
-      "seconds": 63.9
+      "seconds": 64.6
+    },
+    "spriglike": {
+      "recall": 0.69525,
+      "all_support": 0.383,
+      "gated": 0.0,
+      "seconds": 11.9
+    },
+    "linearlike": {
+      "recall": 0.72625,
+      "all_support": 0.44,
+      "gated": 0.0,
+      "seconds": 19.6
     }
   }
 }

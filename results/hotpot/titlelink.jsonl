@@ -695,7 +695,7 @@
 {"qid": "5ae7376f5542992ae0d163d2", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Hyuna", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a89f6235542993b751ca9c7", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "yes", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ae2dd2055429928c423950d", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Ossipee", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5ac00cde554299012d1db58a", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "no", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}
+{"qid": "5ac00cde554299012d1db58a", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5a775bd65542993569682d6b", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Stephen Hawking", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7f53ff5542992097ad2f17", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Columbina", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a8a3dd55542995153361360", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "no", "em": 1.0, "f1": 1.0, "support": 0.0, "unsupported": 1.0}

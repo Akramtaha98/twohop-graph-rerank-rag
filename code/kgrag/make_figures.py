@@ -1,5 +1,5 @@
 """Publication figures from the stored per-question files (vector PDF + 300 dpi PNG).
-    python -m kgrag.make_figures --res ../mac/results --out ../paper/figs
+    python -m kgrag.make_figures --res ../h200_final/results --out ../paper/figs
 """
 import argparse
 import json
@@ -107,7 +107,7 @@ def main():
 
     # Fig 4: answers (EM, F1) on both samples
     fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.7), sharey=True)
-    for ax, (nm, d, ss) in zip(axs, [("HotpotQA A", R / "answersA_gpu", ["dense", "spriglike", "linearlike", "hybrid2_gate", "ce_dense", "titlelink"]), ("HotpotQA B", R / "eval_v2_seed1", ["dense", "hybrid2_gate", "ce_dense", "titlelink"])]):
+    for ax, (nm, d, ss) in zip(axs, [("HotpotQA A", R / "hotpot", ["dense", "spriglike", "linearlike", "hybrid2_gate", "ce_dense", "titlelink"]), ("HotpotQA B", R / "eval_v2_seed1", ["dense", "hybrid2_gate", "ce_dense", "titlelink"])]):
         for k, s in enumerate(ss):
             r = rd(d / f"{s}.jsonl")
             for o, m in enumerate(("em", "f1")):

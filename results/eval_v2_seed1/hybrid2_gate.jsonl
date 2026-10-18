@@ -789,7 +789,7 @@
 {"qid": "5a836ce55542993344746012", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "Sarracenia", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a83093c55429966c78a6b01", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": true, "pred": "yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5ae3e1e95542994393b9e78b", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "ABC", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a89e92c5542993b751ca9af", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "The 2009 UEFA Champions League Final was played on 27 May 2009 at the Stadio Olimpico in Rome", "em": 0.0, "f1": 0.38095238095238093, "support": 1.0, "unsupported": 0.0}
+{"qid": "5a89e92c5542993b751ca9af", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "2008-09 UEFA Champions League", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a72160e55429971e9dc9253", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "William Randolph Hearst", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7c8cea55429935c91b5214", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Margot Robbie", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a7789195542995d831811a2", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "Jewel", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}

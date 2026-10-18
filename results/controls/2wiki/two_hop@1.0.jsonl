@@ -964,7 +964,7 @@
 {"qid": "9b659c320bdd11eba7f7acde48001122", "qtype": "compositional", "gated": false, "recall": 0.5, "all_support": 0.0, "recall20": 1.0, "all20": 1.0, "recall10": 1.0, "all10": 1.0}
 {"qid": "8afa12aa08b411ebbd88ac1f6bf848b6", "qtype": "bridge_comparison", "gated": false, "recall": 0.25, "all_support": 0.0, "recall20": 0.25, "all20": 0.0, "recall10": 0.25, "all10": 0.0}
 {"qid": "21a3b9fa0bde11eba7f7acde48001122", "qtype": "compositional", "gated": false, "recall": 0.5, "all_support": 0.0, "recall20": 0.5, "all20": 0.0, "recall10": 0.5, "all10": 0.0}
-{"qid": "f147fc0c088711ebbd6eac1f6bf848b6", "qtype": "bridge_comparison", "gated": false, "recall": 0.25, "all_support": 0.0, "recall20": 0.5, "all20": 0.0, "recall10": 0.5, "all10": 0.0}
+{"qid": "f147fc0c088711ebbd6eac1f6bf848b6", "qtype": "bridge_comparison", "gated": false, "recall": 0.5, "all_support": 0.0, "recall20": 0.5, "all20": 0.0, "recall10": 0.5, "all10": 0.0}
 {"qid": "739b0fb80bdb11eba7f7acde48001122", "qtype": "compositional", "gated": false, "recall": 1.0, "all_support": 1.0, "recall20": 1.0, "all20": 1.0, "recall10": 1.0, "all10": 1.0}
 {"qid": "bfb58f38089611ebbd76ac1f6bf848b6", "qtype": "bridge_comparison", "gated": false, "recall": 0.75, "all_support": 0.0, "recall20": 1.0, "all20": 1.0, "recall10": 1.0, "all10": 1.0}
 {"qid": "556b75e00baf11ebab90acde48001122", "qtype": "inference", "gated": false, "recall": 0.5, "all_support": 0.0, "recall20": 1.0, "all20": 1.0, "recall10": 1.0, "all10": 1.0}

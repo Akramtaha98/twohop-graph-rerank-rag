@@ -7,7 +7,7 @@
     "k": 5,
     "dense": "bge",
     "ner": "regex",
-    "generator": "none",
+    "generator": "hf",
     "model": "Qwen/Qwen2.5-1.5B-Instruct",
     "adapter": null,
     "load_4bit": false,
@@ -16,26 +16,49 @@
       "dense",
       "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
       "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+      "oracle",
       "abl2_no_title:hybrid2:ner=both,m=3,gamma=0.3,tb=0",
       "abl2_one_seed:hybrid2:ner=both,m=1,gamma=0.3,tb=0.5",
       "abl2_regex_ner:hybrid2:ner=regex,m=3,gamma=0.3,tb=0.5",
-      "oracle"
+      "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+      "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
+      "ce_dense:ce:top=20",
+      "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
+      "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+      "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+      "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+      "spriglike:spriglike:alpha=0.15,seeds_k=5",
+      "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
     ],
-    "gen_systems": null,
+    "gen_systems": [
+      "dense",
+      "hybrid2_gate",
+      "ce_dense",
+      "titlelink"
+    ],
     "append": false,
     "tuned": null,
     "tuned2": null,
-    "out": "../results/eval_v2_seed1"
+    "out": "../results_h200/eval_v2_seed1"
   },
   "systems_run": [
     "bm25",
     "dense",
     "hybrid:hybrid:alpha=0.15,lam=0.5,beta=0.3",
     "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+    "oracle",
     "abl2_no_title:hybrid2:ner=both,m=3,gamma=0.3,tb=0",
     "abl2_one_seed:hybrid2:ner=both,m=1,gamma=0.3,tb=0.5",
     "abl2_regex_ner:hybrid2:ner=regex,m=3,gamma=0.3,tb=0.5",
-    "oracle"
+    "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+    "hybrid2_oracle:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=oracle",
+    "ce_dense:ce:top=20",
+    "ce_hybrid2:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,top=20",
+    "ce_hybrid2_gate:ce_h2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles,top=20",
+    "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+    "ce_titlelink:ce_h2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only,top=20",
+    "spriglike:spriglike:alpha=0.15,seeds_k=5",
+    "linearlike:linearlike:alpha=0.15,beta=0.5,hops=2,bridge_k=10"
   ],
   "n_questions": 1000,
   "n_passages": 9807,
@@ -43,7 +66,8 @@
     "bm25": {
       "recall": 0.716,
       "all_support": 0.481,
-      "seconds": 1.5
+      "gated": 0.0,
+      "seconds": 1.4
     },
     "dense": {
       "recall": 0.841,
@@ -53,53 +77,59 @@
       "f1": 0.4922931713353615,
       "support": 0.8962571428571429,
       "unsupported": 0.11,
-      "seconds": 158.4
+      "seconds": 78.0
     },
     "hybrid": {
       "recall": 0.84,
       "all_support": 0.698,
-      "seconds": 20.3
+      "gated": 0.0,
+      "seconds": 17.0
     },
     "hybrid2": {
       "recall": 0.888,
       "all_support": 0.803,
-      "seconds": 37.7
-    },
-    "abl2_no_title": {
-      "recall": 0.8535,
-      "all_support": 0.734,
-      "seconds": 36.0
-    },
-    "abl2_one_seed": {
-      "recall": 0.859,
-      "all_support": 0.761,
-      "seconds": 21.3
-    },
-    "abl2_regex_ner": {
-      "recall": 0.886,
-      "all_support": 0.798,
-      "seconds": 33.8
+      "gated": 0.0,
+      "seconds": 21.1
     },
     "oracle": {
       "recall": 1.0,
       "all_support": 1.0,
+      "gated": 0.0,
       "seconds": 0.0
+    },
+    "abl2_no_title": {
+      "recall": 0.8535,
+      "all_support": 0.734,
+      "gated": 0.0,
+      "seconds": 20.3
+    },
+    "abl2_one_seed": {
+      "recall": 0.859,
+      "all_support": 0.761,
+      "gated": 0.0,
+      "seconds": 11.8
+    },
+    "abl2_regex_ner": {
+      "recall": 0.886,
+      "all_support": 0.798,
+      "gated": 0.0,
+      "seconds": 17.8
     },
     "hybrid2_gate": {
       "recall": 0.8945,
       "all_support": 0.816,
       "gated": 0.229,
       "em": 0.442,
-      "f1": 0.5696378068168391,
+      "f1": 0.5692568544358867,
       "support": 0.8933833333333332,
       "unsupported": 0.115,
-      "seconds": 96.6
+      "seconds": 69.3
     },
     "hybrid2_oracle": {
       "recall": 0.898,
       "all_support": 0.823,
       "gated": 0.216,
-      "seconds": 27.9
+      "seconds": 16.9
     },
     "ce_dense": {
       "recall": 0.9005,
@@ -109,19 +139,19 @@
       "f1": 0.5361587780025161,
       "support": 0.9058333333333333,
       "unsupported": 0.099,
-      "seconds": 117.1
+      "seconds": 94.0
     },
     "ce_hybrid2": {
       "recall": 0.9275,
       "all_support": 0.868,
       "gated": 0.0,
-      "seconds": 396.2
+      "seconds": 70.8
     },
     "ce_hybrid2_gate": {
       "recall": 0.9265,
       "all_support": 0.866,
       "gated": 0.0,
-      "seconds": 387.2
+      "seconds": 65.8
     },
     "titlelink": {
       "recall": 0.9,
@@ -131,13 +161,25 @@
       "f1": 0.5470411067332969,
       "support": 0.8991904761904761,
       "unsupported": 0.109,
-      "seconds": 78.0
+      "seconds": 57.4
     },
     "ce_titlelink": {
       "recall": 0.9175,
       "all_support": 0.844,
       "gated": 0.0,
-      "seconds": 55.3
+      "seconds": 57.2
+    },
+    "spriglike": {
+      "recall": 0.8415,
+      "all_support": 0.699,
+      "gated": 0.0,
+      "seconds": 17.7
+    },
+    "linearlike": {
+      "recall": 0.7925,
+      "all_support": 0.62,
+      "gated": 0.0,
+      "seconds": 28.1
     }
   }
 }

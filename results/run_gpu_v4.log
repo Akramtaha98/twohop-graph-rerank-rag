@@ -1,72 +1,0 @@
-Generating train split:   0%|          | 0/90447 [00:00<?, ? examples/s]Generating train split:   7%|▋         | 6000/90447 [00:00<00:01, 42453.90 examples/s]Generating train split:  15%|█▌        | 14000/90447 [00:00<00:01, 49477.20 examples/s]Generating train split:  22%|██▏       | 20000/90447 [00:00<00:01, 50440.09 examples/s]Generating train split:  29%|██▊       | 26000/90447 [00:00<00:01, 46375.25 examples/s]Generating train split:  36%|███▋      | 33000/90447 [00:00<00:01, 43392.13 examples/s]Generating train split:  43%|████▎     | 39000/90447 [00:00<00:01, 43114.75 examples/s]Generating train split:  51%|█████     | 46224/90447 [00:01<00:01, 39345.07 examples/s]Generating train split:  59%|█████▉    | 53224/90447 [00:01<00:00, 43874.81 examples/s]Generating train split:  68%|██████▊   | 61224/90447 [00:01<00:00, 43780.38 examples/s]Generating train split:  73%|███████▎  | 66224/90447 [00:01<00:00, 42554.25 examples/s]Generating train split:  80%|███████▉  | 72224/90447 [00:01<00:00, 41524.35 examples/s]Generating train split:  85%|████████▌ | 77224/90447 [00:01<00:00, 42690.21 examples/s]Generating train split:  93%|█████████▎| 84224/90447 [00:01<00:00, 41391.16 examples/s]Generating train split: 100%|██████████| 90447/90447 [00:02<00:00, 44198.01 examples/s]
-Generating validation split:   0%|          | 0/7405 [00:00<?, ? examples/s]Generating validation split:  54%|█████▍    | 4000/7405 [00:00<00:00, 28562.85 examples/s]Generating validation split: 100%|██████████| 7405/7405 [00:00<00:00, 35764.13 examples/s]
-hotpot: 1000 questions, 9760 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4967.45it/s]
-titlelink {'recall': 0.903, 'all_support': 0.823, 'gated': 0.0, 'seconds': 9.7}
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 4876.31it/s]
-ce_titlelink {'recall': 0.918, 'all_support': 0.843, 'gated': 0.0, 'seconds': 54.6}
-hotpot: 1000 questions, 9807 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 12784.18it/s]
-titlelink {'recall': 0.9, 'all_support': 0.816, 'gated': 0.0, 'seconds': 9.9}
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 10041.51it/s]
-ce_titlelink {'recall': 0.917, 'all_support': 0.844, 'gated': 0.0, 'seconds': 55.3}
-Generating train split:   0%|          | 0/167454 [00:00<?, ? examples/s]Generating train split:   5%|▌         | 9000/167454 [00:00<00:02, 69608.07 examples/s]Generating train split:  10%|█         | 17000/167454 [00:00<00:02, 71648.10 examples/s]Generating train split:  17%|█▋        | 28000/167454 [00:00<00:01, 85978.64 examples/s]Generating train split:  22%|██▏       | 37000/167454 [00:00<00:01, 79990.71 examples/s]Generating train split:  28%|██▊       | 47000/167454 [00:00<00:01, 84862.59 examples/s]Generating train split:  35%|███▍      | 58000/167454 [00:00<00:01, 74919.40 examples/s]Generating train split:  40%|████      | 67000/167454 [00:00<00:01, 74127.66 examples/s]Generating train split:  45%|████▍     | 75000/167454 [00:00<00:01, 74024.24 examples/s]Generating train split:  50%|████▉     | 83000/167454 [00:01<00:01, 73431.51 examples/s]Generating train split:  57%|█████▋    | 94727/167454 [00:01<00:01, 64459.70 examples/s]Generating train split:  63%|██████▎   | 104727/167454 [00:01<00:00, 63335.92 examples/s]Generating train split:  69%|██████▊   | 114727/167454 [00:01<00:00, 69327.47 examples/s]Generating train split:  74%|███████▍  | 124727/167454 [00:01<00:00, 66152.64 examples/s]Generating train split:  80%|███████▉  | 133727/167454 [00:01<00:00, 68008.75 examples/s]Generating train split:  85%|████████▍ | 141727/167454 [00:01<00:00, 69396.55 examples/s]Generating train split:  89%|████████▉ | 149727/167454 [00:02<00:00, 70100.86 examples/s]Generating train split:  96%|█████████▌| 160727/167454 [00:02<00:00, 69254.96 examples/s]Generating train split: 100%|██████████| 167454/167454 [00:02<00:00, 71688.35 examples/s]
-Generating validation split:   0%|          | 0/12576 [00:00<?, ? examples/s]Generating validation split:  40%|███▉      | 5000/12576 [00:00<00:00, 44642.96 examples/s]Generating validation split: 100%|██████████| 12576/12576 [00:00<00:00, 60176.06 examples/s]
-Generating test split:   0%|          | 0/12576 [00:00<?, ? examples/s]Generating test split:  40%|███▉      | 5000/12576 [00:00<00:00, 40589.15 examples/s]Generating test split: 100%|██████████| 12576/12576 [00:00<00:00, 58612.71 examples/s]
-2wiki: 1000 questions, 6223 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 9363.44it/s]
-titlelink {'recall': 0.903, 'all_support': 0.752, 'gated': 0.0, 'seconds': 6.2}
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 10636.98it/s]
-ce_titlelink {'recall': 0.748, 'all_support': 0.46, 'gated': 0.0, 'seconds': 63.9}
-musique: 1000 questions, 11525 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 12059.74it/s]
-titlelink {'recall': 0.436, 'all_support': 0.165, 'gated': 0.0, 'seconds': 9.6}
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 11427.38it/s]
-ce_titlelink {'recall': 0.537, 'all_support': 0.204, 'gated': 0.0, 'seconds': 58.1}
-hotpot: 1000 questions, 9807 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 14126.06it/s]
-Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<01:10,  4.81it/s]Loading weights:  19%|█▉        | 64/338 [00:00<00:01, 249.05it/s]Loading weights:  29%|██▉       | 99/338 [00:00<00:00, 280.79it/s]Loading weights:  40%|███▉      | 135/338 [00:00<00:00, 300.79it/s]Loading weights:  50%|█████     | 169/338 [00:00<00:00, 298.69it/s]Loading weights:  61%|██████    | 205/338 [00:00<00:00, 306.63it/s]Loading weights:  71%|███████▏  | 241/338 [00:00<00:00, 305.21it/s]Loading weights:  81%|████████  | 273/338 [00:00<00:00, 306.00it/s]Loading weights:  90%|█████████ | 305/338 [00:01<00:00, 288.02it/s]Loading weights: 100%|██████████| 338/338 [00:01<00:00, 285.42it/s]
-dense {'recall': 0.841, 'all_support': 0.698, 'gated': 0.0, 'em': 0.375, 'f1': 0.492, 'support': 0.896, 'unsupported': 0.11, 'seconds': 158.4}
-hybrid2_gate {'recall': 0.894, 'all_support': 0.816, 'gated': 0.229, 'em': 0.442, 'f1': 0.57, 'support': 0.893, 'unsupported': 0.115, 'seconds': 96.6}
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 10593.54it/s]
-ce_dense {'recall': 0.9, 'all_support': 0.81, 'gated': 0.0, 'em': 0.416, 'f1': 0.536, 'support': 0.906, 'unsupported': 0.099, 'seconds': 117.1}
-titlelink {'recall': 0.9, 'all_support': 0.816, 'gated': 0.0, 'em': 0.423, 'f1': 0.547, 'support': 0.899, 'unsupported': 0.109, 'seconds': 78.0}
-hotpot: 1000 questions, 9760 pooled passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 13558.81it/s]
-Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  46%|████▌     | 155/338 [00:00<00:00, 1548.67it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 1999.60it/s]
-titlelink {'recall': 0.903, 'all_support': 0.823, 'gated': 0.0, 'em': 0.426, 'f1': 0.54, 'support': 0.899, 'unsupported': 0.105, 'seconds': 164.2}
-hotpot/validation: 1000 questions, 9760 passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 12158.47it/s]
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 10465.06it/s]
-{"dataset": "hotpot", "n_questions": 1000, "n_passages": 9760, "pool_questions": 1000, "seed": 0, "seconds_dense_index": 17.1, "seconds_graph_build": 101.5, "seconds_eval": 102.7, "peak_rss_mb": 3062.0, "embedding_mb": 15.0, "graph_nnz": 184404, "graph_entities": 94042, "gammas": [0.3], "tb": 0.5, "m": 3, "gate": "titles"}
-dense                  {'all_support': 70.2, 'recall': 84.3, 'all10': 79.6, 'all20': 85.9, 'recall20': 92.7, 'n': 1000}
-two_hop@0.3            {'all_support': 78.6, 'recall': 88.15, 'all10': 88.3, 'all20': 91.9, 'recall20': 95.5, 'n': 1000}
-two_hop@0.3+gate       {'all_support': 79.6, 'recall': 88.65, 'all10': 87.8, 'all20': 92.1, 'recall20': 95.6, 'n': 1000}
-poolD:ce               {'all_support': 81.2, 'recall': 90.25, 'all10': 84.8, 'all20': 85.9, 'recall20': 92.7, 'n': 1000}
-poolD:dense            {'all_support': 70.2, 'recall': 84.3, 'all10': 79.6, 'all20': 85.9, 'recall20': 92.7, 'n': 1000}
-poolD:two_hop          {'all_support': 74.1, 'recall': 85.85, 'all10': 81.7, 'all20': 85.9, 'recall20': 92.7, 'n': 1000}
-poolH:ce               {'all_support': 85.3, 'recall': 92.15, 'all10': 90.6, 'all20': 91.9, 'recall20': 95.5, 'n': 1000}
-poolH:dense            {'all_support': 70.1, 'recall': 84.0, 'all10': 80.6, 'all20': 91.9, 'recall20': 95.5, 'n': 1000}
-poolH:two_hop          {'all_support': 78.6, 'recall': 88.15, 'all10': 88.3, 'all20': 91.9, 'recall20': 95.5, 'n': 1000}
-expand_all@0.3         {'all_support': 72.5, 'recall': 85.5, 'all10': 82.4, 'all20': 88.8, 'recall20': 94.15, 'n': 1000}
-expand_all@0.3+gate    {'all_support': 72.3, 'recall': 85.4, 'all10': 82.3, 'all20': 88.5, 'recall20': 94.0, 'n': 1000}
-title_only@0.3         {'all_support': 80.7, 'recall': 89.6, 'all10': 87.2, 'all20': 90.5, 'recall20': 95.05, 'n': 1000}
-title_only@0.3+gate    {'all_support': 80.0, 'recall': 89.25, 'all10': 86.6, 'all20': 90.3, 'recall20': 94.95, 'n': 1000}
-hotpot/validation: 1000 questions, 9807 passages
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 12650.87it/s]
-Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 9944.97it/s]
-{"dataset": "hotpot", "n_questions": 1000, "n_passages": 9807, "pool_questions": 1000, "seed": 1, "seconds_dense_index": 17.5, "seconds_graph_build": 101.6, "seconds_eval": 103.3, "peak_rss_mb": 3067.0, "embedding_mb": 15.1, "graph_nnz": 185077, "graph_entities": 93774, "gammas": [0.3], "tb": 0.5, "m": 3, "gate": "titles"}
-dense                  {'all_support': 69.8, 'recall': 84.1, 'all10': 79.7, 'all20': 85.9, 'recall20': 92.65, 'n': 1000}
-two_hop@0.3            {'all_support': 80.3, 'recall': 88.8, 'all10': 89.2, 'all20': 92.9, 'recall20': 95.95, 'n': 1000}
-two_hop@0.3+gate       {'all_support': 81.6, 'recall': 89.45, 'all10': 89.2, 'all20': 92.8, 'recall20': 95.9, 'n': 1000}
-poolD:ce               {'all_support': 81.0, 'recall': 90.05, 'all10': 84.9, 'all20': 85.9, 'recall20': 92.65, 'n': 1000}
-poolD:dense            {'all_support': 69.8, 'recall': 84.1, 'all10': 79.7, 'all20': 85.9, 'recall20': 92.65, 'n': 1000}
-poolD:two_hop          {'all_support': 75.0, 'recall': 86.3, 'all10': 82.4, 'all20': 85.9, 'recall20': 92.65, 'n': 1000}
-poolH:ce               {'all_support': 86.8, 'recall': 92.75, 'all10': 91.7, 'all20': 92.9, 'recall20': 95.95, 'n': 1000}
-poolH:dense            {'all_support': 70.5, 'recall': 84.25, 'all10': 81.0, 'all20': 92.9, 'recall20': 95.95, 'n': 1000}
-poolH:two_hop          {'all_support': 80.3, 'recall': 88.8, 'all10': 89.2, 'all20': 92.9, 'recall20': 95.95, 'n': 1000}
-expand_all@0.3         {'all_support': 72.0, 'recall': 85.05, 'all10': 83.6, 'all20': 89.8, 'recall20': 94.6, 'n': 1000}
-expand_all@0.3+gate    {'all_support': 72.1, 'recall': 85.1, 'all10': 83.6, 'all20': 89.7, 'recall20': 94.55, 'n': 1000}
-title_only@0.3         {'all_support': 80.2, 'recall': 89.35, 'all10': 86.6, 'all20': 90.6, 'recall20': 95.0, 'n': 1000}
-title_only@0.3+gate    {'all_support': 79.7, 'recall': 89.1, 'all10': 86.4, 'all20': 90.5, 'recall20': 94.95, 'n': 1000}
-DONE

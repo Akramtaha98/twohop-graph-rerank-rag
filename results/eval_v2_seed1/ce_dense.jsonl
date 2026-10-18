@@ -573,7 +573,7 @@
 {"qid": "5a8f38fa55429924144829f5", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "tiger", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae48e7e55429913cc20449d", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Europe", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5ae02b6c55429924de1b7044", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "Life", "em": 1.0, "f1": 1.0, "support": 1.0, "unsupported": 0.0}
-{"qid": "5a8720885542991e771816d8", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Guanche", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
+{"qid": "5a8720885542991e771816d8", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Siwi", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a84b7db5542991dd0999db0", "recall": 1.0, "all_support": 1.0, "qtype": "comparison", "gated": false, "pred": "yes", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
 {"qid": "5a8ff69655429916514e73f1", "recall": 1.0, "all_support": 1.0, "qtype": "bridge", "gated": false, "pred": "Ronnie Schell", "em": 0.0, "f1": 0.0, "support": 1.0, "unsupported": 0.0}
 {"qid": "5a90740a5542990a98493658", "recall": 0.5, "all_support": 0.0, "qtype": "bridge", "gated": false, "pred": "New York City", "em": 0.0, "f1": 0.0, "support": 0.0, "unsupported": 1.0}
