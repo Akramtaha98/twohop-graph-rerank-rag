@@ -46,6 +46,7 @@ bash run_h200_all.sh     # tuning on train, all systems on the four sets, answer
 bash run_h200_fix.sh     # full tuning grid (records the train tie) and the main HotpotQA run with all baselines
 bash run_h200_abl.sh     # retrieval-only ablations of the earlier PPR hybrid
 bash run_h200_r6.sh      # added baselines (BM25-dense fusion, question-title boost), BGE-base/large, untouched sample C
+bash run_h200_scale500k_par.sh   # 500,002-passage pool (dev + train paragraphs) and blind-title control, sample C, one config per GPU
 ```
 Each script is resumable and writes a tarball of its results.
 
@@ -60,6 +61,7 @@ python -m kgrag.analysis --a $H/eval_v2_seed0 --b $H/eval_v2_seed1 --out ../pape
 python -m kgrag.report_controls --dir ../results/controls --out ../paper --timing "Gpu small=$H/timing_h200_1k.json" "Gpu full=$H/timing_h200_full.json"
 python -m kgrag.report_gpu --res $H --out ../paper
 python -m kgrag.report_r6 --res $H --out ../paper
+python -m kgrag.report_scale --res ../results_h200/scale500k --out ../results_h200/scale500k/tables   # 500k / blind tables
 python -m kgrag.make_figures --res $H --out ../paper/figs
 python check_review3.py claims       # also: related cover build sampleids
 ```
@@ -75,3 +77,14 @@ Please cite the archived release: https://doi.org/10.5281/zenodo.23445104 (versi
 
 ## License
 MIT.
+
+## Scale and blind-title results (sample C, BGE-small, All@5 %)
+
+| Pool | Titles | Dense | TitleLink | Two-hop | Two-hop + gate |
+|---|---|---|---|---|---|
+| 66,635 | real | 59.6 | 71.3 | 67.4 | 71.7 |
+| 66,635 | blind | 57.4 | 57.4 | 56.8 | 56.8 |
+| 500,002 | real | 47.4 | 46.5 | 50.3 | 57.4 |
+| 500,002 | blind | 45.2 | 45.2 | 37.5 | 37.5 |
+
+At 500,002 passages only the gated method keeps a significant gain over dense retrieval (+10.0); with blind titles the gain disappears. Raw per-question results are in `results_h200/scale500k/`.

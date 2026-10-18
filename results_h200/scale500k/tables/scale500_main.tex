@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Corpus scale on the untouched sample C (1\,000 HotpotQA dev questions, BGE-small): the dev-only pool against a pool enlarged with HotpotQA train paragraphs. Settings are the frozen ones. $\Delta$ is the change from the small to the large pool; latency is mean ms per question on one H200.}
+\label{tab:scale500}
+\begin{tabular}{lrrrrrr}
+\toprule
+System & \multicolumn{3}{c}{66{,}635 passages} & \multicolumn{3}{c}{500{,}002 passages} \\
+ & All@5 & R@5 & ms & All@5 & R@5 & ms \\
+\midrule
+Dense (BGE-small) & 59.6 & 77.8 & 6 & 47.4 & 70.5 & 12 \\
+TitleLink only & 71.3 & 82.6 & 80 & 46.5 & 64.5 & 365 \\
+Two-hop & 67.4 & 81.0 & 106 & 50.3 & 69.0 & 438 \\
+Two-hop + gate & 71.7 & 83.2 & 80 & 57.4 & 73.2 & 295 \\
+\bottomrule
+\end{tabular}
+\end{table}

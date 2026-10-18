@@ -7,7 +7,7 @@ OUT=../results/scale500k
 mkdir -p "$OUT" ../cache
 CHK=""; [ -f ../results_h200/eval_v2_seed2/dense.jsonl ] && CHK="--check_ids ../results_h200/eval_v2_seed2/dense.jsonl"
 run() { # gpu, configuration
-  CUDA_VISIBLE_DEVICES=$1 python -m kgrag.scale500k --pool_size 500000 --only $2 --spacy_procs 8 --cache ../cache --out "$OUT" $CHK > "$OUT/run_$2.log" 2>&1 &
+  CUDA_VISIBLE_DEVICES=$1 python -m kgrag.scale500k --pool_size 500000 --also_blind --only $2 --spacy_procs 8 --cache ../cache --out "$OUT" $CHK > "$OUT/run_$2.log" 2>&1 &
 }
 run 0 500k_std
 run 1 500k_blind

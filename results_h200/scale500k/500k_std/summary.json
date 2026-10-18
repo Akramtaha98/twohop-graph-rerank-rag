@@ -1,0 +1,84 @@
+{
+ "meta": {
+  "name": "500k_std",
+  "n_passages": 500002,
+  "n_questions": 1000,
+  "seconds_dense_index": 9.9,
+  "seconds_graph_build": 34.4,
+  "seconds_eval": 144.2,
+  "peak_rss_mb": 4746.0,
+  "embedding_mb": 768.0,
+  "graph_nnz": 8507361,
+  "graph_entities": 2440342,
+  "latency_questions": 100,
+  "latency_repeats": 3
+ },
+ "rows": {
+  "dense": {
+   "all_support": 0.474,
+   "recall": 0.705,
+   "all20": 0.624,
+   "gated": 0.0,
+   "n": 1000
+  },
+  "titlelink": {
+   "all_support": 0.465,
+   "recall": 0.645,
+   "all20": 0.769,
+   "gated": 0.0,
+   "n": 1000
+  },
+  "two_hop": {
+   "all_support": 0.503,
+   "recall": 0.6905,
+   "all20": 0.713,
+   "gated": 0.0,
+   "n": 1000
+  },
+  "two_hop_gate": {
+   "all_support": 0.574,
+   "recall": 0.7325,
+   "all20": 0.735,
+   "gated": 0.272,
+   "n": 1000
+  }
+ },
+ "latency": {
+  "dense": {
+   "ms_per_question_mean": 11.59,
+   "ms_per_question_sd": 0.08,
+   "runs_ms": [
+    11.52,
+    11.68,
+    11.59
+   ]
+  },
+  "two_hop": {
+   "ms_per_question_mean": 437.58,
+   "ms_per_question_sd": 76.64,
+   "runs_ms": [
+    525.03,
+    405.57,
+    382.13
+   ]
+  },
+  "two_hop_gate": {
+   "ms_per_question_mean": 294.89,
+   "ms_per_question_sd": 3.48,
+   "runs_ms": [
+    291.57,
+    294.57,
+    298.52
+   ]
+  },
+  "titlelink": {
+   "ms_per_question_mean": 364.74,
+   "ms_per_question_sd": 0.28,
+   "runs_ms": [
+    364.63,
+    365.06,
+    364.54
+   ]
+  }
+ }
+}
