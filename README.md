@@ -4,7 +4,7 @@
 
 **A lightweight passage–entity graph that helps a dense retriever find the second supporting passage. No LLM calls at indexing time.**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23445104.svg)](https://doi.org/10.5281/zenodo.23445104)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448996.svg)](https://doi.org/10.5281/zenodo.23448996)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![GPU](https://img.shields.io/badge/run%20on-NVIDIA%20H200-76b900)
@@ -159,7 +159,7 @@ Every table and number in the paper is generated from the stored per-question fi
 
 ## Citation
 
-Please cite the archived release (the latest version is listed on the [Zenodo record](https://doi.org/10.5281/zenodo.23445104)) and the paper once published:
+Please cite the archived release (the latest version is listed on the [Zenodo record](https://doi.org/10.5281/zenodo.23448996)) and the paper once published:
 
 ```bibtex
 @misc{zeyad2026twohop,
@@ -168,7 +168,7 @@ Please cite the archived release (the latest version is listed on the [Zenodo re
   author       = {Zeyad, Akram Taha and Jasim, Fanan Hikmat},
   year         = {2026},
   howpublished = {\url{https://github.com/Akramtaha98/twohop-graph-rerank-rag}},
-  doi          = {10.5281/zenodo.23445104}
+  doi          = {10.5281/zenodo.23448996}
 }
 ```
 
