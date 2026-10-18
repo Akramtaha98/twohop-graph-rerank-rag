@@ -3,12 +3,12 @@
 \footnotesize
 \caption{Retrieval latency per question (ms; mean $\pm$ standard deviation over repeated passes, after warm-up). The cross-encoder rescored the dense top-20.}
 \label{tab:timing}
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-Setting & Dense & Two-hop & Two-hop + gate & CE (dense top-20) \\
+Setting & Dense & TitleLink & Two-hop & Two-hop + gate & CE (dense top-20) \\
 \midrule
-H200: 9\,760 passages & 4 $\pm$ 0 & 22 $\pm$ 1 & 18 $\pm$ 0 & 46 $\pm$ 0 \\
-H200: 66\,635 passages & 4 $\pm$ 0 & 103 $\pm$ 0 & 80 $\pm$ 0 & 46 $\pm$ 0 \\
+H200: 9\,760 passages & 4 $\pm$ 0 & 10 $\pm$ 0 & 22 $\pm$ 1 & 18 $\pm$ 0 & 46 $\pm$ 0 \\
+H200: 66\,635 passages & 4 $\pm$ 0 & 84 $\pm$ 0 & 103 $\pm$ 0 & 80 $\pm$ 0 & 46 $\pm$ 0 \\
 \bottomrule
 \end{tabular}
 \end{table}

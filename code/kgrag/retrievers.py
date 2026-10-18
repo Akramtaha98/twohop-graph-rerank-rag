@@ -357,3 +357,48 @@ class LinearLike:
         pi = self.g.ppr(seed, self.alpha)[: self.g.n]
         score = self.beta * _minmax(d) + (1 - self.beta) * _minmax(pi)
         return list(np.argsort(-score)[:k]), {}
+
+
+class BM25DenseFusion:
+    """BM25 + dense hybrid: 'rrf' = reciprocal rank fusion (k=60); 'linear' = 0.5*minmax(dense) + 0.5*minmax(BM25). Untuned defaults."""
+
+    name = "bm25dense"
+
+    def __init__(self, dense, mode="rrf", rrf=60, w=0.5):
+        self.dense, self.mode, self.rrf, self.w = dense, mode, int(rrf), float(w)
+
+    def fit(self, passages):
+        self.bm = BM25().fit(passages)
+        return self
+
+    def search(self, q, k, qtype=None):
+        d, b = self.dense.scores(q), self.bm.scores(q)
+        if self.mode == "linear":
+            f = self.w * _minmax(d) + (1 - self.w) * _minmax(b)
+        else:
+            rd = np.empty(len(d)); rd[np.argsort(-d)] = np.arange(len(d))
+            rb = np.empty(len(b)); rb[np.argsort(-b)] = np.arange(len(b))
+            f = 1.0 / (self.rrf + rd + 1) + 1.0 / (self.rrf + rb + 1)
+        return list(np.argsort(-f)[:k]), {}
+
+
+class QuestionTitle:
+    """Direct mention-to-title baseline without a first hop: dense score + tb for every passage whose title is an entity named in the question."""
+
+    name = "qtitle"
+
+    def __init__(self, dense, tb=0.5, ner="both", idf=True, max_df_frac=0.2):
+        self.dense, self.tb, self.ner, self.idf, self.max_df_frac = dense, float(tb), ner, idf, max_df_frac
+
+    def fit(self, passages):
+        from .text import ekey
+
+        self.g = EntityGraph(passages, self.ner, self.idf, self.max_df_frac)
+        self.title_col = np.array([self.g.vocab.get(ekey(p["title"]), -1) for p in passages])
+        return self
+
+    def search(self, q, k, qtype=None):
+        d = self.dense.scores(q)
+        qset = set(self.g.query_entities(q))
+        f = d + self.tb * np.array([1.0 if (c >= 0 and c in qset) else 0.0 for c in self.title_col])
+        return list(np.argsort(-f)[:k]), {}

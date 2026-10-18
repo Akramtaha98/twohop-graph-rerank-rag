@@ -15,7 +15,7 @@ import numpy as np
 from . import data as D
 from . import metrics as M
 from .generate import Extractive, HFGenerator, build_context
-from .retrievers import BM25, CrossRerank, Dense, GraphPPR, Hybrid, Hybrid2, LinearLike, SprigLike
+from .retrievers import BM25, CrossRerank, Dense, GraphPPR, Hybrid, Hybrid2, LinearLike, SprigLike, BM25DenseFusion, QuestionTitle
 
 def default_systems(best=None, best2=None):
     """Baselines, the proposed hybrid and its ablations. `best` overrides hyper-parameters (from tune.py)."""
@@ -64,6 +64,10 @@ def build(kind, kw, dense, passages, args):
         return Hybrid(dense, ner=args.ner, **kw).fit(passages)
     if kind == "spriglike":
         return SprigLike(dense, **{"ner": args.ner, **kw}).fit(passages)
+    if kind == "bm25dense":
+        return BM25DenseFusion(dense, **kw).fit(passages)
+    if kind == "qtitle":
+        return QuestionTitle(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind == "linearlike":
         return LinearLike(dense, **{"ner": args.ner, **kw}).fit(passages)
     if kind == "hybrid2":
@@ -84,6 +88,7 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--dense", default="tfidf", choices=["tfidf", "bge"])
+    ap.add_argument("--dense_model", default="BAAI/bge-small-en-v1.5", help="sentence-transformers encoder used when --dense bge")
     ap.add_argument("--ner", default="regex", choices=["regex", "spacy", "both"])
     ap.add_argument("--generator", default="extractive", choices=["extractive", "hf", "none"])
     ap.add_argument("--model", default="Qwen/Qwen2.5-1.5B-Instruct")
@@ -102,7 +107,7 @@ def main():
     exs, passages = D.load(args.dataset, args.path, args.n, args.seed)
     print(f"{args.dataset}: {len(exs)} questions, {len(passages)} pooled passages")
 
-    dense = Dense(args.dense).fit(passages)
+    dense = Dense(args.dense, model=args.dense_model).fit(passages)
     gen = None
     if args.generator == "extractive":
         gen = Extractive()
