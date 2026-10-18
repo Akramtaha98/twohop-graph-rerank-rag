@@ -154,6 +154,7 @@ def main():
     ap.add_argument("--blind_titles", action="store_true", help="replace every passage title by a synthetic id (run only this mode)")
     ap.add_argument("--blind_mode", default="doc", choices=["doc", "head"])
     ap.add_argument("--also_blind", action="store_true", help="run the standard and the blind-title mode in one process (shares spaCy and the pool)")
+    ap.add_argument("--only", default=None, help="comma list of configurations to run, e.g. 500k_blind or 66k_std,66k_blind (default: all)")
     ap.add_argument("--eval_seed", type=int, default=2)
     ap.add_argument("--n", type=int, default=1000)
     ap.add_argument("--lat_n", type=int, default=100)
@@ -165,6 +166,9 @@ def main():
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
 
+    only = set(a.only.split(",")) if a.only else None
+    if only and not any(x.startswith("500k") for x in only):
+        a.pool_size = 0  # only the dev-only pool is needed: skip loading train and the 500k spaCy pass
     exs, passages, n_dev = build_pool(a.pool_size, a.eval_seed, a.n)
     if a.check_ids:
         ref = {json.loads(l)["qid"] for l in Path(a.check_ids).read_text().splitlines()}
@@ -180,7 +184,11 @@ def main():
         for mode in modes:
             ps = blind(pas, a.blind_mode) if mode == "blind" else pas
             # pool ids are the same, so the evaluation examples carry over; the dev pool is a prefix of the large pool
-            run_one(f"{tag}_{'blind' + ('_head' if a.blind_mode == 'head' else '') if mode == 'blind' else 'std'}", exs, ps, a, a.out)
+            name = f"{tag}_{'blind' + ('_head' if a.blind_mode == 'head' else '') if mode == 'blind' else 'std'}"
+            if (only and name not in only) or (Path(a.out) / name / "summary.json").exists():
+                print(f"skip {name}", flush=True)
+                continue
+            run_one(name, exs, ps, a, a.out)
     print("SCALE_DONE")
 
 
