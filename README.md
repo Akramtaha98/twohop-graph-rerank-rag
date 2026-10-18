@@ -12,12 +12,14 @@ A passage–entity graph, built without any LLM calls, restricts which passages 
 | System | HotpotQA A | HotpotQA B | 2WikiMultiHopQA | MuSiQue |
 |---|---|---|---|---|
 | Dense (BGE-small) | 70.2 | 69.8 | 38.2 | 15.3 |
+| BM25+dense fusion (RRF, untuned) | 70.8 | 68.5 | 37.6 | 14.8 |
+| Question-title boost (no first hop) | 70.5 | 69.9 | 38.4 | 14.8 |
 | SPRIG-style (re-implementation) | 70.3 | 69.9 | 38.3 | 15.3 |
 | LinearRAG-style (re-implementation) | 62.0 | 62.0 | 44.0 | 13.0 |
 | Two-hop + gate (ours) | 79.6 | 81.6 | 60.5 | 21.8 |
 | TitleLink | 82.3 | 81.6 | 75.2 | 16.5 |
 
-Settings were tuned on HotpotQA **train** only and frozen; 2WikiMultiHopQA and MuSiQue are zero-shot transfer. The SPRIG- and LinearRAG-style systems are simplified, untuned re-implementations (`SprigLike`, `LinearLike` in `code/kgrag/retrievers.py`), not the authors' code. Negative results are reported in the paper.
+The gain also holds with BGE-base and BGE-large and on an untouched HotpotQA sample (see the paper, Section 7.8). Settings were tuned on HotpotQA **train** only and frozen; 2WikiMultiHopQA and MuSiQue are zero-shot transfer. The SPRIG- and LinearRAG-style systems are simplified, untuned re-implementations (`SprigLike`, `LinearLike` in `code/kgrag/retrievers.py`), not the authors' code. Negative results are reported in the paper.
 
 ## Repository layout
 ```
@@ -43,6 +45,7 @@ cd code && python -m unittest discover -s tests
 bash run_h200_all.sh     # tuning on train, all systems on the four sets, answers, controls, coverage, scale, latency
 bash run_h200_fix.sh     # full tuning grid (records the train tie) and the main HotpotQA run with all baselines
 bash run_h200_abl.sh     # retrieval-only ablations of the earlier PPR hybrid
+bash run_h200_r6.sh      # added baselines (BM25-dense fusion, question-title boost), BGE-base/large, untouched sample C
 ```
 Each script is resumable and writes a tarball of its results.
 
@@ -56,6 +59,7 @@ python -m kgrag.extended --hotpot $H/hotpot --a $H/eval_v2_seed0 --b $H/eval_v2_
 python -m kgrag.analysis --a $H/eval_v2_seed0 --b $H/eval_v2_seed1 --out ../paper
 python -m kgrag.report_controls --dir ../results/controls --out ../paper --timing "Gpu small=$H/timing_h200_1k.json" "Gpu full=$H/timing_h200_full.json"
 python -m kgrag.report_gpu --res $H --out ../paper
+python -m kgrag.report_r6 --res $H --out ../paper
 python -m kgrag.make_figures --res $H --out ../paper/figs
 python check_review3.py claims       # also: related cover build sampleids
 ```

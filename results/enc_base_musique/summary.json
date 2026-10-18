@@ -1,0 +1,101 @@
+{
+  "config": {
+    "dataset": "musique",
+    "path": null,
+    "n": 1000,
+    "seed": 0,
+    "k": 5,
+    "dense": "bge",
+    "dense_model": "BAAI/bge-base-en-v1.5",
+    "ner": "regex",
+    "generator": "none",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter": null,
+    "load_4bit": false,
+    "systems": [
+      "bm25",
+      "dense",
+      "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+      "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+      "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+      "fusion_rrf:bm25dense:mode=rrf",
+      "fusion_linear:bm25dense:mode=linear",
+      "qtitle:qtitle:tb=0.5,ner=both",
+      "oracle"
+    ],
+    "gen_systems": null,
+    "append": false,
+    "tuned": null,
+    "tuned2": null,
+    "out": "../results_h200/enc_base_musique"
+  },
+  "systems_run": [
+    "bm25",
+    "dense",
+    "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+    "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+    "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+    "fusion_rrf:bm25dense:mode=rrf",
+    "fusion_linear:bm25dense:mode=linear",
+    "qtitle:qtitle:tb=0.5,ner=both",
+    "oracle"
+  ],
+  "n_questions": 1000,
+  "n_passages": 11525,
+  "systems": {
+    "bm25": {
+      "recall": 0.4359166666666666,
+      "all_support": 0.1,
+      "gated": 0.0,
+      "seconds": 1.7
+    },
+    "dense": {
+      "recall": 0.5394166666666668,
+      "all_support": 0.184,
+      "gated": 0.0,
+      "seconds": 4.1
+    },
+    "hybrid2": {
+      "recall": 0.5333333333333332,
+      "all_support": 0.262,
+      "gated": 0.0,
+      "seconds": 26.6
+    },
+    "hybrid2_gate": {
+      "recall": 0.5339166666666666,
+      "all_support": 0.255,
+      "gated": 0.117,
+      "seconds": 21.7
+    },
+    "titlelink": {
+      "recall": 0.46625,
+      "all_support": 0.198,
+      "gated": 0.0,
+      "seconds": 11.6
+    },
+    "fusion_rrf": {
+      "recall": 0.5228333333333333,
+      "all_support": 0.156,
+      "gated": 0.0,
+      "seconds": 6.1
+    },
+    "fusion_linear": {
+      "recall": 0.5355833333333333,
+      "all_support": 0.17,
+      "gated": 0.0,
+      "seconds": 5.9
+    },
+    "qtitle": {
+      "recall": 0.5411666666666666,
+      "all_support": 0.181,
+      "gated": 0.0,
+      "seconds": 5.1
+    },
+    "oracle": {
+      "recall": 1.0,
+      "all_support": 1.0,
+      "gated": 0.0,
+      "seconds": 0.0
+    }
+  }
+}

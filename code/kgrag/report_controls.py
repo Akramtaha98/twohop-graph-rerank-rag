@@ -207,13 +207,13 @@ def main():
     if tm:
         U = ["\\begin{table}[t]", "\\centering", "\\footnotesize",
              "\\caption{Retrieval latency per question (ms; mean $\\pm$ standard deviation over repeated passes, after warm-up). The cross-encoder rescored the dense top-20.}",
-             "\\label{tab:timing}", "\\begin{tabular}{lrrrr}", "\\toprule", "Setting & Dense & Two-hop & Two-hop + gate & CE (dense top-20) \\\\", "\\midrule"]
+             "\\label{tab:timing}", "\\begin{tabular}{lrrrrr}", "\\toprule", "Setting & Dense & TitleLink & Two-hop & Two-hop + gate & CE (dense top-20) \\\\", "\\midrule"]
         for lab, t in tm.items():
             def c(key):
                 return f"{t[key]['ms_per_question_mean']:.0f} $\\pm$ {t[key]['ms_per_question_sd']:.0f}" if key in t else "--"
-            U.append(f"H200: {t["n_passages"]:,} passages & {c('dense')} & {c('two_hop')} & {c('two_hop_gate')} & {c('ce_dense_top20')} \\\\".replace(",", "\\,"))
+            U.append(f"H200: {t["n_passages"]:,} passages & {c('dense')} & {c('title_only')} & {c('two_hop')} & {c('two_hop_gate')} & {c('ce_dense_top20')} \\\\".replace(",", "\\,"))
             code_ = "".join(w.capitalize() for w in lab.replace("-", " ").split())
-            for key, nm in (("dense", "Dense"), ("two_hop", "Two"), ("two_hop_gate", "Gate"), ("ce_dense_top20", "CE")):
+            for key, nm in (("dense", "Dense"), ("title_only", "Title"), ("two_hop", "Two"), ("two_hop_gate", "Gate"), ("ce_dense_top20", "CE")):
                 if key in t:
                     mac.append(f"\\newcommand{{\\Tm{code_}{nm}}}{{{t[key]['ms_per_question_mean']:.0f}}}")
                     mac.append(f"\\newcommand{{\\Tm{code_}{nm}Sd}}{{{t[key]['ms_per_question_sd']:.0f}}}")

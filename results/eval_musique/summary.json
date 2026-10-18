@@ -135,6 +135,24 @@
       "all_support": 0.13,
       "gated": 0.0,
       "seconds": 29.8
+    },
+    "fusion_rrf": {
+      "recall": 0.5114166666666666,
+      "all_support": 0.148,
+      "gated": 0.0,
+      "seconds": 5.8
+    },
+    "fusion_linear": {
+      "recall": 0.5188333333333333,
+      "all_support": 0.151,
+      "gated": 0.0,
+      "seconds": 5.4
+    },
+    "qtitle": {
+      "recall": 0.502,
+      "all_support": 0.148,
+      "gated": 0.0,
+      "seconds": 4.6
     }
   }
 }

@@ -1,0 +1,109 @@
+{
+  "config": {
+    "dataset": "hotpot",
+    "path": null,
+    "n": 1000,
+    "seed": 2,
+    "k": 5,
+    "dense": "bge",
+    "dense_model": "BAAI/bge-small-en-v1.5",
+    "ner": "regex",
+    "generator": "none",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter": null,
+    "load_4bit": false,
+    "systems": [
+      "bm25",
+      "dense",
+      "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+      "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+      "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+      "fusion_rrf:bm25dense:mode=rrf",
+      "fusion_linear:bm25dense:mode=linear",
+      "qtitle:qtitle:tb=0.5,ner=both",
+      "ce_dense:ce:top=20",
+      "oracle"
+    ],
+    "gen_systems": null,
+    "append": false,
+    "tuned": null,
+    "tuned2": null,
+    "out": "../results_h200/eval_v2_seed2"
+  },
+  "systems_run": [
+    "bm25",
+    "dense",
+    "hybrid2:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5",
+    "hybrid2_gate:hybrid2:ner=both,m=3,gamma=0.3,tb=0.5,gate=titles",
+    "titlelink:hybrid2:ner=both,m=3,gamma=1.0,tb=0.5,mode=title_only",
+    "fusion_rrf:bm25dense:mode=rrf",
+    "fusion_linear:bm25dense:mode=linear",
+    "qtitle:qtitle:tb=0.5,ner=both",
+    "ce_dense:ce:top=20",
+    "oracle"
+  ],
+  "n_questions": 1000,
+  "n_passages": 9797,
+  "systems": {
+    "bm25": {
+      "recall": 0.723,
+      "all_support": 0.489,
+      "gated": 0.0,
+      "seconds": 1.4
+    },
+    "dense": {
+      "recall": 0.8445,
+      "all_support": 0.708,
+      "gated": 0.0,
+      "seconds": 3.6
+    },
+    "hybrid2": {
+      "recall": 0.8805,
+      "all_support": 0.792,
+      "gated": 0.0,
+      "seconds": 22.2
+    },
+    "hybrid2_gate": {
+      "recall": 0.893,
+      "all_support": 0.817,
+      "gated": 0.233,
+      "seconds": 15.7
+    },
+    "titlelink": {
+      "recall": 0.902,
+      "all_support": 0.824,
+      "gated": 0.0,
+      "seconds": 10.4
+    },
+    "fusion_rrf": {
+      "recall": 0.8345,
+      "all_support": 0.678,
+      "gated": 0.0,
+      "seconds": 5.4
+    },
+    "fusion_linear": {
+      "recall": 0.8195,
+      "all_support": 0.65,
+      "gated": 0.0,
+      "seconds": 5.2
+    },
+    "qtitle": {
+      "recall": 0.847,
+      "all_support": 0.711,
+      "gated": 0.0,
+      "seconds": 4.5
+    },
+    "ce_dense": {
+      "recall": 0.898,
+      "all_support": 0.806,
+      "gated": 0.0,
+      "seconds": 44.8
+    },
+    "oracle": {
+      "recall": 1.0,
+      "all_support": 1.0,
+      "gated": 0.0,
+      "seconds": 0.0
+    }
+  }
+}

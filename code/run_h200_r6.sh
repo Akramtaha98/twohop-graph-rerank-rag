@@ -26,5 +26,5 @@ for M in base large; do
 done
 # (3) untouched sample C (seed 2), evaluated once
 python -m kgrag.run --dataset hotpot --n 1000 --seed 2 --dense bge --generator none --out $R/eval_v2_seed2 --systems "${CORE[@]}" "ce_dense:ce:top=20" oracle
-tar czf ../results_h200_r6.tar.gz -C .. results_h200/eval_v2_seed0 results_h200/eval_v2_seed1 results_h200/eval_2wiki results_h200/eval_musique results_h200/eval_v2_seed2 results_h200/enc_*
+(cd .. && tar czf results_h200_r6.tar.gz results_h200/eval_v2_seed0 results_h200/eval_v2_seed1 results_h200/eval_2wiki results_h200/eval_musique results_h200/eval_v2_seed2 results_h200/enc_*)
 echo DONE

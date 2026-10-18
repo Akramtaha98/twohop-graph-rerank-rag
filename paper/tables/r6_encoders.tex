@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Other BGE encoders (All@5, \%, 1\,000 questions per set). The method settings are those frozen with BGE-small and were not re-tuned for the larger encoders.}
+\label{tab:r6enc}
+\begin{tabular}{llrrrr}
+\toprule
+Encoder & System & HotpotQA A & HotpotQA B & 2Wiki & MuSiQue \\
+\midrule
+\multirow{4}{*}{BGE-small (33M)} & Dense & 70.2 & 69.8 & 38.2 & 15.3 \\
+ & Question-title boost & 70.5 & 69.9 & 38.4 & 14.8 \\
+ & TitleLink & 82.3 & 81.6 & 75.2 & 16.5 \\
+ & Two-hop + gate & 79.6 & 81.6 & 60.5 & 21.8 \\
+\midrule
+\multirow{4}{*}{BGE-base (110M)} & Dense & 75.9 & 72.2 & 40.8 & 18.4 \\
+ & Question-title boost & 76.0 & 72.2 & 40.6 & 18.1 \\
+ & TitleLink & 85.2 & 83.3 & 75.3 & 19.8 \\
+ & Two-hop + gate & 84.9 & 83.8 & 63.4 & 25.5 \\
+\midrule
+\multirow{4}{*}{BGE-large (335M)} & Dense & 79.9 & 79.1 & 43.1 & 22.4 \\
+ & Question-title boost & 79.9 & 79.1 & 43.0 & 22.1 \\
+ & TitleLink & 87.6 & 85.8 & 77.4 & 22.2 \\
+ & Two-hop + gate & 86.1 & 86.8 & 63.9 & 27.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
