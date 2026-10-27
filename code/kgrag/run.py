@@ -82,7 +82,7 @@ def build(kind, kw, dense, passages, args):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", default="toy", choices=["toy", "hotpot", "2wiki", "musique"])
+    ap.add_argument("--dataset", default="toy", choices=["toy", "hotpot", "2wiki", "musique", "multihoprag"])
     ap.add_argument("--path", default=None, help="local data file (required for 2wiki/musique)")
     ap.add_argument("--n", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=0)
@@ -140,6 +140,7 @@ def main():
                 "all_support": M.all_support_at_k(pids, ex["sup_pids"]),
                 "qtype": ex.get("qtype", ""),
                 "gated": bool(extra.get("gated", False)),
+                "ranked": [int(x) for x in pids],
             }
             if gen is not None and (gen_for is None or label in gen_for):
                 ctx = build_context(passages, pids, bridges, chain=(kind in {"graph", "hybrid"}))
@@ -150,7 +151,7 @@ def main():
         with open(out / f"{label}.jsonl", "w") as f:
             for rec in recs:
                 f.write(json.dumps(rec) + "\n")
-        agg = {k: float(np.mean([x[k] for x in recs])) for k in recs[0] if k not in {"qid", "pred", "qtype"}}
+        agg = {k: float(np.mean([x[k] for x in recs])) for k in recs[0] if k not in {"qid", "pred", "qtype", "ranked"}}
         agg["seconds"] = round(time.time() - t0, 1)
         summary["systems"][label] = agg
         print(label, {k: round(v, 3) for k, v in agg.items()})

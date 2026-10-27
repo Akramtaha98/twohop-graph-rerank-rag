@@ -129,3 +129,21 @@ def load(name, path=None, n=1000, seed=0):
     if name == "musique":
         return load_musique(path, n, seed)
     raise ValueError(name)
+
+
+# ---- JIS extension: MultiHop-RAG loader and optional blind titles (env KG_BLIND_TITLES=1) ----
+import os
+
+_load_base = load
+
+
+def load(name, path=None, n=1000, seed=0):  # noqa: F811
+    if name == "multihoprag":
+        from .multihoprag import load_multihoprag
+
+        exs, ps = load_multihoprag(path, n, seed)
+    else:
+        exs, ps = _load_base(name, path, n, seed)
+    if os.environ.get("KG_BLIND_TITLES"):
+        ps = [dict(p, title=f"doc_{i}") for i, p in enumerate(ps)]
+    return exs, ps
