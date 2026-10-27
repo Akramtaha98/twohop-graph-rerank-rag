@@ -28,6 +28,10 @@ fulldev)
   for d in hotpot musique 2wiki; do
     python -m kgrag.rank_report --dataset $d --n 100000 --dir $R/full_$d --systems dense bm25 two_hop two_hop_gate titlelink ce_dense ce_gate sprig linear --latex $R/full_$d/table.tex
   done ;;
+fulldev_hotpot|fulldev_musique|fulldev_2wiki)
+  d=${STAGE#fulldev_}; python_ds=$d
+  run $python_ds 100000 0 $R/full_$d
+  python -m kgrag.rank_report --dataset $d --n 100000 --dir $R/full_$d --systems dense bm25 two_hop two_hop_gate titlelink ce_dense ce_gate sprig linear --latex $R/full_$d/table.tex ;;
 hipporag)
   # protocol of HippoRAG/LinearRAG: 1,000 questions per dataset, pooled corpus. Same samples as our paper (seed 0).
   LLM=${LLM:-Qwen/Qwen2.5-7B-Instruct}; EMB=${EMB:-nvidia/NV-Embed-v2}
@@ -52,6 +56,6 @@ report)
     for x in hipporag2 mdr; do [ -f "$R/$d/$x.jsonl" ] && S="$S $x"; done
     echo "== $d"; python -m kgrag.rank_report --dataset $ds --n $n --dir $R/$d --systems $S --latex $R/$d/table.tex
   done ;;
-*) echo "usage: bash run_jis_experiments.sh {mhrag|fulldev|hipporag|mdr_export|mdr_import|report}"; exit 1 ;;
+*) echo "usage: bash run_jis_experiments.sh {mhrag|fulldev|fulldev_hotpot|fulldev_musique|fulldev_2wiki|hipporag|mdr_export|mdr_import|report}"; exit 1 ;;
 esac
 echo "STAGE $STAGE DONE"
